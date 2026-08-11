@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+      font-weight: 45 920;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: oklch(0.56 0.09 152); }
+    @keyframes onsaemi-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+    @keyframes shimmer-border { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh; background: oklch(0.985 0.008 95); color: oklch(0.24 0.02 145);">
+
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter: blur(16px); background: oklch(0.985 0.008 95 / 0.75); border-bottom: 1px solid oklch(0.9 0.015 120);">
+    <div style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,40px); height:76px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="dashboard.dc.html" aria-label="키우다 홈" style="display:flex; align-items:center; gap:10px;">
+        <img src="../assets/logo.png" alt="키우다 로고" style="width:auto; height:210px; object-fit:contain;">
+        </a>
+      <nav aria-label="주요 서비스" style="display:flex; align-items:center; gap:36px;">
+        <a href="dashboard.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">보다</a>
+        <a href="ask.dc.html" style="font-size:15px; font-weight:700; color:oklch(0.5 0.1 152);">묻다</a>
+        <a href="connect.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">잇다</a>
+        <a href="share.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">나누다</a>
+      </nav>
+      <a href="profile.dc.html" style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150);">민</a>
+    </div>
+  </header>
+
+  <main style="max-width:900px; margin:0 auto; padding: clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px;">
+
+    <div>
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+        <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">AI 온새미</p>
+        <span style="font-size:13.5px; font-weight:600; color:oklch(0.55 0.02 145);">생육에 관한 모든 정보가 담긴 지혜의 샘</span>
+      </div>
+      <h1 style="margin-top:12px; font-size:clamp(26px,3.4vw,34px); font-weight:900; letter-spacing:-0.03em;">무엇이든 물어보세요</h1>
+    </div>
+
+    <sc-if value="{{ isThinking }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:32px; border-radius:24px; padding:1.5px; background:linear-gradient(90deg, oklch(0.75 0.1 150 / 0.7), oklch(0.8 0.09 200 / 0.7), oklch(0.78 0.12 90 / 0.7), oklch(0.75 0.1 150 / 0.7)); background-size:300% 100%; animation:shimmer-border 3s linear infinite; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+        <div style="border-radius:22.5px; background:oklch(1 0 0 / 0.65); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); padding:26.5px; display:flex; align-items:center; gap:14px;">
+          <div style="width:40px; height:40px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-size:18px; animation:onsaemi-pulse 1.2s ease-in-out infinite;">🌱</div>
+          <p style="font-size:15px; font-weight:600; color:oklch(0.48 0.02 145);">온새미가 사진과 증상을 분석하고 있어요…</p>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showAnswer }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:32px; display:flex; flex-direction:column; gap:20px;">
+
+        <div style="border-radius:24px; background:oklch(0.94 0.03 140); padding:22px 26px; align-self:flex-end; max-width:80%;">
+          <p style="font-size:15px; line-height:1.7; color:oklch(0.3 0.04 145);">{{ answeredQuestion }}</p>
+        </div>
+
+        <div style="border-radius:28px; background:oklch(1 0 0); padding:clamp(24px,3vw,32px); box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="width:32px; height:32px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-size:15px;">🌱</span>
+            <span style="font-size:15px; font-weight:800;">온새미</span>
+            <span style="font-size:12.5px; color:oklch(0.55 0.02 145);">근거 기반 가설 · 3초 전</span>
+          </div>
+
+          <p style="margin-top:18px; font-size:15.5px; line-height:1.75; color:oklch(0.32 0.02 145);">
+            첨부하신 사진과 증상을 종합하면, 아래 두 가지 원인이 유력해요. 확률이 가장 높은 후보부터 확인해 보시고, 맞는 진단을 선택해 주세요.
+          </p>
+
+          <div style="margin-top:22px; display:flex; flex-direction:column; gap:14px;">
+            <sc-for list="{{ diagnoses }}" as="d" hint-placeholder-count="2">
+              <div onClick="{{ d.select }}" style="border-radius:20px; border:1.5px solid {{ d.borderColor }}; background:{{ d.bg }}; padding:20px 22px; cursor:pointer; transition:border-color .2s;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                  <h3 style="font-size:16.5px; font-weight:800;">{{ d.name }}</h3>
+                  <span style="font-size:13px; font-weight:800; color:oklch(0.5 0.1 152);">일치도 {{ d.confidence }}</span>
+                </div>
+                <p style="margin-top:8px; font-size:14.5px; line-height:1.7; color:oklch(0.48 0.02 145);">{{ d.reason }}</p>
+                <sc-if value="{{ d.isSelected }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:14px; padding-top:14px; border-top:1px solid oklch(0.9 0.015 120);">
+                    <p style="font-size:13px; font-weight:800; color:oklch(0.5 0.1 152); text-transform:uppercase; letter-spacing:0.06em;">대처법</p>
+                    <ul style="margin-top:10px; display:flex; flex-direction:column; gap:8px; list-style:none;">
+                      <sc-for list="{{ d.steps }}" as="step" hint-placeholder-count="3">
+                        <li style="display:flex; gap:8px; font-size:14px; line-height:1.6; color:oklch(0.35 0.02 145);">
+                          <span style="color:oklch(0.5 0.1 152); font-weight:800;">·</span>{{ step }}
+                        </li>
+                      </sc-for>
+                    </ul>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:22px; display:flex; flex-wrap:wrap; gap:10px;">
+            <a href="Kiuda Connect.dc.html?openMyHelp=1" style="border:1.5px solid oklch(0.88 0.015 120); background:transparent; color:oklch(0.4 0.02 145); font-size:14px; font-weight:700; padding:11px 20px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center;">이웃에게 물어보기</a>
+            <button style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14px; font-weight:800; padding:11px 22px; border-radius:999px; cursor:pointer;">이 진단이 맞아요</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:36px; border-radius:28px; background:oklch(1 0 0); padding:20px 22px; box-shadow:0 12px 32px oklch(0.3 0.03 145 / 0.08);">
+      <sc-if value="{{ showAttachment }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:14px; display:flex; align-items:center; gap:14px;">
+          <sc-if value="{{ isPhotoMode }}" hint-placeholder-val="{{ false }}">
+            <div style="width:96px; height:72px; border-radius:14px; overflow:hidden; flex-shrink:0;">
+              <image-slot id="ask-photo" shape="rect" placeholder="사진 첨부"></image-slot>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isVoiceMode }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; background:oklch(0.94 0.05 30);">
+              <span style="width:10px; height:10px; border-radius:50%; background:oklch(0.6 0.14 30); animation:onsaemi-pulse 1s ease-in-out infinite;"></span>
+              <span style="font-size:14px; font-weight:700; color:oklch(0.5 0.13 30);">음성으로 듣고 있어요…</span>
+            </div>
+          </sc-if>
+          <button onClick="{{ clearAttachment }}" aria-label="첨부 제거" style="border:none; background:transparent; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:oklch(0.5 0.02 145); flex-shrink:0;" style-hover="background:oklch(0.96 0.015 130);"><span style="width:26px; height:26px; border-radius:50%; background:oklch(0.96 0.015 130); display:flex; align-items:center; justify-content:center; font-size:13px;">✕</span></button>
+        </div>
+      </sc-if>
+
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button onClick="{{ togglePhoto }}" aria-label="사진 첨부" title="사진 첨부" style="border:none; background:{{ photoBtnBg }}; width:44px; height:44px; border-radius:50%; font-size:18px; cursor:pointer; flex-shrink:0;">📷</button>
+        <button onClick="{{ toggleVoice }}" aria-label="음성 입력" title="음성 입력" style="border:none; background:{{ voiceBtnBg }}; width:44px; height:44px; border-radius:50%; font-size:18px; cursor:pointer; flex-shrink:0;">🎙️</button>
+        <input type="text" placeholder="예: 방울토마토 잎 끝이 노랗게 마르고 있어요. 원인이 뭘까요?" value="{{ question }}" onChange="{{ onQuestionChange }}" style="flex:1; min-width:160px; height:48px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 20px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+        <button onClick="{{ submit }}" aria-label="검색" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); width:48px; height:48px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px oklch(0.56 0.09 152 / 0.28); flex-shrink:0; transition:transform .2s;" style-hover="transform: translateY(-2px);">→</button>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;">
+      <p style="font-size:13px; font-weight:800; color:oklch(0.5 0.02 145); text-transform:uppercase; letter-spacing:0.08em;">자주 묻는 증상</p>
+      <div style="margin-top:14px; display:flex; gap:10px; overflow-x:auto; padding:2px 2px 10px;">
+        <sc-for list="{{ symptomChips }}" as="c" hint-placeholder-count="10">
+          <button onClick="{{ c.onClick }}" style="flex-shrink:0; display:flex; align-items:center; gap:7px; border:1.5px solid oklch(0.9 0.015 120); background:oklch(1 0 0); color:oklch(0.35 0.02 145); font-size:13.5px; font-weight:700; padding:10px 16px; border-radius:999px; cursor:pointer; white-space:nowrap; transition:border-color .2s, transform .2s, background .2s;" style-hover="border-color: oklch(0.56 0.09 152); background: oklch(0.97 0.02 140); transform: translateY(-2px);">
+            <span style="font-size:15px;">{{ c.icon }}</span>#{{ c.label }}
+          </button>
+        </sc-for>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    question: '',
+    isThinking: false,
+    showAnswer: false,
+    answeredQuestion: '',
+    selectedDiagnosisId: 'aphid',
+    attachmentMode: null,
+  };
+
+  submitQuestion() {
+    const q = this.state.question.trim() || '방울토마토 잎 끝이 노랗게 마르고 있어요. 원인이 뭘까요?';
+    this.setState({ isThinking: true, showAnswer: false });
+    setTimeout(() => {
+      this.setState({ isThinking: false, showAnswer: true, answeredQuestion: q });
+    }, 900);
+  }
+
+  toggleMode(mode) {
+    this.setState((s) => ({ attachmentMode: s.attachmentMode === mode ? null : mode }));
+  }
+
+  renderVals() {
+    const green = 'oklch(0.56 0.09 152)';
+    const mode = this.state.attachmentMode;
+    const softBg = 'oklch(0.94 0.03 140)';
+    const idleBg = 'oklch(0.96 0.015 130)';
+
+    const symptomChipItems = [
+      { icon: '🍃', label: '잎이 노래져요' },
+      { icon: '🐛', label: '벌레가 보여요' },
+      { icon: '💧', label: '물주기 주기' },
+      { icon: '🪴', label: '분갈이 시기' },
+      { icon: '🔴', label: '반점이 생겼어요' },
+      { icon: '🌱', label: '성장이 더뎌요' },
+      { icon: '🛡️', label: '병해충 예방' },
+      { icon: '✂️', label: '가지치기 방법' },
+      { icon: '🌾', label: '비료 추천' },
+      { icon: '☀️', label: '일조량' },
+      { icon: '🧪', label: '토양 산도' },
+      { icon: '🌡️', label: '온도 관리' },
+      { icon: '🌬️', label: '통풍' },
+      { icon: '🍅', label: '수확 시기' },
+      { icon: '🌰', label: '씨앗 발아' },
+      { icon: '🌿', label: '잡초 제거' },
+    ];
+    const symptomChips = symptomChipItems.map((c) => ({
+      ...c,
+      onClick: () => this.setState({ question: c.label }),
+    }));
+
+    const diagnosisList = [
+      {
+        id: 'aphid',
+        name: '진딧물로 인한 초기 스트레스',
+        confidence: '82%',
+        reason: '잎 끝 황화와 함께 최근 지역 내 진딧물 주의보가 발효 중이에요. 잎 뒷면에 작은 벌레나 끈끈한 분비물이 있는지 확인해 보세요.',
+        steps: ['잎 뒷면을 물로 씻어내거나 마른 천으로 닦아내기', '친환경 님오일 스프레이를 3일 간격으로 도포', '증상이 심한 잎은 조기에 제거해 확산 방지'],
+      },
+      {
+        id: 'water',
+        name: '수분 스트레스(과습 또는 건조)',
+        confidence: '61%',
+        reason: '최근 강수량 변화와 화분 배수 상태에 따라 뿌리가 수분을 제대로 흡수하지 못했을 가능성이 있어요.',
+        steps: ['화분 배수구가 막히지 않았는지 확인', '겉흙이 마른 뒤에만 물주기로 조절', '2~3일간 잎 색 변화 관찰 후 재진단'],
+      },
+    ];
+    const diagnoses = diagnosisList.map((d) => {
+      const isSelected = this.state.selectedDiagnosisId === d.id;
+      return {
+        ...d,
+        isSelected,
+        select: () => this.setState({ selectedDiagnosisId: d.id }),
+        borderColor: isSelected ? green : 'oklch(0.9 0.015 120)',
+        bg: isSelected ? 'oklch(0.97 0.02 140)' : 'oklch(0.985 0.008 95)',
+      };
+    });
+
+    return {
+      question: this.state.question,
+      onQuestionChange: (e) => this.setState({ question: e.target.value }),
+      submit: () => this.submitQuestion(),
+      isThinking: this.state.isThinking,
+      showAnswer: this.state.showAnswer,
+      answeredQuestion: this.state.answeredQuestion,
+      diagnoses,
+      symptomChips,
+      showAttachment: !!mode,
+      attachmentMode: mode,
+      isPhotoMode: mode === 'photo',
+      isVoiceMode: mode === 'voice',
+      togglePhoto: () => this.toggleMode('photo'),
+      toggleVoice: () => this.toggleMode('voice'),
+      clearAttachment: () => this.setState({ attachmentMode: null }),
+      photoBtnBg: mode === 'photo' ? softBg : idleBg,
+      voiceBtnBg: mode === 'voice' ? 'oklch(0.94 0.05 30)' : idleBg,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

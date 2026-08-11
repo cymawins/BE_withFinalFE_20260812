@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+      font-weight: 45 920;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: oklch(0.56 0.09 152); }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh; background: oklch(0.985 0.008 95); color: oklch(0.24 0.02 145);">
+
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter: blur(16px); background: oklch(0.985 0.008 95 / 0.75); border-bottom: 1px solid oklch(0.9 0.015 120);">
+    <div style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,40px); height:76px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="#" aria-label="키우다 홈" style="display:flex; align-items:center; gap:10px;">
+        <img src="../assets/logo.png" alt="키우다 로고" style="width:auto; height:210px; object-fit:contain;">
+        </a>
+      <nav aria-label="주요 서비스" style="display:flex; align-items:center; gap:36px;">
+        <a href="#" style="font-size:15px; font-weight:700; color:oklch(0.5 0.1 152);">보다</a>
+        <a href="ask.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">묻다</a>
+        <a href="connect.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">잇다</a>
+        <a href="share.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">나누다</a>
+      </nav>
+      <a href="profile.dc.html" style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150);">민</a>
+    </div>
+  </header>
+
+  <main style="max-width:1180px; margin:0 auto; padding: clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px;">
+
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px;">
+      <div>
+        <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">나의 키움터</p>
+        <h1 style="margin-top:12px; font-size:clamp(28px,3.6vw,38px); font-weight:900; letter-spacing:-0.03em;">오늘도 건강하게 자라고 있어요, 민준님</h1>
+        <p style="margin-top:8px; font-size:15.5px; color:oklch(0.48 0.02 145);">2026년 8월 3일 월요일 · 서울 마포구</p>
+      </div>
+      <button onClick="{{ openModal }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:15px; font-weight:700; padding:14px 24px; border-radius:999px; cursor:pointer; box-shadow:0 10px 24px oklch(0.56 0.09 152 / 0.28); transition:transform .2s;" style-hover="transform: translateY(-2px);">+ 새 키움이 등록</button>
+    </div>
+
+    <div style="margin-top:36px; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px;">
+      <div style="border-radius:28px; background:linear-gradient(135deg, oklch(0.56 0.09 152), oklch(0.68 0.1 140)); padding:28px; color:oklch(0.99 0.006 120);">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:14px; font-weight:700; opacity:0.85;">오늘의 날씨</span>
+          <span style="font-size:26px;">☀️</span>
+        </div>
+        <p style="margin-top:18px; font-size:32px; font-weight:900;">27°C</p>
+        <p style="margin-top:6px; font-size:14px; opacity:0.85;">맑음 · 습도 58% · 물주기 좋은 날</p>
+      </div>
+
+      <div style="border-radius:28px; background:oklch(1 0 0); padding:28px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:14px; font-weight:700; color:oklch(0.55 0.02 145);">병해충 주의보</span>
+          <span style="font-size:22px;">🐛</span>
+        </div>
+        <p style="margin-top:18px; font-size:20px; font-weight:800; color:oklch(0.6 0.14 55);">진딧물 · 주의(MEDIUM)</p>
+        <p style="margin-top:6px; font-size:14px; color:oklch(0.5 0.02 145);">방울토마토 등 지역 내 발생 알림</p>
+      </div>
+
+      <div style="border-radius:28px; background:oklch(1 0 0); padding:28px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:14px; font-weight:700; color:oklch(0.55 0.02 145);">오늘의 체크리스트</span>
+          <span style="font-size:14px; font-weight:800; color:oklch(0.5 0.1 152);">2 / 4</span>
+        </div>
+        <ul style="margin-top:16px; display:flex; flex-direction:column; gap:10px; list-style:none;">
+          <li style="display:flex; align-items:center; gap:10px; font-size:14.5px; color:oklch(0.4 0.02 145);">
+            <span style="width:18px; height:18px; border-radius:6px; background:oklch(0.56 0.09 152); display:inline-flex; align-items:center; justify-content:center; color:oklch(0.99 0.006 120); font-size:12px; flex-shrink:0;">✓</span>
+            방울토마토 물주기
+          </li>
+          <li style="display:flex; align-items:center; gap:10px; font-size:14.5px; color:oklch(0.4 0.02 145);">
+            <span style="width:18px; height:18px; border-radius:6px; background:oklch(0.56 0.09 152); display:inline-flex; align-items:center; justify-content:center; color:oklch(0.99 0.006 120); font-size:12px; flex-shrink:0;">✓</span>
+            상추 잎 상태 확인
+          </li>
+          <li style="display:flex; align-items:center; gap:10px; font-size:14.5px; color:oklch(0.55 0.02 145);">
+            <span style="width:18px; height:18px; border-radius:6px; border:1.5px solid oklch(0.85 0.015 120); flex-shrink:0;"></span>
+            잡초 제거
+          </li>
+          <li style="display:flex; align-items:center; gap:10px; font-size:14.5px; color:oklch(0.55 0.02 145);">
+            <span style="width:18px; height:18px; border-radius:6px; border:1.5px solid oklch(0.85 0.015 120); flex-shrink:0;"></span>
+            블루베리 가지치기
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:56px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+      <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.02em;">나의 키움터 ({{ plots.length }})</h2>
+      <div style="display:flex; gap:8px;">
+        <sc-for list="{{ filters }}" as="filter" hint-placeholder-count="4">
+          <button onClick="{{ filter.onClick }}" style="border:1.5px solid oklch(0.88 0.015 120); background:{{ filter.active }}; color:{{ filter.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ filter.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px;">
+      <sc-for list="{{ plots }}" as="plot" hint-placeholder-count="6">
+        <article style="border-radius:24px; background:oklch(1 0 0); overflow:hidden; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); border:1px solid oklch(0.9 0.012 130 / 0.6); transition:transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1);" style-hover="transform: translateY(-4px); box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);">
+          <div style="position:relative; height:150px;">
+            <image-slot id="{{ plot.imgId }}" shape="rect" placeholder="{{ plot.placeholder }}"></image-slot>
+            <span style="position:absolute; top:12px; left:12px; border-radius:999px; padding:5px 12px; font-size:12px; font-weight:800; background:{{ plot.badgeBg }}; color:{{ plot.badgeColor }};">{{ plot.statusLabel }}</span>
+          </div>
+          <div style="padding:18px 20px 20px;">
+            <p style="font-size:12.5px; font-weight:700; color:oklch(0.55 0.02 145); display:flex; align-items:center; gap:6px;">
+              <span style="color:oklch(0.5 0.1 152);">{{ plot.environmentLabel }}</span>{{ plot.speciesName }}
+            </p>
+            <h3 style="margin-top:4px; font-size:17px; font-weight:800;">{{ plot.nickname }}</h3>
+            <div style="margin-top:12px; display:flex; align-items:center; justify-content:space-between; font-size:13px; color:oklch(0.5 0.02 145);">
+              <span>💧 {{ plot.watered }}</span>
+              <span>심은 날 {{ plot.plantedAt }}</span>
+            </div>
+            <p style="margin-top:4px; font-size:12.5px; color:oklch(0.55 0.02 145); text-align:right;">{{ plot.plantedLocation }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+
+  </main>
+
+  <sc-if value="{{ isStatusModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeStatusModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:720px; max-height:86vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(28px,4vw,40px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <p style="font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:0.16em; color:oklch(0.5 0.1 152);">상태별 키움터</p>
+            <h2 style="margin-top:10px; font-size:24px; font-weight:900; letter-spacing:-0.02em;">{{ selectedStatusLabel }}</h2>
+            <p style="margin-top:6px; font-size:14.5px; color:oklch(0.5 0.02 145);">{{ statusPlots.length }}개의 키움이가 있어요</p>
+          </div>
+          <button onClick="{{ closeStatusModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145); flex-shrink:0;">✕</button>
+        </div>
+
+        <sc-if value="{{ isStatusDetailOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px; max-width:280px;">
+            <article style="border-radius:22px; background:oklch(0.985 0.008 95); overflow:hidden; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); border:1px solid oklch(0.9 0.012 130 / 0.6);">
+              <div style="position:relative; height:120px;">
+                <image-slot id="status-{{ statusDetailPlot.imgId }}" shape="rect" placeholder="{{ statusDetailPlot.placeholder }}"></image-slot>
+                <span style="position:absolute; top:10px; left:10px; border-radius:999px; padding:4px 10px; font-size:11.5px; font-weight:800; background:{{ statusDetailPlot.badgeBg }}; color:{{ statusDetailPlot.badgeColor }};">{{ statusDetailPlot.statusLabel }}</span>
+              </div>
+              <div style="padding:14px 16px 16px;">
+                <p style="font-size:11.5px; font-weight:700; color:oklch(0.55 0.02 145); display:flex; align-items:center; gap:5px;">
+                  <span style="color:oklch(0.5 0.1 152);">{{ statusDetailPlot.environmentLabel }}</span>{{ statusDetailPlot.speciesName }}
+                </p>
+                <h3 style="margin-top:4px; font-size:15.5px; font-weight:800;">{{ statusDetailPlot.nickname }}</h3>
+                <p style="margin-top:8px; font-size:12.5px; color:oklch(0.5 0.02 145);">💧 {{ statusDetailPlot.watered }}</p>
+                <p style="margin-top:2px; font-size:11.5px; color:oklch(0.55 0.02 145);">{{ statusDetailPlot.plantedLocation }}</p>
+                <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+                  <button onClick="{{ closeStatusDetail }}" style="border:none; background:transparent; color:oklch(0.5 0.1 152); font-size:13px; font-weight:700; cursor:pointer; padding:4px 0;">← 뒤로</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isStatusListOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ statusPlots }}" as="plot" hint-placeholder-count="3">
+              <button onClick="{{ plot.openDetail }}" style="display:flex; align-items:center; gap:14px; border:1px solid oklch(0.9 0.012 130 / 0.6); background:oklch(0.985 0.008 95); border-radius:16px; padding:12px 16px; cursor:pointer; text-align:left;">
+                <div style="width:44px; height:44px; border-radius:12px; overflow:hidden; flex-shrink:0;">
+                  <image-slot id="status-list-{{ plot.imgId }}" shape="rect" placeholder="{{ plot.placeholder }}"></image-slot>
+                </div>
+                <div style="flex:1;">
+                  <h3 style="font-size:14.5px; font-weight:800;">{{ plot.nickname }}</h3>
+                  <p style="margin-top:2px; font-size:12px; color:oklch(0.55 0.02 145);">{{ plot.speciesName }} · {{ plot.plantedLocation }}</p>
+                </div>
+                <span style="font-size:11.5px; font-weight:800; border-radius:999px; padding:4px 10px; background:{{ plot.badgeBg }}; color:{{ plot.badgeColor }}; flex-shrink:0;">{{ plot.statusLabel }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:560px; max-height:88vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(28px,4vw,44px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <p style="font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:0.16em; color:oklch(0.5 0.1 152);">NEW 키움이</p>
+            <h2 style="margin-top:10px; font-size:26px; font-weight:900; letter-spacing:-0.02em;">새 키움이 등록</h2>
+            <p style="margin-top:6px; font-size:14.5px; color:oklch(0.5 0.02 145);">사진 한 장이면 충분해요. 나머지는 천천히 채워가도 괜찮아요.</p>
+          </div>
+          <button onClick="{{ closeModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145); flex-shrink:0;">✕</button>
+        </div>
+
+        <div style="margin-top:28px; height:180px; border-radius:20px; overflow:hidden;">
+          <image-slot id="new-plant-photo" shape="rect" placeholder="키움이 사진을 올려주세요"></image-slot>
+        </div>
+
+        <div style="margin-top:24px; display:flex; flex-direction:column; gap:20px;">
+          <label style="display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.35 0.02 145);">별명 (nickname)</span>
+            <input type="text" placeholder="예: 우리집 방울이" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+          </label>
+
+          <label style="display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.35 0.02 145);">작물 종류</span>
+            <input type="text" placeholder="예: 방울토마토" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+          </label>
+
+          <label style="display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.35 0.02 145);">심은 날짜 (planted_at)</span>
+            <input type="date" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+          </label>
+
+          <label style="display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.35 0.02 145);">심은 장소 (planted_location)</span>
+            <input type="text" placeholder="예: 서울 마포구" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+          </label>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:13.5px; font-weight:700; color:oklch(0.35 0.02 145);">생육 환경 (planted_environment)</span>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <sc-for list="{{ envOptions }}" as="opt" hint-placeholder-count="2">
+                <button onClick="{{ opt.select }}" style="border:1.5px solid {{ opt.border }}; background:{{ opt.bg }}; color:{{ opt.color }}; font-size:14px; font-weight:700; padding:10px 18px; border-radius:999px; cursor:pointer;">{{ opt.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:32px; display:flex; gap:10px;">
+          <button onClick="{{ closeModal }}" style="flex:1; border:1.5px solid oklch(0.88 0.015 120); background:transparent; color:oklch(0.4 0.02 145); font-size:15px; font-weight:700; padding:14px; border-radius:999px; cursor:pointer;">취소</button>
+          <button onClick="{{ closeModal }}" style="flex:1.4; border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:15px; font-weight:800; padding:14px; border-radius:999px; cursor:pointer; box-shadow:0 10px 24px oklch(0.56 0.09 152 / 0.28);">키움이 등록하기</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STATUS_LABELS = {
+  GROWING: '생육중',
+  HARVESTED: '수확완료',
+  DEAD: '고사',
+  ARCHIVED: '보관',
+};
+const STATUS_COLORS = {
+  GROWING: { bg: 'oklch(0.94 0.03 140)', color: 'oklch(0.4 0.09 150)' },
+  HARVESTED: { bg: 'oklch(0.93 0.05 90)', color: 'oklch(0.5 0.11 90)' },
+  DEAD: { bg: 'oklch(0.94 0.02 30)', color: 'oklch(0.5 0.05 30)' },
+  ARCHIVED: { bg: 'oklch(0.94 0.01 145)', color: 'oklch(0.5 0.01 145)' },
+};
+
+class Component extends DCLogic {
+  state = { isModalOpen: false, selectedStatus: 'GROWING', statusModalOpen: false, selectedEnvironment: 'INDOOR', selectedStatusPlotId: null };
+
+  renderVals() {
+    const green = 'oklch(0.56 0.09 152)';
+
+    // UserPlant 레코드 (plant_id → PlantEntity, nickname, status_code, planted_at, planted_location, planted_environment)
+    const ENV_ICON = { INDOOR: '실내', OUTDOOR: '실외' };
+    const plots = [
+      { imgId: 'plot-1', placeholder: '방울토마토', speciesName: '방울토마토', nickname: '우리집 방울이', status: 'GROWING', watered: '오늘 완료', plantedAt: '2026.04.02', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+      { imgId: 'plot-2', placeholder: '상추', speciesName: '상추', nickname: '베란다 상추', status: 'GROWING', watered: '1일 전', plantedAt: '2026.05.10', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+      { imgId: 'plot-3', placeholder: '고구마', speciesName: '고구마', nickname: '고구마 밭', status: 'GROWING', watered: '2일 전', plantedAt: '2026.05.20', environment: 'OUTDOOR', plantedLocation: '경기 파주시' },
+      { imgId: 'plot-4', placeholder: '블루베리', speciesName: '블루베리', nickname: '블루베리 화분', status: 'HARVESTED', watered: '오늘 완료', plantedAt: '2025.09.14', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+      { imgId: 'plot-5', placeholder: '바질', speciesName: '바질', nickname: '허브 화단', status: 'GROWING', watered: '3일 전', plantedAt: '2026.06.01', environment: 'OUTDOOR', plantedLocation: '서울 마포구' },
+      { imgId: 'plot-6', placeholder: '옥수수', speciesName: '옥수수', nickname: '옥수수 밭', status: 'ARCHIVED', watered: '2일 전', plantedAt: '2025.06.03', environment: 'OUTDOOR', plantedLocation: '경기 파주시' },
+    ].map((p) => ({
+      ...p,
+      statusLabel: STATUS_LABELS[p.status],
+      badgeBg: STATUS_COLORS[p.status].bg,
+      badgeColor: STATUS_COLORS[p.status].color,
+      environmentLabel: ENV_ICON[p.environment],
+    }));
+
+    const openStatus = (status) => this.setState({ statusModalOpen: true, selectedStatus: status, selectedStatusPlotId: null });
+    const filters = [
+      { key: null, label: '전체', onClick: () => {} },
+      { key: 'GROWING', label: STATUS_LABELS.GROWING, onClick: () => openStatus('GROWING') },
+      { key: 'HARVESTED', label: STATUS_LABELS.HARVESTED, onClick: () => openStatus('HARVESTED') },
+      { key: 'ARCHIVED', label: STATUS_LABELS.ARCHIVED, onClick: () => openStatus('ARCHIVED') },
+    ].map((f) => ({
+      ...f,
+      active: f.key === null ? green : 'transparent',
+      color: f.key === null ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+    }));
+
+    const statusPlots = plots.filter((p) => p.status === this.state.selectedStatus).map((p) => ({
+      ...p,
+      openDetail: () => this.setState({ selectedStatusPlotId: p.imgId }),
+    }));
+    const statusDetailPlot = statusPlots.find((p) => p.imgId === this.state.selectedStatusPlotId) || {};
+
+    const ENV_LABELS = { INDOOR: '실내', OUTDOOR: '실외' };
+    const envOptions = Object.keys(ENV_LABELS).map((key) => {
+      const active = this.state.selectedEnvironment === key;
+      return {
+        key,
+        label: ENV_LABELS[key],
+        select: () => this.setState({ selectedEnvironment: key }),
+        bg: active ? green : 'transparent',
+        color: active ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+        border: active ? green : 'oklch(0.88 0.015 120)',
+      };
+    });
+
+    return {
+      plots,
+      filters,
+      envOptions,
+      statusPlots,
+      selectedStatusLabel: STATUS_LABELS[this.state.selectedStatus],
+      isStatusModalOpen: this.state.statusModalOpen,
+      closeStatusModal: () => this.setState({ statusModalOpen: false }),
+      isStatusDetailOpen: !!this.state.selectedStatusPlotId,
+      isStatusListOpen: !this.state.selectedStatusPlotId,
+      statusDetailPlot,
+      closeStatusDetail: () => this.setState({ selectedStatusPlotId: null }),
+      isModalOpen: this.state.isModalOpen,
+      openModal: () => this.setState({ isModalOpen: true }),
+      closeModal: () => this.setState({ isModalOpen: false }),
+      stopClick: (e) => e.stopPropagation(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

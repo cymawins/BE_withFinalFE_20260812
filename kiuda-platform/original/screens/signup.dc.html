@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, sans-serif; background: linear-gradient(135deg, #F9F6EE 0%, #E8F3E3 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</helmet>
+
+<div style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <div style="animation: slideIn 0.6s ease-out; width: 100%; max-width: 480px;">
+    
+    <!-- Progress Indicator -->
+    <div style="display: flex; gap: 8px; margin-bottom: 40px;">
+      <div style="height: 4px; flex: 1; border-radius: 2px; background: {{ progressBar0 }}; transition: background 0.3s;"></div>
+      <div style="height: 4px; flex: 1; border-radius: 2px; background: {{ progressBar1 }}; transition: background 0.3s;"></div>
+      <div style="height: 4px; flex: 1; border-radius: 2px; background: {{ progressBar2 }}; transition: background 0.3s;"></div>
+    </div>
+
+    <!-- Logo & Header -->
+    <div style="text-align: center; margin-bottom: 32px;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: #56B968; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: white;">키</div>
+      </div>
+      <h1 style="font-size: 26px; font-weight: 900; color: #3D5A3D; margin-bottom: 8px;">회원가입</h1>
+      <p style="font-size: 13px; color: #888;">{{ stepTitles[currentStep] }}</p>
+    </div>
+
+    <!-- Step 1: Email & Password -->
+    <form onSubmit="{{ handleStep1 }}" style="animation: fadeIn 0.3s ease-out; display: {{ step1Display }};">
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">이메일</label>
+        <div style="display: flex; gap: 8px;">
+          <input 
+            id="emailInput"
+            type="email" 
+            value="{{ email }}" 
+            placeholder="example@email.com"
+            style="flex: 1; padding: 12px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;"
+            style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+            onInput="{{ handleEmailChange }}"
+          />
+          <button 
+            type="button"
+            onClick="{{ checkEmailDuplicate }}"
+            style="padding: 12px 20px; background: #F5F0E8; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 12px; font-weight: 700; color: #3D5A3D; cursor: pointer; white-space: nowrap; transition: all 0.2s;"
+            style-hover="background: #EFE9DF; border-color: #C9B5A1;"
+          >
+            {{ emailButtonLabel }}
+          </button>
+        </div>
+        <p style="font-size: 12px; color: {{ emailStatusColor }}; margin-top: 6px; display: {{ emailStatusDisplay }};">
+          {{ emailStatusText }}
+        </p>
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">비밀번호</label>
+        <input 
+          id="passwordInput"
+          type="{{ passwordInputType }}" 
+          value="{{ password }}" 
+          placeholder="8자 이상, 대문자·숫자·특수문자 포함"
+          style="width: 100%; padding: 12px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;"
+          style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+          onInput="{{ handlePasswordChange }}"
+        />
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <div style="flex: 1; height: 4px; border-radius: 2px; background: {{ strengthBar1 }};"></div>
+          <div style="flex: 1; height: 4px; border-radius: 2px; background: {{ strengthBar2 }};"></div>
+          <div style="flex: 1; height: 4px; border-radius: 2px; background: {{ strengthBar3 }};"></div>
+        </div>
+        <p style="font-size: 12px; color: #888; margin-top: 6px;">강도: {{ passwordStrengthLabel }}</p>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">비밀번호 확인</label>
+        <input 
+          id="passwordConfirmInput"
+          type="{{ passwordInputType }}" 
+          value="{{ passwordConfirm }}" 
+          placeholder="비밀번호를 다시 입력하세요"
+          style="width: 100%; padding: 12px 14px; border: 1.5px solid {{ passwordConfirmBorderColor }}; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;"
+          style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+          onInput="{{ handlePasswordConfirmChange }}"
+        />
+        <p style="font-size: 12px; color: {{ passwordMatchColor }}; margin-top: 6px; display: {{ passwordConfirmDisplay }};">
+          {{ passwordStatusText }}
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button 
+          type="button"
+          onClick="{{ handleCancel }}"
+          style="flex: 1; padding: 12px; background: white; border: 1.5px solid #D9CFC1; border-radius: 8px; cursor: pointer; font-weight: 600; color: #3D5A3D; transition: all 0.2s;"
+          style-hover="background: #F5F0E8; border-color: #C9B5A1;"
+        >
+          취소
+        </button>
+        <button 
+          type="submit"
+          disabled="{{ step1ButtonDisabled }}"
+          style="flex: 1; padding: 12px; background: {{ step1ButtonBg }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s;"
+          style-hover="background: #4A9B56;"
+        >
+          다음
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <input 
+          type="checkbox" 
+          checked="{{ showPassword }}" 
+          onChange="{{ toggleShowPassword }}"
+          style="width: 16px; height: 16px; cursor: pointer;"
+        />
+        <label style="font-size: 12px; color: #888; cursor: pointer;">비밀번호 표시</label>
+      </div>
+    </form>
+
+    <!-- Step 2: Profile Info -->
+    <form onSubmit="{{ handleStep2 }}" style="animation: fadeIn 0.3s ease-out; display: {{ step2Display }};">
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">이름</label>
+        <input 
+          id="nameInput"
+          type="text" 
+          value="{{ name }}" 
+          placeholder="실명 또는 별명"
+          style="width: 100%; padding: 12px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;"
+          style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+          onInput="{{ handleNameChange }}"
+        />
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">지역</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <select 
+            id="provinceSelect"
+            value="{{ province }}" 
+            onChange="{{ handleProvinceChange }}"
+            style="width: 100%; padding: 12px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;"
+            style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+          >
+            <option value="">시/도 선택</option>
+            <option value="서울특별시">서울특별시</option>
+            <option value="경기도">경기도</option>
+            <option value="강원특별자치도">강원특별자치도</option>
+            <option value="충청북도">충청북도</option>
+            <option value="충청남도">충청남도</option>
+            <option value="전라북도">전라북도</option>
+            <option value="전라남도">전라남도</option>
+            <option value="경상북도">경상북도</option>
+            <option value="경상남도">경상남도</option>
+          </select>
+          <select 
+            id="districtSelect"
+            value="{{ district }}" 
+            onChange="{{ handleDistrictChange }}"
+            disabled="{{ districtSelectDisabled }}"
+            style="width: 100%; padding: 12px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s; background: {{ districtSelectBg }};"
+            style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+          >
+            <option value="">시/군/구 선택</option>
+            <sc-for list="{{ districtsForProvince }}" as="d" hint-placeholder-count="3">
+              <option value="{{ d }}">{{ d }}</option>
+            </sc-for>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 24px; display: none;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">주로 기르는 것</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <button type="button" onClick="{{ togglePlant0 }}" style="padding: 12px 14px; border: 1.5px solid {{ plantBorder0 }}; background: {{ plantBg0 }}; color: {{ plantColor0 }}; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s;" style-hover="border-color: #56B968; background: #E8F3E3; color: #56B968;">채소</button>
+          <button type="button" onClick="{{ togglePlant1 }}" style="padding: 12px 14px; border: 1.5px solid {{ plantBorder1 }}; background: {{ plantBg1 }}; color: {{ plantColor1 }}; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s;" style-hover="border-color: #56B968; background: #E8F3E3; color: #56B968;">과수</button>
+          <button type="button" onClick="{{ togglePlant2 }}" style="padding: 12px 14px; border: 1.5px solid {{ plantBorder2 }}; background: {{ plantBg2 }}; color: {{ plantColor2 }}; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s;" style-hover="border-color: #56B968; background: #E8F3E3; color: #56B968;">화훼</button>
+          <button type="button" onClick="{{ togglePlant3 }}" style="padding: 12px 14px; border: 1.5px solid {{ plantBorder3 }}; background: {{ plantBg3 }}; color: {{ plantColor3 }}; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s;" style-hover="border-color: #56B968; background: #E8F3E3; color: #56B968;">약용식물</button>
+          <button type="button" onClick="{{ togglePlant4 }}" style="padding: 12px 14px; border: 1.5px solid {{ plantBorder4 }}; background: {{ plantBg4 }}; color: {{ plantColor4 }}; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s;" style-hover="border-color: #56B968; background: #E8F3E3; color: #56B968;">곡식</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button 
+          type="button"
+          onClick="{{ handlePreviousStep }}"
+          style="flex: 1; padding: 12px; background: white; border: 1.5px solid #D9CFC1; border-radius: 8px; cursor: pointer; font-weight: 600; color: #3D5A3D; transition: all 0.2s;"
+          style-hover="background: #F5F0E8; border-color: #C9B5A1;"
+        >
+          이전
+        </button>
+        <button 
+          type="submit"
+          disabled="{{ step2ButtonDisabled }}"
+          style="flex: 1; padding: 12px; background: {{ step2ButtonBg }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s;"
+          style-hover="background: #4A9B56;"
+        >
+          다음
+        </button>
+      </div>
+    </form>
+
+    <!-- Step 3: Terms & Completion -->
+    <form onSubmit="{{ handleSignup }}" style="animation: fadeIn 0.3s ease-out; display: {{ step3Display }};">
+      <div style="background: #F5F0E8; border-radius: 12px; padding: 16px; margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
+        <p style="font-size: 12px; color: #555; line-height: 1.6;">
+          <strong style="color: #3D5A3D;">키우다 이용약관 (요약)</strong><br><br>
+          1. 서비스 이용<br>
+          본 서비스는 농작물·식물·과수의 생육 정보 제공 및 커뮤니티 연결을 위해 제공됩니다.<br><br>
+          2. 개인정보 보호<br>
+          귀하의 개인정보는 당사 개인정보처리방침에 따라 보호됩니다.<br><br>
+          3. 금지 행위<br>
+          스팸, 혐오, 저작권 침해 등의 행위는 금지됩니다.<br><br>
+          4. 서비스 중단<br>
+          당사는 필요 시 사전 공지 없이 서비스를 중단할 수 있습니다.<br><br>
+          5. 책임 제한<br>
+          본 서비스의 사용으로 인한 손해에 대해 당사는 책임을 지지 않습니다.
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; padding: 12px; background: white; border-radius: 8px; border: 1.5px solid #D9CFC1;">
+        <input 
+          type="checkbox" 
+          checked="{{ termsAgreed }}" 
+          onChange="{{ handleTermsChange }}"
+          style="width: 20px; height: 20px; margin-top: 2px; cursor: pointer; flex-shrink: 0;"
+        />
+        <label style="font-size: 13px; color: #3D5A3D; cursor: pointer; flex: 1;">
+          <strong>이용약관 및 개인정보 수집·이용</strong>에 동의합니다<br>
+          <span style="color: #888; font-size: 12px;"> (필수)</span>
+        </label>
+      </div>
+
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px; padding: 12px; background: white; border-radius: 8px; border: 1.5px solid #D9CFC1;">
+        <input 
+          type="checkbox" 
+          checked="{{ marketingAgreed }}" 
+          onChange="{{ handleMarketingChange }}"
+          style="width: 20px; height: 20px; margin-top: 2px; cursor: pointer; flex-shrink: 0;"
+        />
+        <label style="font-size: 13px; color: #3D5A3D; cursor: pointer; flex: 1;">
+          마케팅 정보 수신<br>
+          <span style="color: #888; font-size: 12px;"> (선택) 팁, 뉴스레터 등을 받을 수 있습니다</span>
+        </label>
+      </div>
+
+      <div style="background: #FFE8E8; border: 1px solid #FFB3B3; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #C00; text-align: center; display: {{ signupErrorDisplay }};">
+        {{ signupError }}
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button 
+          type="button"
+          onClick="{{ handlePreviousStep }}"
+          style="flex: 1; padding: 12px; background: white; border: 1.5px solid #D9CFC1; border-radius: 8px; cursor: pointer; font-weight: 600; color: #3D5A3D; transition: all 0.2s;"
+          style-hover="background: #F5F0E8; border-color: #C9B5A1;"
+        >
+          이전
+        </button>
+        <button 
+          type="submit"
+          disabled="{{ step3ButtonDisabled }}"
+          style="flex: 1; padding: 12px; background: {{ step3ButtonBg }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s;"
+          style-hover="background: #4A9B56;"
+        >
+          {{ signupButtonLabel }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;480px&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = {
+    currentStep: 0,
+    email: '',
+    emailChecked: false,
+    emailError: '',
+    password: '',
+    passwordConfirm: '',
+    passwordStrength: 0,
+    passwordMatch: false,
+    showPassword: false,
+    name: '',
+    province: '',
+    district: '',
+    selectedPlantTypes: [],
+    termsAgreed: false,
+    marketingAgreed: false,
+    isSigningUp: false,
+    signupError: ''
+  };
+
+  stepTitles = ['이메일과 비밀번호를 입력해주세요', '프로필 정보를 완성해주세요', '약관에 동의하고 가입을 완료해주세요'];
+
+  districtsByProvince = {
+    '서울특별시': ['강남구', '강북구', '강서구', '관악구', '광진구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'],
+    '경기도': ['고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '오산시', '옛 안산시', '안성시', '안양시', '양주시', '여주시', '연천군', '오사부', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'],
+    '강원특별자치도': ['강릉시', '고성군', '동해시', '삼척시', '속초시', '양구군', '양양군', '영월군', '원주시', '인제군', '정선군', '철원군', '태백시', '평창군', '홍천군', '화천군', '횡성군'],
+    '충청북도': ['괴산군', '단양군', '제천시', '청주시', '충주시', '음성군', '옥천군', '영동군', '증평군', '진천군'],
+    '충청남도': ['계룡시', '공주시', '금산군', '논산시', '당진시', '보령시', '부여군', '서천군', '세종특별자치시', '아산시', '예산군', '천안시', '청양군', '태안군', '홍성군'],
+    '전라북도': ['고창군', '고창읍', '군산시', '김제시', '남원시', '무주군', '부안군', '순창군', '전주시', '정읍시', '완주군', '임실군', '장수군', '전라북도'],
+    '전라남도': ['강진군', '고흥군', '곡성군', '구례군', '나주시', '담양군', '동복읍', '목포시', '무안군', '보성군', '순천시', '신안군', '여수시', '영광군', '영암군', '완도군', '주천군', '중국군', '함평군', '해남군', '화순군'],
+    '경상북도': ['경산시', '경주시', '고령군', '구미시', '군위군', '김천시', '문경시', '봉화군', '상주시', '성주군', '안동시', '영덕군', '영양군', '영주시', '영천시', '예천군', '울릉군', '울진군', '의성군', '청도군', '청송군', '포항시'],
+    '경상남도': ['거제시', '거창군', '고성군', '김해시', '남해군', '사천시', '산청군', '순천시', '의령군', '진주시', '창녕군', '창원시', '통영시', '하동군', '합천군']
+  };
+
+  componentDidMount() {}
+
+  handleProvinceChange = (e) => {
+    this.setState({ province: e.target.value, district: '' });
+    setTimeout(() => {
+      const districtSelect = document.getElementById('districtSelect');
+      if (districtSelect) districtSelect.value = '';
+    }, 0);
+  };
+
+  handleDistrictChange = (e) => {
+    this.setState({ district: e.target.value });
+  };
+
+  handleNameChange = (e) => {
+    this.setState({ name: e.target.value });
+  };
+
+  handleTermsChange = (e) => {
+    this.setState({ termsAgreed: e.target.checked });
+  };
+
+  handleMarketingChange = (e) => {
+    this.setState({ marketingAgreed: e.target.checked });
+  };
+
+  handlePreviousStep = () => {
+    this.setState({ currentStep: this.state.currentStep - 1 });
+  };
+
+  checkPasswordStrength = (pwd) => {
+    let strength = 0;
+    if (pwd.length >= 8) strength++;
+    if (/[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) strength++;
+    if (/[!@#$%^&*]/.test(pwd)) strength++;
+    return strength;
+  };
+
+  handleEmailChange = (e) => {
+    this.setState({ email: e.target.value, emailChecked: false, emailError: '' });
+  };
+
+  handlePasswordChange = (e) => {
+    const pwd = e.target.value;
+    const strength = this.checkPasswordStrength(pwd);
+    const match = pwd === this.state.passwordConfirm;
+    this.setState({ password: pwd, passwordStrength: strength, passwordMatch: match });
+  };
+
+  handlePasswordConfirmChange = (e) => {
+    const pwd = e.target.value;
+    const match = pwd === this.state.password;
+    this.setState({ passwordConfirm: pwd, passwordMatch: match });
+  };
+
+  checkEmailDuplicate = async () => {
+    if (!this.state.email) {
+      this.setState({ emailError: '이메일을 입력해주세요' });
+      return;
+    }
+    try {
+      const response = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: this.state.email })
+      });
+      if (!response.ok) throw new Error('Server error');
+      const data = await response.json();
+      if (data.available) {
+        this.setState({ emailChecked: true, emailError: '' });
+      } else {
+        this.setState({ emailError: '이미 사용 중인 이메일입니다', emailChecked: false });
+      }
+    } catch (error) {
+      this.setState({ emailChecked: true, emailError: '' });
+    }
+  };
+
+  togglePlantType = (type) => {
+    const selected = [...this.state.selectedPlantTypes];
+    const idx = selected.indexOf(type);
+    if (idx >= 0) selected.splice(idx, 1);
+    else selected.push(type);
+    this.setState({ selectedPlantTypes: selected });
+  };
+
+  handleStep1 = (e) => {
+    e.preventDefault();
+    if (this.state.emailChecked && this.state.passwordMatch && this.state.password && this.state.password.length >= 8) {
+      this.setState({ currentStep: 1 });
+    }
+  };
+
+  handleCancel = () => {
+    this.setState({
+      currentStep: 0,
+      email: '',
+      emailChecked: false,
+      emailError: '',
+      password: '',
+      passwordConfirm: '',
+      passwordStrength: 0,
+      passwordMatch: false,
+      showPassword: false,
+      name: '',
+      province: '',
+      district: '',
+      selectedPlantTypes: [],
+      termsAgreed: false,
+      marketingAgreed: false,
+      isSigningUp: false,
+      signupError: ''
+    });
+  };
+
+  handleStep2 = (e) => {
+    e.preventDefault();
+    if (this.state.name && this.state.province && this.state.district) {
+      this.setState({ currentStep: 2 });
+    }
+  };
+
+  handleStep3 = (e) => {
+    e.preventDefault();
+    if (this.state.email && this.state.password && this.state.passwordConfirm) {
+      this.setState({ currentStep: 3 });
+    }
+  };
+
+  handleSignup = async (e) => {
+    e.preventDefault();
+    this.setState({ isSigningUp: true, signupError: '' });
+    
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password,
+          name: this.state.name,
+          region: `${this.state.province} ${this.state.district}`,
+          plantInterests: this.state.selectedPlantTypes,
+          marketingAgreed: this.state.marketingAgreed
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || '회원가입 실패');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('userId', data.userId);
+      window.location.href = '/dashboard';
+    } catch (error) {
+      this.setState({ signupError: error.message, isSigningUp: false });
+    }
+  };
+
+  renderVals() {
+    const emailButtonLabel = this.state.emailChecked ? '✓ 확인' : '중복확인';
+    const emailStatusText = this.state.emailError || (this.state.emailChecked ? '✓ 사용 가능한 이메일입니다' : '');
+    const passwordStatusText = this.state.passwordConfirm ? (this.state.passwordMatch ? '✓ 비밀번호가 일치합니다' : '비밀번호가 일치하지 않습니다') : '';
+    const signupButtonLabel = this.state.isSigningUp ? '회원가입 중...' : '회원가입 완료';
+    const passwordStrengthLabel = this.state.passwordStrength === 0 ? '없음' : this.state.passwordStrength === 1 ? '약함' : this.state.passwordStrength === 2 ? '중간' : '강함';
+
+    const step1Display = this.state.currentStep === 0 ? 'block' : 'none';
+    const step2Display = this.state.currentStep === 1 ? 'block' : 'none';
+    const step3Display = this.state.currentStep === 2 ? 'block' : 'none';
+    const passwordInputType = this.state.showPassword ? 'text' : 'password';
+    const nextButtonEnabled1 = this.state.emailChecked && this.state.passwordMatch && this.state.password && this.state.password.length >= 8;
+    const step1ButtonDisabled = !nextButtonEnabled1;
+    const emailStatusColor = this.state.emailError ? '#C00' : '#4A7C4E';
+    const emailStatusDisplay = emailStatusText ? 'block' : 'none';
+    const passwordConfirmBorderColor = this.state.passwordConfirm && !this.state.passwordMatch ? '#FFB3B3' : (this.state.passwordConfirm && this.state.passwordMatch ? '#56B968' : '#D9CFC1');
+    const passwordMatchColor = this.state.passwordMatch ? '#4A7C4E' : '#C00';
+    const passwordConfirmDisplay = this.state.passwordConfirm ? 'block' : 'none';
+    const districtSelectDisabled = !this.state.province;
+    const districtSelectBg = this.state.province ? 'white' : '#F5F0E8';
+    const signupErrorDisplay = this.state.signupError ? 'block' : 'none';
+    const progressBar0 = this.state.currentStep > 0 ? '#56B968' : '#E8E3D6';
+    const progressBar1 = this.state.currentStep > 1 ? '#56B968' : '#E8E3D6';
+    const progressBar2 = this.state.currentStep > 2 ? '#56B968' : '#E8E3D6';
+    const strengthBar1 = this.state.passwordStrength >= 1 ? '#56B968' : '#E8E3D6';
+    const strengthBar2 = this.state.passwordStrength >= 2 ? '#56B968' : '#E8E3D6';
+    const strengthBar3 = this.state.passwordStrength >= 3 ? '#56B968' : '#E8E3D6';
+    const step1ButtonBg = nextButtonEnabled1 ? '#56B968' : '#C8D8C5';
+    const plantTypesList = ['채소', '과수', '화훼', '약용식물', '곡식'];
+    const plantVals = plantTypesList.map((pt, i) => {
+      const active = this.state.selectedPlantTypes.includes(pt);
+      return {
+        border: active ? '#56B968' : '#D9CFC1',
+        bg: active ? '#E8F3E3' : 'white',
+        color: active ? '#56B968' : '#3D5A3D',
+        toggle: () => this.togglePlantType(pt)
+      };
+    });
+    const step2ButtonEnabled = !!(this.state.name && this.state.province && this.state.district);
+    const step2ButtonDisabled = !step2ButtonEnabled;
+    const step2ButtonBg = step2ButtonEnabled ? '#56B968' : '#C8D8C5';
+    const step3ButtonEnabled = this.state.termsAgreed && !this.state.isSigningUp;
+    const step3ButtonDisabled = !step3ButtonEnabled;
+    const step3ButtonBg = step3ButtonEnabled ? '#56B968' : '#C8D8C5';
+
+    return {
+      currentStep: this.state.currentStep,
+      step1Display: step1Display,
+      step2Display: step2Display,
+      step3Display: step3Display,
+      passwordInputType: passwordInputType,
+      nextButtonEnabled1: nextButtonEnabled1,
+      step1ButtonDisabled: step1ButtonDisabled,
+      step2ButtonDisabled: step2ButtonDisabled,
+      step2ButtonBg: step2ButtonBg,
+      step3ButtonDisabled: step3ButtonDisabled,
+      step3ButtonBg: step3ButtonBg,
+      emailStatusColor: emailStatusColor,
+      emailStatusDisplay: emailStatusDisplay,
+      passwordConfirmBorderColor: passwordConfirmBorderColor,
+      passwordMatchColor: passwordMatchColor,
+      passwordConfirmDisplay: passwordConfirmDisplay,
+      districtSelectDisabled: districtSelectDisabled,
+      districtSelectBg: districtSelectBg,
+      signupErrorDisplay: signupErrorDisplay,
+      progressBar0: progressBar0,
+      progressBar1: progressBar1,
+      progressBar2: progressBar2,
+      strengthBar1: strengthBar1,
+      strengthBar2: strengthBar2,
+      strengthBar3: strengthBar3,
+      step1ButtonBg: step1ButtonBg,
+      plantBorder0: plantVals[0].border, plantBg0: plantVals[0].bg, plantColor0: plantVals[0].color, togglePlant0: plantVals[0].toggle,
+      plantBorder1: plantVals[1].border, plantBg1: plantVals[1].bg, plantColor1: plantVals[1].color, togglePlant1: plantVals[1].toggle,
+      plantBorder2: plantVals[2].border, plantBg2: plantVals[2].bg, plantColor2: plantVals[2].color, togglePlant2: plantVals[2].toggle,
+      plantBorder3: plantVals[3].border, plantBg3: plantVals[3].bg, plantColor3: plantVals[3].color, togglePlant3: plantVals[3].toggle,
+      plantBorder4: plantVals[4].border, plantBg4: plantVals[4].bg, plantColor4: plantVals[4].color, togglePlant4: plantVals[4].toggle,
+      stepTitles: this.stepTitles,
+      email: this.state.email,
+      emailChecked: this.state.emailChecked,
+      emailError: this.state.emailError,
+      emailButtonLabel: emailButtonLabel,
+      emailStatusText: emailStatusText,
+      name: this.state.name,
+      password: this.state.password,
+      passwordConfirm: this.state.passwordConfirm,
+      passwordStrength: this.state.passwordStrength,
+      passwordStrengthLabel: passwordStrengthLabel,
+      passwordMatch: this.state.passwordMatch,
+      passwordStatusText: passwordStatusText,
+      showPassword: this.state.showPassword,
+      province: this.state.province,
+      district: this.state.district,
+      districtsForProvince: this.districtsByProvince[this.state.province] || [],
+      selectedPlantTypes: this.state.selectedPlantTypes,
+      termsAgreed: this.state.termsAgreed,
+      marketingAgreed: this.state.marketingAgreed,
+      isSigningUp: this.state.isSigningUp,
+      signupError: this.state.signupError,
+      signupButtonLabel: signupButtonLabel,
+      checkEmailDuplicate: this.checkEmailDuplicate.bind(this),
+      togglePlantType: this.togglePlantType.bind(this),
+      handleProvinceChange: this.handleProvinceChange.bind(this),
+      handleDistrictChange: this.handleDistrictChange.bind(this),
+      handleEmailChange: this.handleEmailChange.bind(this),
+      handlePasswordChange: this.handlePasswordChange.bind(this),
+      handlePasswordConfirmChange: this.handlePasswordConfirmChange.bind(this),
+      handleStep1: this.handleStep1.bind(this),
+      handleStep2: this.handleStep2.bind(this),
+      handleSignup: this.handleSignup.bind(this),
+      toggleShowPassword: () => this.setState({ showPassword: !this.state.showPassword }),
+      handleCancel: this.handleCancel.bind(this),
+      handleNameChange: this.handleNameChange.bind(this),
+      handleTermsChange: this.handleTermsChange.bind(this),
+      handleMarketingChange: this.handleMarketingChange.bind(this),
+      handlePreviousStep: this.handlePreviousStep.bind(this)
+    };
+  }
+}
+</script>
+</body>
+</html>

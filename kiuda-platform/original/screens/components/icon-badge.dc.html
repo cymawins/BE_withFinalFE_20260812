@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="display:inline-flex; align-items:center; justify-content:center; width:{{ px }}; height:{{ px }}; border-radius:{{ radiusPx }}; background:{{ bg }}; flex-shrink:0;">
+  <svg viewBox="0 0 24 24" width="{{ iconPx }}" height="{{ iconPx }}" fill="none" stroke="{{ color }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <sc-for list="{{ circles }}" as="c" hint-placeholder-count="0">
+      <circle cx="{{ c.cx }}" cy="{{ c.cy }}" r="{{ c.r }}"></circle>
+    </sc-for>
+    <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0">
+      <line x1="{{ l.x1 }}" y1="{{ l.y1 }}" x2="{{ l.x2 }}" y2="{{ l.y2 }}"></line>
+    </sc-for>
+    <sc-for list="{{ paths }}" as="p" hint-placeholder-count="0">
+      <path d="{{ p }}"></path>
+    </sc-for>
+  </svg>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:52,&quot;height&quot;:52},&quot;icon&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;leaf&quot;,&quot;options&quot;:[&quot;leaf&quot;,&quot;layers&quot;,&quot;alert&quot;,&quot;users&quot;,&quot;history&quot;,&quot;seed&quot;,&quot;sprout&quot;,&quot;flower&quot;,&quot;basket&quot;,&quot;drop&quot;,&quot;shield&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:52,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:24,&quot;max&quot;:96},&quot;bg&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;oklch(0.94 0.03 140)&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;color&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;oklch(0.45 0.09 150)&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const ICONS = {
+  leaf: { paths: ['M6,20 C6,10 12,4 20,4 C20,12 16,20 6,20 Z', 'M6,20 C10,16 13,12 18,7'] },
+  layers: { paths: ['M12,3 L21,8 L12,13 L3,8 Z', 'M3,13 L12,18 L21,13'] },
+  alert: { paths: ['M12,3 L21,19 L3,19 Z'], lines: [{ x1: 12, y1: 9, x2: 12, y2: 13.5 }, { x1: 12, y1: 16, x2: 12, y2: 16.2 }] },
+  users: { circles: [{ cx: 9, cy: 8, r: 3 }, { cx: 17, cy: 10, r: 2.2 }], paths: ['M3,20 C3,15.5 5.5,13 9,13 C12.5,13 15,15.5 15,20', 'M15,20 C15,17 16.6,15 19,15'] },
+  history: { circles: [{ cx: 12, cy: 13, r: 8 }], lines: [{ x1: 12, y1: 8, x2: 12, y2: 13 }, { x1: 12, y1: 13, x2: 15, y2: 15 }] },
+  seed: { paths: ['M12,4 C7,4 5,9 5,13 C5,17.5 8.5,20 12,20 C15.5,20 19,17.5 19,13 C19,9 17,4 12,4 Z'], lines: [{ x1: 12, y1: 4, x2: 12, y2: 2 }] },
+  sprout: { paths: ['M12,21 L12,11', 'M12,11 C12,7 8,7 6,4 C10,4 12,7 12,11', 'M12,11 C12,7 16,7 18,4 C14,4 12,7 12,11'] },
+  flower: { circles: [{ cx: 12, cy: 12, r: 2.2 }], paths: ['M12,9.8 C10,9.8 9,8 9,6 C11,6 12.4,7.6 12.4,9.4', 'M12,14.2 C14,14.2 15,16 15,18 C13,18 11.6,16.4 11.6,14.6', 'M9.8,12 C9.8,10 8,9 6,9 C6,11 7.6,12.4 9.4,12.4', 'M14.2,12 C14.2,14 16,15 18,15 C18,13 16.4,11.6 14.6,11.6'] },
+  basket: { paths: ['M4,10 L20,10 L18,20 L6,20 Z', 'M8,10 C8,6 10,4 12,4 C14,4 16,6 16,10'] },
+  drop: { paths: ['M12,3 C12,3 6,11 6,15 C6,18.3 8.7,21 12,21 C15.3,21 18,18.3 18,15 C18,11 12,3 12,3 Z'] },
+  shield: { paths: ['M12,3 L20,6 L20,12 C20,17 16.5,20 12,21 C7.5,20 4,17 4,12 L4,6 Z', 'M9,12 L11,14 L15,10'] },
+};
+
+class Component extends DCLogic {
+  renderVals() {
+    const size = this.props.size ?? 52;
+    const icon = ICONS[this.props.icon] || ICONS.leaf;
+    return {
+      px: `${size}px`,
+      iconPx: `${Math.round(size * 0.46)}px`,
+      radiusPx: `${Math.round(size * 0.34)}px`,
+      bg: this.props.bg ?? 'oklch(0.94 0.03 140)',
+      color: this.props.color ?? 'oklch(0.45 0.09 150)',
+      circles: icon.circles || [],
+      lines: icon.lines || [],
+      paths: icon.paths || [],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

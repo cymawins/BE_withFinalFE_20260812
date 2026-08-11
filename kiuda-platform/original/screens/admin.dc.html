@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, sans-serif; background: #F5F0E8; color: #3D5A3D; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: grid; grid-template-columns: 240px 1fr; gap: 0;">
+  <!-- Sidebar -->
+  <aside style="background: white; border-right: 1px solid #E8E3D6; padding: 24px 16px; box-shadow: 2px 0 4px rgba(0,0,0,0.02); position: sticky; top: 0; height: 100vh; overflow-y: auto;">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px; padding: 0 8px;">
+      <div style="width: 32px; height: 32px; border-radius: 50%; background: #56B968; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: white;">키</div>
+      <span style="font-size: 16px; font-weight: 900;">관리</span>
+    </div>
+
+    <nav style="display: flex; flex-direction: column; gap: 8px;">
+      <button onClick="{{ () => setState({ activeTab: 'users' }) }}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{ activeTab === 'users' ? '#E8F3E3' : 'transparent' }}; color: #3D5A3D; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: {{ activeTab === 'users' ? '700' : '500' }}; transition: all 0.2s;" style-hover="background: #F0EBE1;">
+        👥 사용자 관리
+      </button>
+      <button onClick="{{ () => setState({ activeTab: 'withdrawn' }) }}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{ activeTab === 'withdrawn' ? '#E8F3E3' : 'transparent' }}; color: #3D5A3D; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: {{ activeTab === 'withdrawn' ? '700' : '500' }}; transition: all 0.2s;" style-hover="background: #F0EBE1;">
+        🚪 탈퇴 관리
+      </button>
+      <button onClick="{{ () => setState({ activeTab: 'messages' }) }}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{ activeTab === 'messages' ? '#E8F3E3' : 'transparent' }}; color: #3D5A3D; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: {{ activeTab === 'messages' ? '700' : '500' }}; transition: all 0.2s;" style-hover="background: #F0EBE1;">
+        💬 메시지 삭제
+      </button>
+      <button onClick="{{ () => setState({ activeTab: 'stats' }) }}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{ activeTab === 'stats' ? '#E8F3E3' : 'transparent' }}; color: #3D5A3D; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: {{ activeTab === 'stats' ? '700' : '500' }}; transition: all 0.2s;" style-hover="background: #F0EBE1;">
+        📊 통계
+      </button>
+      <button onClick="{{ () => setState({ activeTab: 'logs' }) }}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{ activeTab === 'logs' ? '#E8F3E3' : 'transparent' }}; color: #3D5A3D; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: {{ activeTab === 'logs' ? '700' : '500' }}; transition: all 0.2s;" style-hover="background: #F0EBE1;">
+        📋 로그
+      </button>
+    </nav>
+
+    <hr style="border: none; border-top: 1px solid #E8E3D6; margin: 24px 0;" />
+
+    <button onClick="{{ handleLogout }}" style="width: 100%; padding: 12px 14px; border: 1.5px solid #FFB3B3; background: white; border-radius: 8px; color: #C00; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.2s;" style-hover="background: #FFE8E8;">
+      로그아웃
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main style="padding: 32px;">
+    <!-- Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+      <h1 style="font-size: 32px; font-weight: 900;">{{ tabTitles[activeTab] }}</h1>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: white; border-radius: 8px; border: 1px solid #E8E3D6;">
+        <span style="font-size: 13px; color: #888;">관리자</span>
+        <div style="width: 32px; height: 32px; border-radius: 50%; background: #E8F3E3; display: flex; align-items: center; justify-content: center; font-size: 14px;">👤</div>
+      </div>
+    </div>
+
+    <!-- Users Tab -->
+    <sc-if value="{{ activeTab === 'users' }}" hint-placeholder-val="{{ true }}">
+      <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E8E3D6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <h2 style="font-size: 18px; font-weight: 700;">활성 사용자 ({{ userStats.activeCount }}명)</h2>
+          <input type="text" placeholder="이메일 또는 이름으로 검색..." style="padding: 10px 14px; border: 1.5px solid #D9CFC1; border-radius: 8px; font-size: 13px; width: 240px;" />
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #E8E3D6; background: #F5F0E8;">
+              <th style="text-align: left; padding: 12px; font-weight: 700;">ID</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">이메일</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">이름</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">지역</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">가입일</th>
+              <th style="text-align: center; padding: 12px; font-weight: 700;">액션</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ users }}" as="user" hint-placeholder-count="5">
+              <tr style="border-bottom: 1px solid #E8E3D6; hover-background: #F9F6EE;">
+                <td style="padding: 12px;">{{ user.userId }}</td>
+                <td style="padding: 12px;">{{ user.email }}</td>
+                <td style="padding: 12px;">{{ user.name }}</td>
+                <td style="padding: 12px;">{{ user.region }}</td>
+                <td style="padding: 12px;">{{ user.createdAt }}</td>
+                <td style="padding: 12px; text-align: center; display: flex; gap: 6px; justify-content: center;">
+                  <button onClick="{{ () => openUserDetail(user) }}" style="padding: 6px 10px; background: #E8F3E3; border: none; border-radius: 6px; color: #56B968; font-weight: 600; cursor: pointer; font-size: 12px;">상세</button>
+                  <button onClick="{{ () => suspendUser(user.userId) }}" style="padding: 6px 10px; background: #FFF0E8; border: none; border-radius: 6px; color: #E87C3B; font-weight: 600; cursor: pointer; font-size: 12px;">일시정지</button>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+    <!-- Withdrawn Tab -->
+    <sc-if value="{{ activeTab === 'withdrawn' }}" hint-placeholder-val="{{ false }}">
+      <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E8E3D6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <h2 style="font-size: 18px; font-weight: 700;">탈퇴한 사용자 ({{ userStats.withdrawnCount }}명)</h2>
+          <div style="font-size: 12px; color: #888;">최근 30일</div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #E8E3D6; background: #F5F0E8;">
+              <th style="text-align: left; padding: 12px; font-weight: 700;">이메일</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">탈퇴일</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">이유</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">기록된 키움이</th>
+              <th style="text-align: center; padding: 12px; font-weight: 700;">액션</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ withdrawnUsers }}" as="wu" hint-placeholder-count="4">
+              <tr style="border-bottom: 1px solid #E8E3D6;">
+                <td style="padding: 12px;">{{ wu.email }}</td>
+                <td style="padding: 12px;">{{ wu.withdrawnAt }}</td>
+                <td style="padding: 12px; color: #888;">{{ wu.reason || '미입력' }}</td>
+                <td style="padding: 12px;">{{ wu.plantCount }}개</td>
+                <td style="padding: 12px; text-align: center;">
+                  <button onClick="{{ () => restoreUser(wu.userId) }}" style="padding: 6px 10px; background: #E8F3E3; border: none; border-radius: 6px; color: #56B968; font-weight: 600; cursor: pointer; font-size: 12px;">복구</button>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+    <!-- Messages Tab -->
+    <sc-if value="{{ activeTab === 'messages' }}" hint-placeholder-val="{{ false }}">
+      <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E8E3D6;">
+        <div style="margin-bottom: 20px;">
+          <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">메시지 삭제 요청</h2>
+          <p style="font-size: 13px; color: #888;">사용자가 요청한 특정 메시지 삭제 이력 관리</p>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #E8E3D6; background: #F5F0E8;">
+              <th style="text-align: left; padding: 12px; font-weight: 700;">메시지 ID</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">발신자</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">수신자</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">삭제 요청일</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">상태</th>
+              <th style="text-align: center; padding: 12px; font-weight: 700;">액션</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ deletedMessages }}" as="msg" hint-placeholder-count="3">
+              <tr style="border-bottom: 1px solid #E8E3D6;">
+                <td style="padding: 12px; font-family: monospace; color: #666;">{{ msg.messageId }}</td>
+                <td style="padding: 12px;">{{ msg.senderEmail }}</td>
+                <td style="padding: 12px;">{{ msg.receiverEmail }}</td>
+                <td style="padding: 12px;">{{ msg.requestedAt }}</td>
+                <td style="padding: 12px;">
+                  <span style="display: inline-block; padding: 4px 8px; background: {{ msg.deletedBySender && msg.deletedByReceiver ? '#E8F3E3' : '#FFF0E8' }}; color: {{ msg.deletedBySender && msg.deletedByReceiver ? '#4A7C4E' : '#E87C3B' }}; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                    {{ msg.deletedBySender && msg.deletedByReceiver ? '완전삭제' : '부분삭제' }}
+                  </span>
+                </td>
+                <td style="padding: 12px; text-align: center;">
+                  <button onClick="{{ () => viewDeletedMessage(msg) }}" style="padding: 6px 10px; background: #E8F3E3; border: none; border-radius: 6px; color: #56B968; font-weight: 600; cursor: pointer; font-size: 12px;">상세</button>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+    <!-- Stats Tab -->
+    <sc-if value="{{ activeTab === 'stats' }}" hint-placeholder-val="{{ false }}">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #E8E3D6; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <p style="font-size: 13px; color: #888; margin-bottom: 8px;">전체 사용자</p>
+          <p style="font-size: 32px; font-weight: 900; color: #56B968;">{{ stats.totalUsers }}</p>
+          <p style="font-size: 12px; color: #888; margin-top: 8px;">↑ {{ stats.newUsersThisMonth }} 이달 신규</p>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #E8E3D6; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <p style="font-size: 13px; color: #888; margin-bottom: 8px;">활성 사용자</p>
+          <p style="font-size: 32px; font-weight: 900; color: #56B968;">{{ stats.activeUsers }}</p>
+          <p style="font-size: 12px; color: #888; margin-top: 8px;">{{ stats.activeUserPercent }}% of 전체</p>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #E8E3D6; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <p style="font-size: 13px; color: #888; margin-bottom: 8px;">탈퇴한 사용자</p>
+          <p style="font-size: 32px; font-weight: 900; color: #E87C3B;">{{ stats.withdrawnUsers }}</p>
+          <p style="font-size: 12px; color: #888; margin-top: 8px;">최근 30일</p>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #E8E3D6; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <p style="font-size: 13px; color: #888; margin-bottom: 8px;">등록된 키움이</p>
+          <p style="font-size: 32px; font-weight: 900; color: #56B968;">{{ stats.totalPlants }}</p>
+          <p style="font-size: 12px; color: #888; margin-top: 8px;">사용자당 평균 {{ stats.avgPlantsPerUser }}</p>
+        </div>
+      </div>
+
+      <div style="background: white; border-radius: 16px; padding: 24px; border: 1px solid #E8E3D6; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">일별 가입 추이 (최근 30일)</h3>
+        <div style="height: 240px; background: #F5F0E8; border-radius: 8px; display: flex; align-items: flex-end; gap: 2px; padding: 12px;">
+          <sc-for list="{{ dailySignups }}" as="day" hint-placeholder-count="30">
+            <div style="flex: 1; height: {{ day.count * 4 }}px; background: #56B968; border-radius: 2px; opacity: 0.7; transition: opacity 0.2s;" style-hover="opacity: 1;"></div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Logs Tab -->
+    <sc-if value="{{ activeTab === 'logs' }}" hint-placeholder-val="{{ false }}">
+      <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E8E3D6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <h2 style="font-size: 18px; font-weight: 700;">관리자 활동 로그</h2>
+          <button style="padding: 8px 14px; background: #E8F3E3; border: none; border-radius: 8px; color: #56B968; font-weight: 600; cursor: pointer; font-size: 13px;">내보내기</button>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #E8E3D6; background: #F5F0E8;">
+              <th style="text-align: left; padding: 12px; font-weight: 700;">시간</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">관리자</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">액션</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">대상</th>
+              <th style="text-align: left; padding: 12px; font-weight: 700;">결과</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ adminLogs }}" as="log" hint-placeholder-count="6">
+              <tr style="border-bottom: 1px solid #E8E3D6;">
+                <td style="padding: 12px; color: #888;">{{ log.timestamp }}</td>
+                <td style="padding: 12px;">{{ log.adminEmail }}</td>
+                <td style="padding: 12px; font-weight: 600;">{{ log.action }}</td>
+                <td style="padding: 12px; color: #666;">{{ log.target }}</td>
+                <td style="padding: 12px;">
+                  <span style="display: inline-block; padding: 4px 8px; background: {{ log.success ? '#E8F3E3' : '#FFE8E8' }}; color: {{ log.success ? '#4A7C4E' : '#C00' }}; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                    {{ log.success ? '성공' : '실패' }}
+                  </span>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1280px&quot;,&quot;height&quot;:&quot;800px&quot;}}">
+class Component extends DCLogic {
+  state = {
+    activeTab: 'users',
+    users: [
+      { userId: 1, email: 'user1@example.com', name: '김연주', region: '서울시 강남구', createdAt: '2026-08-01' },
+      { userId: 2, email: 'user2@example.com', name: '이승현', region: '서울시 마포구', createdAt: '2026-08-02' },
+      { userId: 3, email: 'user3@example.com', name: '박지은', region: '경기도 성남시', createdAt: '2026-08-03' }
+    ],
+    withdrawnUsers: [
+      { userId: 10, email: 'withdrawn1@example.com', withdrawnAt: '2026-07-28', reason: '서비스 미사용', plantCount: 2 },
+      { userId: 11, email: 'withdrawn2@example.com', withdrawnAt: '2026-07-25', reason: '개인정보 우려', plantCount: 1 }
+    ],
+    deletedMessages: [
+      { messageId: '2025-0124', senderEmail: 'sender@example.com', receiverEmail: 'receiver@example.com', requestedAt: '2026-08-05 14:22', deletedBySender: true, deletedByReceiver: true },
+      { messageId: '2025-0125', senderEmail: 'user2@example.com', receiverEmail: 'user3@example.com', requestedAt: '2026-08-04 09:15', deletedBySender: true, deletedByReceiver: false }
+    ],
+    userStats: { activeCount: 3, withdrawnCount: 2 },
+    stats: {
+      totalUsers: 12000,
+      newUsersThisMonth: 450,
+      activeUsers: 9800,
+      activeUserPercent: 82,
+      withdrawnUsers: 28,
+      totalPlants: 34000,
+      avgPlantsPerUser: 2.8
+    },
+    dailySignups: Array.from({length: 30}, (_, i) => ({ count: Math.floor(Math.random() * 25) + 5 })),
+    adminLogs: [
+      { timestamp: '2026-08-05 15:42', adminEmail: 'admin@kiuda.io', action: '사용자 일시정지', target: 'user_id: 5', success: true },
+      { timestamp: '2026-08-05 14:15', adminEmail: 'admin@kiuda.io', action: '메시지 삭제 처리', target: 'message_id: 2025-0124', success: true },
+      { timestamp: '2026-08-04 11:30', adminEmail: 'admin@kiuda.io', action: '탈퇴 사용자 복구', target: 'user_id: 10', success: false }
+    ]
+  };
+
+  tabTitles = {
+    users: '사용자 관리',
+    withdrawn: '탈퇴 관리',
+    messages: '메시지 삭제',
+    stats: '통계',
+    logs: '로그'
+  };
+
+  handleLogout = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '/login';
+  };
+
+  suspendUser = (userId) => {
+    alert(`사용자 ${userId} 일시정지 처리됨`);
+  };
+
+  restoreUser = (userId) => {
+    alert(`사용자 ${userId} 복구됨`);
+  };
+
+  viewDeletedMessage = (msg) => {
+    alert(`메시지 ${msg.messageId} 상세 조회`);
+  };
+
+  openUserDetail = (user) => {
+    alert(`${user.name} 상세 정보 조회`);
+  };
+
+  renderVals() {
+    return {
+      activeTab: this.state.activeTab,
+      users: this.state.users,
+      withdrawnUsers: this.state.withdrawnUsers,
+      deletedMessages: this.state.deletedMessages,
+      userStats: this.state.userStats,
+      stats: this.state.stats,
+      dailySignups: this.state.dailySignups,
+      adminLogs: this.state.adminLogs,
+      tabTitles: this.tabTitles,
+      handleLogout: this.handleLogout,
+      suspendUser: this.suspendUser,
+      restoreUser: this.restoreUser,
+      viewDeletedMessage: this.viewDeletedMessage,
+      openUserDetail: this.openUserDetail
+    };
+  }
+}
+</script>
+</body>
+</html>

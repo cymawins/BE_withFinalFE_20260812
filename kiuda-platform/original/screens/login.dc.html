@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, sans-serif; background: linear-gradient(135deg, #F9F6EE 0%, #E8F3E3 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</helmet>
+
+<div style="width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <div style="animation: slideIn 0.6s ease-out; width: 100%; max-width: 420px;">
+    
+    <!-- Logo & Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #56B968; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: white;">키</div>
+      </div>
+      <h1 style="font-size: 28px; font-weight: 900; color: #3D5A3D; margin-bottom: 8px;">로그인</h1>
+      <p style="font-size: 14px; color: #888;">함께 하는 초록빛 일상을 시작하세요</p>
+    </div>
+
+    <!-- Login Form -->
+    <form onSubmit="{{ handleLogin }}" style="margin-bottom: 24px;">
+      <!-- Email Input -->
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">이메일</label>
+        <input 
+          type="email" 
+          value="{{ email }}" 
+          onChange="{{ handleEmailChange }}"
+          placeholder="example@email.com"
+          required
+          style="width: 100%; padding: 14px 16px; border: 1.5px solid #D9CFC1; border-radius: 12px; font-size: 15px; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s;" 
+          style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+        />
+      </div>
+
+      <!-- Password Input -->
+      <div style="margin-bottom: 8px;">
+        <label style="display: block; font-size: 13px; font-weight: 700; color: #3D5A3D; margin-bottom: 8px;">비밀번호</label>
+        <input 
+          type="{{ passwordInputType }}" 
+          value="{{ password }}" 
+          onChange="{{ handlePasswordChange }}"
+          placeholder="8자 이상의 비밀번호"
+          required
+          style="width: 100%; padding: 14px 16px; border: 1.5px solid #D9CFC1; border-radius: 12px; font-size: 15px; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s;" 
+          style-focus="border-color: #56B968; box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);"
+        />
+      </div>
+
+      <!-- Show Password Toggle -->
+      <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+        <input 
+          type="checkbox" 
+          id="showPasswordCheckbox"
+          checked="{{ showPassword }}"
+          onChange="{{ toggleShowPassword }}"
+          style="width: 18px; height: 18px; cursor: pointer;"
+        />
+        <label for="showPasswordCheckbox" style="font-size: 13px; color: #666; cursor: pointer;">비밀번호 표시</label>
+      </div>
+
+      <!-- Error Message -->
+      <sc-if value="{{ error }}" hint-placeholder-val="{{ '' }}">
+        <div style="background: #FFE8E8; border: 1px solid #FFB3B3; border-radius: 8px; padding: 12px 14px; margin-bottom: 20px; font-size: 13px; color: #C00; text-align: center;">
+          {{ error }}
+        </div>
+      </sc-if>
+
+      <!-- Login Button -->
+      <button 
+        type="submit"
+        disabled="{{ isLoading }}"
+        style="width: 100%; padding: 16px; background: #56B968; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(86, 185, 104, 0.2);"
+        style-hover="background: #4A9B56; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(86, 185, 104, 0.3);"
+        style-active="transform: translateY(0);"
+      >
+        {{ loginButtonLabel }}
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+      <div style="flex: 1; height: 1px; background: #D9CFC1;"></div>
+      <span style="font-size: 12px; color: #888; white-space: nowrap;">또는</span>
+      <div style="flex: 1; height: 1px; background: #D9CFC1;"></div>
+    </div>
+
+    <!-- Social Logins -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+      <button style="padding: 12px; border: 1.5px solid #D9CFC1; background: white; border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;" style-hover="background: #F5F0E8; border-color: #C9B5A1;">
+        🍎 Apple
+      </button>
+      <button style="padding: 12px; border: 1.5px solid #D9CFC1; background: white; border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;" style-hover="background: #F5F0E8; border-color: #C9B5A1;">
+        🔵 Google
+      </button>
+    </div>
+
+    <!-- Sign Up Link -->
+    <div style="text-align: center; margin-bottom: 24px;">
+      <p style="font-size: 14px; color: #666;">
+        아직 계정이 없으신가요?
+        <a href="/signup" style="color: #56B968; font-weight: 700; text-decoration: none; transition: color 0.2s;" style-hover="color: #4A9B56; text-decoration: underline;">회원가입</a>
+      </p>
+    </div>
+
+    <!-- Links -->
+    <div style="display: flex; gap: 12px; justify-content: center; text-align: center; padding-top: 20px; border-top: 1px solid #D9CFC1;">
+      <a href="#forgot" style="font-size: 12px; color: #888; text-decoration: none; transition: color 0.2s;" style-hover="color: #56B968;">비밀번호 찾기</a>
+      <span style="color: #D9CFC1;">|</span>
+      <a href="#help" style="font-size: 12px; color: #888; text-decoration: none; transition: color 0.2s;" style-hover="color: #56B968;">도움말</a>
+      <span style="color: #D9CFC1;">|</span>
+      <a href="#privacy" style="font-size: 12px; color: #888; text-decoration: none; transition: color 0.2s;" style-hover="color: #56B968;">개인정보</a>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;420px&quot;,&quot;height&quot;:&quot;720px&quot;}}">
+class Component extends DCLogic {
+  state = { 
+    email: '', 
+    password: '', 
+    showPassword: false,
+    isLoading: false,
+    error: ''
+  };
+
+  handleEmailChange = (e) => {
+    this.setState({ email: e.target.value });
+  };
+
+  handlePasswordChange = (e) => {
+    this.setState({ password: e.target.value });
+  };
+
+  toggleShowPassword = (e) => {
+    this.setState({ showPassword: e.target.checked });
+  };
+
+  handleLogin = async (e) => {
+    e.preventDefault();
+    this.setState({ isLoading: true, error: '' });
+    
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || '로그인 실패');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('userId', data.userId);
+      window.location.href = '/dashboard';
+    } catch (error) {
+      this.setState({ error: error.message, isLoading: false });
+    }
+  };
+
+  renderVals() {
+    return {
+      email: this.state.email,
+      password: this.state.password,
+      showPassword: this.state.showPassword,
+      passwordInputType: this.state.showPassword ? 'text' : 'password',
+      showPasswordLabel: this.state.showPassword ? '숨기기' : '보기',
+      loginButtonLabel: this.state.isLoading ? '로그인 중...' : '로그인',
+      isLoading: this.state.isLoading,
+      error: this.state.error,
+      handleLogin: this.handleLogin,
+      handleEmailChange: this.handleEmailChange,
+      handlePasswordChange: this.handlePasswordChange,
+      toggleShowPassword: this.toggleShowPassword
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="max-width:{{ maxWidthPx }}; margin:{{ marginValue }}; text-align:{{ alignValue }};">
+  <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">{{ eyebrow }}</p>
+  <h2 style="margin-top:16px; font-size:clamp(28px,4.2vw,42px); font-weight:900; letter-spacing:-0.03em; text-wrap:balance;">{{ title }}</h2>
+  <sc-if value="{{ hasDescription }}" hint-placeholder-val="{{ true }}">
+    <p style="margin-top:16px; font-size:17.5px; line-height:1.7; color:oklch(0.48 0.02 145); text-wrap:pretty;">{{ description }}</p>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:640,&quot;height&quot;:160},&quot;eyebrow&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;EYEBROW&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;섹션 제목&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;description&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;align&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;center&quot;,&quot;options&quot;:[&quot;left&quot;,&quot;center&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;maxWidth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:640,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:300,&quot;max&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    const align = this.props.align ?? 'center';
+    return {
+      maxWidthPx: `${this.props.maxWidth ?? 640}px`,
+      marginValue: align === 'center' ? '0 auto' : '0',
+      alignValue: align,
+      eyebrow: this.props.eyebrow ?? '',
+      title: this.props.title ?? '',
+      description: this.props.description ?? '',
+      hasDescription: !!this.props.description,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

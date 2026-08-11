@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+      font-weight: 45 920;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: oklch(0.56 0.09 152); }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh; background: oklch(0.985 0.008 95); color: oklch(0.24 0.02 145);">
+
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter: blur(16px); background: oklch(0.985 0.008 95 / 0.75); border-bottom: 1px solid oklch(0.9 0.015 120);">
+    <div style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,40px); height:76px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="dashboard.dc.html" aria-label="키우다 홈" style="display:flex; align-items:center; gap:10px;">
+        <img src="../assets/logo.png" alt="키우다 로고" style="width:auto; height:210px; object-fit:contain;">
+        </a>
+      <nav aria-label="주요 서비스" style="display:flex; align-items:center; gap:36px;">
+        <a href="dashboard.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">보다</a>
+        <a href="ask.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">묻다</a>
+        <a href="connect.dc.html" style="font-size:15px; font-weight:700; color:oklch(0.5 0.1 152);">잇다</a>
+        <a href="share.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">나누다</a>
+      </nav>
+      <a href="profile.dc.html" style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150);">민</a>
+    </div>
+  </header>
+
+  <main style="max-width:1180px; margin:0 auto; padding: clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px;">
+
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px;">
+      <div>
+        <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">가까운 이웃과 잇다</p>
+        <h1 style="margin-top:12px; font-size:clamp(28px,3.6vw,38px); font-weight:900; letter-spacing:-0.03em;">우리 동네 키움이들</h1>
+        <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+          <span style="width:9px; height:9px; border-radius:50%; background:oklch(0.56 0.09 152); display:inline-block;"></span>
+          <p style="font-size:14.5px; color:oklch(0.48 0.02 145);">현재 위치 · 서울 마포구 (GPS 기반, 반경 3km)</p>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:36px;">
+      <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
+        <sc-for list="{{ mapFilters }}" as="mf" hint-placeholder-count="6">
+          <button onClick="{{ mf.onClick }}" style="border:1.5px solid oklch(0.88 0.015 120); background:{{ mf.active }}; color:{{ mf.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ mf.label }}</button>
+        </sc-for>
+      </div>
+      <div style="border-radius:28px; background:oklch(0.94 0.03 140 / 0.5); border:1.5px solid oklch(0.88 0.05 145); overflow:hidden;">
+        <div style="position:relative; width:100%; height:clamp(320px,40vw,420px); overflow:hidden;">
+          <div style="position:absolute; top:-10%; left:-8%; width:45%; height:45%; border-radius:50%; background:oklch(0.9 0.04 140 / 0.5);"></div>
+          <div style="position:absolute; bottom:-12%; right:-6%; width:50%; height:50%; border-radius:50%; background:oklch(0.9 0.04 140 / 0.45);"></div>
+          <div style="position:absolute; top:20%; right:10%; width:30%; height:30%; border-radius:50%; background:oklch(0.92 0.035 140 / 0.4);"></div>
+
+          <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:4px; z-index:2;">
+            <span style="width:16px; height:16px; border-radius:50%; background:oklch(0.56 0.09 152); border:3px solid oklch(1 0 0); box-shadow:0 0 0 6px oklch(0.56 0.09 152 / 0.2);"></span>
+            <span style="font-size:12px; font-weight:800; background:oklch(1 0 0); padding:3px 10px; border-radius:999px; box-shadow:0 2px 6px oklch(0.3 0.03 145 / 0.15);">나</span>
+          </div>
+
+          <sc-for list="{{ mapPins }}" as="pin" hint-placeholder-count="8">
+            <div style="position:absolute; top:{{ pin.top }}; left:{{ pin.left }}; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; z-index:1;">
+              <span style="font-size:11.5px; font-weight:700; background:oklch(1 0 0); padding:3px 9px; border-radius:999px; box-shadow:0 2px 6px oklch(0.3 0.03 145 / 0.12); white-space:nowrap; margin-bottom:2px;">{{ pin.label }}</span>
+              <span style="width:14px; height:14px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); background:{{ pin.color }}; border:2px solid oklch(1 0 0);"></span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; align-items:center; gap:20px; padding:14px 20px; background:oklch(1 0 0); flex-wrap:wrap;">
+          <span style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:oklch(0.45 0.02 145);"><span style="width:10px; height:10px; border-radius:50%; background:oklch(0.5 0.1 152); display:inline-block;"></span>팔로잉 이웃</span>
+          <span style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:oklch(0.45 0.02 145);"><span style="width:10px; height:10px; border-radius:50%; background:oklch(0.55 0.13 30); display:inline-block;"></span>품앗이 요청 이웃</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:48px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.02em;">가까운 이웃</h2>
+        <div style="display:flex; gap:8px;">
+          <sc-for list="{{ nearbyFilters }}" as="nf" hint-placeholder-count="3">
+            <button onClick="{{ nf.onClick }}" style="border:1.5px solid oklch(0.88 0.015 120); background:{{ nf.active }}; color:{{ nf.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ nf.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:16px;">
+        <sc-for list="{{ visibleNearbyNeighbors }}" as="n" hint-placeholder-count="4">
+          <div onClick="{{ n.openProfile }}" style="border-radius:22px; background:oklch(1 0 0); padding:20px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); display:flex; flex-direction:column; gap:12px; cursor:pointer; transition:transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1);" style-hover="transform: translateY(-4px); box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:48px; height:48px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                <image-slot id="{{ n.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+              </div>
+              <div>
+                <p style="font-size:15px; font-weight:800;">{{ n.name }}</p>
+                <p style="font-size:12.5px; color:oklch(0.5 0.02 145);">{{ n.distance }} · {{ n.region }}</p>
+              </div>
+            </div>
+            <p style="font-size:13.5px; color:oklch(0.45 0.02 145); line-height:1.5;">{{ n.bio }}</p>
+            <sc-if value="{{ n.isFollowing }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center; border:1.5px solid {{ n.followBorder }}; background:{{ n.followBg }}; color:{{ n.followColor }}; font-size:13.5px; font-weight:700; padding:9px; border-radius:999px;">{{ n.followLabel }}</div>
+            </sc-if>
+            <sc-if value="{{ n.showFollowerBadge }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center; background:oklch(0.94 0.03 140); color:oklch(0.3 0.06 145); font-size:13.5px; font-weight:700; padding:9px; border-radius:999px;">팔로워</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top:56px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.02em;">품앗이</h2>
+          <button onClick="{{ openMyHelpModal }}" style="border:1.5px solid oklch(0.88 0.015 120); background:transparent; color:oklch(0.4 0.02 145); font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">나의 품앗이 참여 현황</button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <sc-for list="{{ marketFilters }}" as="f" hint-placeholder-count="3">
+            <button onClick="{{ f.onClick }}" style="border:1.5px solid oklch(0.88 0.015 120); background:{{ f.active }}; color:{{ f.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:16px;">
+        <sc-for list="{{ helpPosts }}" as="h" hint-placeholder-count="4">
+          <article onClick="{{ h.openDetail }}" style="border-radius:22px; background:oklch(1 0 0); padding:22px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); cursor:pointer; transition:transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1);" style-hover="transform: translateY(-4px); box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="border-radius:999px; padding:5px 12px; font-size:12px; font-weight:800; background:{{ h.typeBg }}; color:{{ h.typeColor }};">{{ h.typeLabel }}</span>
+              <span style="font-size:12px; font-weight:700; color:{{ h.statusColor }};">{{ h.statusLabel }}</span>
+            </div>
+            <h3 style="margin-top:14px; font-size:16.5px; font-weight:800;">{{ h.title }}</h3>
+            <p style="margin-top:8px; font-size:14px; line-height:1.6; color:oklch(0.48 0.02 145);">{{ h.content }}</p>
+            <div style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; font-size:12.5px; color:oklch(0.55 0.02 145);">
+              <span>{{ h.author }}</span>
+              <span>{{ h.distance }}</span>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top:56px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.02em;">지역 행사 일정</h2>
+        <div style="display:flex; gap:8px;">
+          <sc-for list="{{ eventRegionFilters }}" as="rf" hint-placeholder-count="3">
+            <button onClick="{{ rf.onClick }}" style="border:1.5px solid oklch(0.88 0.015 120); background:{{ rf.active }}; color:{{ rf.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ rf.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:20px; display:flex; flex-direction:column; gap:14px;">
+        <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+          <div onClick="{{ e.openDetail }}" style="border-radius:20px; background:oklch(1 0 0); padding:20px 22px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); display:flex; align-items:center; gap:20px; flex-wrap:wrap; cursor:pointer; transition:transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1);" style-hover="transform: translateY(-4px); box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);">
+            <div style="width:64px; flex-shrink:0; text-align:center;">
+              <p style="font-size:12px; font-weight:700; color:oklch(0.5 0.1 152);">{{ e.month }}</p>
+              <p style="font-size:24px; font-weight:900;">{{ e.day }}</p>
+            </div>
+            <div style="flex:1; min-width:180px;">
+              <h3 style="font-size:15.5px; font-weight:800;">{{ e.title }}</h3>
+              <p style="margin-top:4px; font-size:13px; color:oklch(0.5 0.02 145);">{{ e.location }} · {{ e.time }}</p>
+            </div>
+            <span style="border-radius:999px; padding:6px 14px; font-size:12.5px; font-weight:700; background:oklch(0.94 0.03 140); color:oklch(0.4 0.09 150);">{{ e.tag }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+  </main>
+
+  <sc-if value="{{ isNeighborModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeNeighborModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:560px; max-height:86vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(24px,4vw,36px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:52px; height:52px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+              <image-slot id="{{ selectedNeighbor.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+            </div>
+            <div>
+              <h2 style="font-size:19px; font-weight:900;">{{ selectedNeighbor.name }}</h2>
+              <p style="margin-top:2px; font-size:13px; color:oklch(0.5 0.02 145);">{{ selectedNeighbor.distance }} · {{ selectedNeighbor.region }}</p>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <button onClick="{{ toggleSelectedNeighborFollow }}" style="border:1.5px solid {{ selectedNeighborFollowBorder }}; background:{{ selectedNeighborFollowBg }}; color:{{ selectedNeighborFollowColor }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ selectedNeighborFollowLabel }}</button>
+            <button onClick="{{ closeNeighborModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145);">✕</button>
+          </div>
+        </div>
+
+        <p style="margin-top:14px; font-size:13px; font-weight:700; color:oklch(0.5 0.1 152); text-transform:uppercase; letter-spacing:0.06em;">{{ selectedNeighborSectionLabel }}</p>
+
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:16px;">
+          <sc-for list="{{ selectedNeighborStories }}" as="s" hint-placeholder-count="2">
+            <div style="border-radius:18px; background:oklch(0.985 0.008 95); padding:16px 18px;">
+              <p style="font-size:12.5px; color:oklch(0.55 0.02 145);">{{ s.createdAt }} · {{ s.plantNickname }}</p>
+              <p style="margin-top:8px; font-size:14.5px; line-height:1.65; color:oklch(0.3 0.02 145);">{{ s.content }}</p>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ selectedNeighborCanMessage }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px; padding-top:18px; border-top:1px solid oklch(0.94 0.01 130);">
+            <p style="font-size:13px; font-weight:800; color:oklch(0.35 0.02 145);">1:1 다이렉트 메시지</p>
+            <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto;">
+              <sc-for list="{{ selectedNeighborMessages }}" as="m" hint-placeholder-count="2">
+                <div style="align-self:{{ m.align }}; max-width:85%; background:{{ m.bg }}; color:{{ m.color }}; border-radius:14px; padding:8px 12px; font-size:13px; line-height:1.5;">{{ m.text }}</div>
+              </sc-for>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:8px;">
+              <input type="text" placeholder="메시지를 입력하세요" value="{{ dmText }}" onChange="{{ onDmChange }}" style="flex:1; height:44px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 16px; font-size:14px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+              <button onClick="{{ sendDm }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14px; font-weight:700; padding:0 20px; border-radius:999px; cursor:pointer;">보내기</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isHelpModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeHelpModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:500px; max-height:86vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(24px,4vw,36px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <span style="border-radius:999px; padding:5px 12px; font-size:12px; font-weight:800; background:{{ selectedHelp.typeBg }}; color:{{ selectedHelp.typeColor }};">{{ selectedHelp.typeLabel }}</span>
+          <button onClick="{{ closeHelpModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145); flex-shrink:0;">✕</button>
+        </div>
+        <h2 style="margin-top:16px; font-size:20px; font-weight:900; letter-spacing:-0.02em;">{{ selectedHelp.title }}</h2>
+        <p style="margin-top:10px; font-size:14.5px; line-height:1.7; color:oklch(0.4 0.02 145);">{{ selectedHelp.content }}</p>
+        <div style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; font-size:13px; color:oklch(0.55 0.02 145);">
+          <span>{{ selectedHelp.author }} · {{ selectedHelp.distance }}</span>
+          <span style="font-weight:700; color:{{ selectedHelp.statusColor }};">{{ selectedHelp.statusLabel }}</span>
+        </div>
+
+        <sc-if value="{{ selectedHelpIsOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px; padding-top:18px; border-top:1px solid oklch(0.94 0.01 130);">
+            <p style="font-size:13px; font-weight:800; color:oklch(0.35 0.02 145);">1:1 다이렉트 메시지</p>
+            <div style="margin-top:10px; display:flex; gap:8px;">
+              <input type="text" placeholder="메시지를 입력하세요" value="{{ dmText }}" onChange="{{ onDmChange }}" style="flex:1; height:44px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 16px; font-size:14px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+              <button onClick="{{ sendDm }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14px; font-weight:700; padding:0 20px; border-radius:999px; cursor:pointer;">보내기</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMyHelpModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMyHelpModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:600px; max-height:88vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(24px,4vw,36px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <h2 style="font-size:20px; font-weight:900; letter-spacing:-0.02em;">나의 품앗이 참여 현황</h2>
+          <button onClick="{{ closeMyHelpModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145); flex-shrink:0;">✕</button>
+        </div>
+
+        <div style="margin-top:24px; border-radius:20px; background:oklch(0.985 0.008 95); padding:20px;">
+          <p style="font-size:14px; font-weight:800;">새 품앗이 등록</p>
+          <div style="margin-top:14px; display:flex; gap:8px;">
+            <sc-for list="{{ myHelpTypeOptions }}" as="t" hint-placeholder-count="2">
+              <button onClick="{{ t.select }}" style="border:1.5px solid {{ t.border }}; background:{{ t.bg }}; color:{{ t.color }}; font-size:13.5px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer;">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <input type="text" placeholder="제목을 입력하세요" value="{{ myHelpTitle }}" onChange="{{ onMyHelpTitleChange }}" style="margin-top:12px; width:100%; border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:12px 16px; font-size:14.5px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+          <textarea placeholder="내용을 입력하세요" value="{{ myHelpContent }}" onChange="{{ onMyHelpContentChange }}" style="margin-top:10px; width:100%; height:80px; resize:none; border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:12px 16px; font-size:14.5px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);"></textarea>
+
+          <div style="margin-top:12px; display:flex; align-items:center; gap:8px;">
+            <button onClick="{{ toggleMyHelpPhoto }}" aria-label="사진 첨부" title="사진 첨부" style="border:none; background:{{ myHelpPhotoBtnBg }}; width:36px; height:36px; border-radius:50%; font-size:15px; cursor:pointer;">📷</button>
+            <button onClick="{{ toggleMyHelpFile }}" aria-label="파일 첨부" title="파일 첨부" style="border:none; background:{{ myHelpFileBtnBg }}; width:36px; height:36px; border-radius:50%; font-size:15px; cursor:pointer;">📎</button>
+            <button onClick="{{ submitMyHelp }}" style="margin-left:auto; border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:13.5px; font-weight:800; padding:10px 20px; border-radius:999px; cursor:pointer;">등록하기</button>
+          </div>
+
+          <sc-if value="{{ myHelpShowPhoto }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px; height:120px; border-radius:14px; overflow:hidden;">
+              <image-slot id="my-help-photo" shape="rect" placeholder="품앗이 사진 첨부"></image-slot>
+            </div>
+          </sc-if>
+          <sc-if value="{{ myHelpShowFile }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px; display:flex; align-items:center; gap:8px; border-radius:12px; background:oklch(0.96 0.015 130); padding:8px 12px; width:fit-content;">
+              <span style="font-size:14px;">📄</span>
+              <span style="font-size:12.5px; font-weight:600; color:oklch(0.4 0.02 145);">첨부파일.pdf 첨부됨</span>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="margin-top:26px;">
+          <p style="font-size:14px; font-weight:800;">진행중</p>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ myOngoingPosts }}" as="p" hint-placeholder-count="1">
+              <div style="border-radius:16px; background:oklch(0.985 0.008 95); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <div>
+                  <span style="border-radius:999px; padding:3px 10px; font-size:11px; font-weight:800; background:{{ p.typeBg }}; color:{{ p.typeColor }};">{{ p.typeLabel }}</span>
+                  <p style="margin-top:6px; font-size:14px; font-weight:700;">{{ p.title }}</p>
+                </div>
+                <button onClick="{{ p.complete }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:12.5px; font-weight:700; padding:8px 14px; border-radius:999px; cursor:pointer; flex-shrink:0;">완료 처리</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;">
+          <p style="font-size:14px; font-weight:800;">완료</p>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ myCompletedPosts }}" as="p" hint-placeholder-count="1">
+              <div style="border-radius:16px; background:oklch(0.985 0.008 95); padding:14px 16px; opacity:0.7;">
+                <span style="border-radius:999px; padding:3px 10px; font-size:11px; font-weight:800; background:{{ p.typeBg }}; color:{{ p.typeColor }};">{{ p.typeLabel }}</span>
+                <p style="margin-top:6px; font-size:14px; font-weight:700;">{{ p.title }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isEventModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeEventModal }}" style="position:fixed; inset:0; z-index:100; background:oklch(0.2 0.02 145 / 0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClick }}" style="width:100%; max-width:480px; max-height:86vh; overflow-y:auto; border-radius:32px; background:oklch(1 0 0); box-shadow:0 40px 90px oklch(0.2 0.03 145 / 0.3); padding:clamp(24px,4vw,36px);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <div style="width:56px; text-align:center;">
+              <p style="font-size:12px; font-weight:700; color:oklch(0.5 0.1 152);">{{ selectedEvent.month }}</p>
+              <p style="font-size:26px; font-weight:900;">{{ selectedEvent.day }}</p>
+            </div>
+            <h2 style="font-size:19px; font-weight:900; letter-spacing:-0.02em;">{{ selectedEvent.title }}</h2>
+          </div>
+          <button onClick="{{ closeEventModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:oklch(0.4 0.02 145); flex-shrink:0;">✕</button>
+        </div>
+        <p style="margin-top:16px; font-size:14px; color:oklch(0.5 0.02 145);">{{ selectedEvent.location }} · {{ selectedEvent.time }}</p>
+        <p style="margin-top:12px; font-size:14.5px; line-height:1.7; color:oklch(0.4 0.02 145);">{{ selectedEvent.description }}</p>
+        <a href="{{ selectedEvent.sourceUrl }}" target="_blank" rel="noopener" style="margin-top:20px; display:inline-flex; align-items:center; gap:8px; border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14px; font-weight:700; padding:12px 22px; border-radius:999px;">해당 사이트에서 자세히 보기 →</a>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    if (new URLSearchParams(window.location.search).get('openMyHelp') === '1') {
+      this.setState({ isMyHelpModalOpen: true, myHelpType: 'REQUEST' });
+    }
+  }
+
+  static loadFollowed() {
+    const defaults = { yj: true, sh: false, mk: false, jw: false };
+    try {
+      if (!localStorage.getItem('kiuda_followed_mutual_v2')) {
+        localStorage.setItem('kiuda_followed_mutual', JSON.stringify(['yj']));
+        localStorage.setItem('kiuda_followed_mutual_v2', '1');
+        return defaults;
+      }
+      const raw = localStorage.getItem('kiuda_followed_mutual');
+      if (raw) {
+        const arr = JSON.parse(raw);
+        return { yj: arr.includes('yj'), sh: arr.includes('sh'), mk: arr.includes('mk'), jw: arr.includes('jw') };
+      }
+    } catch (e) {}
+    return defaults;
+  }
+
+  toggleFollowKey = (key) => {
+    const followed = { ...this.state.followed, [key]: !this.state.followed[key] };
+    localStorage.setItem('kiuda_followed_mutual', JSON.stringify(Object.keys(followed).filter((k) => followed[k])));
+    this.setState({ followed });
+  };
+
+  state = {
+    followed: Component.loadFollowed(),
+    nearbyFilter: 'ALL',
+    marketFilter: 'ALL',
+    mapFilter: 'ALL',
+    dmText: '',
+    openNeighborKey: null,
+    openHelpIndex: null,
+    openEventIndex: null,
+    isMyHelpModalOpen: false,
+    eventRegion: 'ALL',
+    myHelpType: 'OFFER',
+    myHelpTitle: '',
+    myHelpContent: '',
+    myHelpShowPhoto: false,
+    myHelpShowFile: false,
+    myPosts: [
+      { id: 'm1', type: 'OFFER', title: '방울토마토 지지대 나눔', status: 'OPEN' },
+      { id: 'm2', type: 'REQUEST', title: '물뿌리개 빌려주실 분', status: 'COMPLETED' },
+    ],
+  };
+
+  renderVals() {
+    const green = 'oklch(0.56 0.09 152)';
+
+    // User(nickname/region/lat,lng) + Follow — 거리순 정렬된 근처 이웃 (crop: 민준의 UserPlant와 동일 작물인지 비교용)
+    const MY_CROPS = ['방울토마토', '상추', '고구마', '블루베리', '바질', '옥수수'];
+    const neighborData = [
+      { key: 'yj', avatarId: 'nb-1', name: '연주', region: '서울 마포구', distance: '350m', bio: '베란다에서 허브·상추를 키워요. 물주기 품앗이 환영!', crop: '상추', isFollower: true },
+      { key: 'sh', avatarId: 'nb-2', name: '승현', region: '서울 마포구', distance: '700m', bio: '망원 도시농장 3년차. 병해충 정보 잘 나눠요.', crop: '방울토마토', isFollower: true },
+      { key: 'mk', avatarId: 'nb-3', name: '미경', region: '서울 마포구', distance: '1.1km', bio: '방울토마토·블루베리 재배 중. 모종 나눔 자주 해요.', crop: '블루베리', isFollower: false },
+      { key: 'jw', avatarId: 'nb-4', name: '재원', region: '서울 마포구', distance: '1.8km', bio: '주말농장 초보, 도구 빌려드릴 수 있어요.', crop: '옥수수', isFollower: false },
+    ];
+    const neighbors = neighborData.map((n) => {
+      const isFollowing = this.state.followed[n.key];
+      return {
+        ...n,
+        isFollowing,
+        showFollowButton: !isFollowing && n.key !== 'sh' && n.key !== 'mk' && n.key !== 'jw',
+        showFollowerBadge: !isFollowing && !!n.isFollower,
+        followLabel: isFollowing ? '팔로잉' : '팔로우',
+        followBg: isFollowing ? green : 'transparent',
+        followColor: isFollowing ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+        followBorder: isFollowing ? green : 'oklch(0.88 0.015 120)',
+        toggleFollow: (e) => { e.stopPropagation(); this.toggleFollowKey(n.key); },
+        openProfile: () => this.setState({ openNeighborKey: n.key }),
+      };
+    });
+
+    const neighborStories = {
+      yj: [
+        { sortKey: 1, createdAt: '1일 전', plantNickname: '베란다 상추', content: '상추 잎이 훨씬 넓어졌어요. 이번 주에 첫 수확 해보려고요!' },
+        { sortKey: 5, createdAt: '5일 전', plantNickname: '허브 화단', content: '바질 새순이 올라왔어요. 향이 벌써 좋네요.' },
+      ],
+      sh: [
+        { sortKey: 3, createdAt: '3일 전', plantNickname: '망원 도시농장 구역', content: '진딧물 방제 후 상태가 훨씬 좋아졌어요. 님오일 스프레이 효과 있네요.' },
+      ],
+      mk: [
+        { sortKey: 2, createdAt: '2일 전', plantNickname: '블루베리 화분', content: '첫 열매가 파랗게 익어가고 있어요!' },
+      ],
+      jw: [
+        { sortKey: 4, createdAt: '4일 전', plantNickname: '옥수수 밭', content: '장마 끝나고 수염 정리했습니다.' },
+      ],
+    };
+
+    // HelpPost(help_type REQUEST/OFFER, help_status) — 로컬 마켓 · 품앗이
+    const helpPostData = [
+      { type: 'OFFER', title: '방울토마토 모종 3개 나눔', content: '작년 씨앗에서 튼튼하게 키운 모종이에요. 직거래로 나눔합니다.', status: 'OPEN', author: '미경', distance: '1.1km' },
+      { type: 'REQUEST', title: '베란다 지지대 좀 빌려주실 분', content: '고추 지지대가 부족해서요. 주말에 반납 가능합니다.', status: 'OPEN', author: '재원', distance: '1.8km' },
+      { type: 'OFFER', title: '상추 씨앗 나눔합니다', content: '두 봉지 남았어요, 필요하신 분 댓글 주세요.', status: 'COMPLETED', author: '연주', distance: '350m' },
+      { type: 'REQUEST', title: '진딧물 방제 노하우 여쭤봐요', content: '님오일 스프레이 만드는 법 아시는 분 계신가요?', status: 'OPEN', author: '승현', distance: '700m' },
+    ];
+    const statusMeta = {
+      OPEN: { label: '모집중', color: green },
+      COMPLETED: { label: '완료', color: 'oklch(0.55 0.02 145)' },
+      CANCELLED: { label: '취소됨', color: 'oklch(0.55 0.02 145)' },
+    };
+    const typeMeta = {
+      OFFER: { label: '나눔', bg: 'oklch(0.94 0.03 140)', color: 'oklch(0.4 0.09 150)' },
+      REQUEST: { label: '요청', bg: 'oklch(0.94 0.05 30)', color: 'oklch(0.55 0.13 30)' },
+    };
+    const allHelpPosts = helpPostData.map((h, i) => ({
+      ...h,
+      id: i,
+      typeLabel: typeMeta[h.type].label,
+      typeBg: typeMeta[h.type].bg,
+      typeColor: typeMeta[h.type].color,
+      statusLabel: statusMeta[h.status].label,
+      statusColor: statusMeta[h.status].color,
+      openDetail: () => this.setState({ openHelpIndex: i }),
+    }));
+    const helpPosts = this.state.marketFilter === 'ALL' ? allHelpPosts : allHelpPosts.filter((h) => h.type === this.state.marketFilter);
+
+    const marketFilters = [
+      { key: 'ALL', label: '전체' },
+      { key: 'OFFER', label: '나눔' },
+      { key: 'REQUEST', label: '요청' },
+    ].map((f) => ({
+      ...f,
+      onClick: () => this.setState({ marketFilter: f.key }),
+      active: this.state.marketFilter === f.key ? green : 'transparent',
+      color: this.state.marketFilter === f.key ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+    }));
+
+    // 지역 행사 일정 — 별도 스키마 테이블 없이 지역(Region) 기준 큐레이션 목업
+    const eventDataAll = [
+      { month: '8월', day: '09', title: '망원 도시농장 여름 나눔장터', location: '망원 도시농장', region: '서울 마포구', time: '오전 10시', tag: '나눔장터', description: '지역 이웃들과 모종·씨앗을 나누는 여름 나눔장터입니다. 누구나 참여 가능해요.', sourceUrl: 'https://www.mapo.go.kr' },
+      { month: '8월', day: '16', title: '초보자를 위한 병해충 예방 강좌', location: '마포구민센터 3층', region: '서울 마포구', time: '오후 2시', tag: '강좌', description: '친환경 방제법부터 계절별 병해충 예방까지, 전문가와 함께하는 무료 강좌입니다.', sourceUrl: 'https://www.mapo.go.kr' },
+      { month: '8월', day: '23', title: '주말농장 공동 수확 체험', location: '파주 주말농장', region: '경기 파주시', time: '오전 9시', tag: '체험', description: '가족단위로 참여해 가을 작물을 함께 수확하는 프로그램입니다. 사전 신청 필수.', sourceUrl: 'https://www.paju.go.kr' },
+    ].map((e, i) => ({ ...e, id: i, openDetail: () => this.setState({ openEventIndex: i }) }));
+    const eventData = this.state.eventRegion === 'ALL' ? eventDataAll : eventDataAll.filter((e) => e.region === this.state.eventRegion);
+    const events = eventData;
+
+    // 사용자 거주 지역(마포구) + 활동 지역(파주시) 기준 필터
+    const eventRegionFilters = [
+      { key: 'ALL', label: '전체' },
+      { key: '서울 마포구', label: '서울 마포구' },
+      { key: '경기 파주시', label: '경기 파주시' },
+    ].map((f) => ({
+      ...f,
+      onClick: () => this.setState({ eventRegion: f.key }),
+      active: this.state.eventRegion === f.key ? green : 'transparent',
+      color: this.state.eventRegion === f.key ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+    }));
+
+    // 지도 필터: 전체 / 팔로우(내가 팔로우) / 팔로잉(나를 팔로우) / 팔로우·팔로잉(맞팔) / 품앗이 / 동일 작물
+    const mapFilterDefs = [
+      { key: 'ALL', label: '전체' },
+      { key: 'FOLLOWER', label: '팔로잉 이웃' },
+      { key: 'HELP', label: '품앗이 요청 이웃' },
+    ];
+    const mapFilters = mapFilterDefs.map((f) => ({
+      ...f,
+      onClick: () => this.setState({ mapFilter: f.key }),
+      active: this.state.mapFilter === f.key ? green : 'transparent',
+      color: this.state.mapFilter === f.key ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+    }));
+
+    let visibleNeighbors = neighbors;
+    if (this.state.mapFilter === 'FOLLOWER') visibleNeighbors = neighbors.filter((n) => n.isFollower);
+    else if (this.state.mapFilter === 'HELP') visibleNeighbors = [];
+
+    const nearbyFilterDefs = [
+      { key: 'ALL', label: '전체' },
+      { key: 'FOLLOWING', label: '팔로잉' },
+      { key: 'FOLLOWER', label: '팔로워' },
+    ];
+    const nearbyFilters = nearbyFilterDefs.map((f) => ({
+      ...f,
+      onClick: () => this.setState({ nearbyFilter: f.key }),
+      active: this.state.nearbyFilter === f.key ? green : 'transparent',
+      color: this.state.nearbyFilter === f.key ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+    }));
+    let visibleNearbyNeighbors = neighbors;
+    if (this.state.nearbyFilter === 'FOLLOWING') visibleNearbyNeighbors = neighbors.filter((n) => n.isFollowing);
+    else if (this.state.nearbyFilter === 'FOLLOWER') visibleNearbyNeighbors = neighbors.filter((n) => n.isFollower);
+
+    const neighborPins = visibleNeighbors.map((n, i) => ({
+      label: n.name,
+      color: green,
+      top: ['30%', '55%', '20%', '72%'][i] || '50%',
+      left: ['28%', '68%', '75%', '35%'][i] || '50%',
+    }));
+    const marketPins = (this.state.mapFilter === 'ALL' || this.state.mapFilter === 'HELP') ? allHelpPosts.map((h, i) => ({
+      label: h.title.length > 10 ? h.title.slice(0, 10) + '…' : h.title,
+      color: 'oklch(0.55 0.13 30)',
+      top: ['65%', '25%', '45%', '78%'][i] || '50%',
+      left: ['55%', '18%', '82%', '60%'][i] || '50%',
+    })) : [];
+    const mapPins = [...neighborPins, ...marketPins];
+
+    const openNeighborKey = this.state.openNeighborKey;
+    const selectedNeighbor = openNeighborKey ? neighbors.find((n) => n.key === openNeighborKey) : null;
+    const selectedNeighborCanMessage = !!(selectedNeighbor && this.state.followed[selectedNeighbor.key]);
+    const selectedNeighborIsFollowing = !!(selectedNeighbor && this.state.followed[selectedNeighbor.key]);
+    const selectedNeighborStories = selectedNeighbor
+      ? [...(neighborStories[selectedNeighbor.key] || [])].sort((a, b) => a.sortKey - b.sortKey)
+      : [];
+    const selectedNeighborSectionLabel = '소개 피드';
+
+    const openHelpIndex = this.state.openHelpIndex;
+    const selectedHelp = openHelpIndex !== null ? allHelpPosts[openHelpIndex] : null;
+    const selectedHelpIsOpen = !!(selectedHelp && selectedHelp.status === 'OPEN');
+
+    const openEventIndex = this.state.openEventIndex;
+    const selectedEvent = openEventIndex !== null ? eventData[openEventIndex] : null;
+
+    // HelpPost — 민준 본인이 등록한 품앗이 글(진행중/완료)
+    const myTypeOptions = [
+      { key: 'OFFER', label: '나눔' },
+      { key: 'REQUEST', label: '요청' },
+    ].map((t) => ({
+      ...t,
+      select: () => this.setState({ myHelpType: t.key }),
+      active: this.state.myHelpType === t.key,
+      bg: this.state.myHelpType === t.key ? green : 'transparent',
+      color: this.state.myHelpType === t.key ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+      border: this.state.myHelpType === t.key ? green : 'oklch(0.88 0.015 120)',
+    }));
+    const myPostsDecorated = this.state.myPosts.map((p) => ({
+      ...p,
+      typeLabel: typeMeta[p.type].label,
+      typeBg: typeMeta[p.type].bg,
+      typeColor: typeMeta[p.type].color,
+      complete: () => this.setState((s) => ({ myPosts: s.myPosts.map((mp) => mp.id === p.id ? { ...mp, status: 'COMPLETED' } : mp) })),
+    }));
+    const myOngoingPosts = myPostsDecorated.filter((p) => p.status === 'OPEN');
+    const myCompletedPosts = myPostsDecorated.filter((p) => p.status === 'COMPLETED');
+
+    return {
+      neighbors, helpPosts, marketFilters, events, mapPins, mapFilters,
+      nearbyFilters, visibleNearbyNeighbors,
+      eventRegionFilters,
+      isMyHelpModalOpen: this.state.isMyHelpModalOpen,
+      openMyHelpModal: () => this.setState({ isMyHelpModalOpen: true }),
+      closeMyHelpModal: () => this.setState({ isMyHelpModalOpen: false }),
+      myHelpTypeOptions: myTypeOptions,
+      myHelpTitle: this.state.myHelpTitle,
+      onMyHelpTitleChange: (e) => this.setState({ myHelpTitle: e.target.value }),
+      myHelpContent: this.state.myHelpContent,
+      onMyHelpContentChange: (e) => this.setState({ myHelpContent: e.target.value }),
+      myHelpShowPhoto: this.state.myHelpShowPhoto,
+      toggleMyHelpPhoto: () => this.setState((s) => ({ myHelpShowPhoto: !s.myHelpShowPhoto })),
+      myHelpShowFile: this.state.myHelpShowFile,
+      toggleMyHelpFile: () => this.setState((s) => ({ myHelpShowFile: !s.myHelpShowFile })),
+      myHelpPhotoBtnBg: this.state.myHelpShowPhoto ? 'oklch(0.94 0.03 140)' : 'oklch(0.96 0.015 130)',
+      myHelpFileBtnBg: this.state.myHelpShowFile ? 'oklch(0.94 0.03 140)' : 'oklch(0.96 0.015 130)',
+      submitMyHelp: () => this.setState((s) => {
+        if (!s.myHelpTitle.trim()) return null;
+        return {
+          myPosts: [...s.myPosts, { id: `m${Date.now()}`, type: s.myHelpType, title: s.myHelpTitle.trim(), status: 'OPEN' }],
+          myHelpTitle: '', myHelpContent: '', myHelpShowPhoto: false, myHelpShowFile: false,
+        };
+      }),
+      myOngoingPosts,
+      myCompletedPosts,
+      dmText: this.state.dmText,
+      onDmChange: (e) => this.setState({ dmText: e.target.value }),
+      sendDm: () => {
+        const key = selectedNeighbor && selectedNeighbor.key;
+        const text = this.state.dmText.trim();
+        if (!key || !text) return;
+        const threads = this.loadDmThreads();
+        threads[key] = [...(threads[key] || []), { from: 'me', text }];
+        this.saveDmThreads(threads);
+        this.setState({ dmText: '' });
+      },
+      isNeighborModalOpen: !!selectedNeighbor,
+      selectedNeighbor: selectedNeighbor || {},
+      selectedNeighborMessages: this.getNeighborMessages(selectedNeighbor),
+      selectedNeighborStories,
+      selectedNeighborCanMessage,
+      selectedNeighborSectionLabel,
+      selectedNeighborIsFollowing,
+      selectedNeighborFollowLabel: selectedNeighborIsFollowing ? '팔로잉 취소' : '팔로잉',
+      selectedNeighborFollowBorder: selectedNeighborIsFollowing ? 'transparent' : 'oklch(0.88 0.015 120)',
+      selectedNeighborFollowBg: selectedNeighborIsFollowing ? green : 'transparent',
+      selectedNeighborFollowColor: selectedNeighborIsFollowing ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+      toggleSelectedNeighborFollow: () => {
+        if (selectedNeighbor) this.toggleFollowKey(selectedNeighbor.key);
+      },
+      closeNeighborModal: () => this.setState({ openNeighborKey: null }),
+      isHelpModalOpen: !!selectedHelp,
+      selectedHelp: selectedHelp || {},
+      selectedHelpIsOpen,
+      closeHelpModal: () => this.setState({ openHelpIndex: null }),
+      isEventModalOpen: !!selectedEvent,
+      selectedEvent: selectedEvent || {},
+      closeEventModal: () => this.setState({ openEventIndex: null }),
+      stopClick: (e) => e.stopPropagation(),
+    };
+  }
+
+  loadDmThreads() {
+    const DEFAULT_THREADS = {
+      yj: [
+        { from: 'them', text: '민준님 안녕하세요! 상추 씨앗 남는 거 있으신가요?' },
+        { from: 'me', text: '네 있어요! 내일 오후에 드릴게요 :)' },
+        { from: 'them', text: '감사합니다!' },
+      ],
+      sh: [
+        { from: 'me', text: '진딧물 방제 스프레이 어떤 거 쓰세요?' },
+        { from: 'them', text: '님오일 스프레이 쓰고 있어요, 효과 좋아요!' },
+      ],
+    };
+    try {
+      const raw = localStorage.getItem('kiuda_dm_threads');
+      return raw ? JSON.parse(raw) : DEFAULT_THREADS;
+    } catch (e) {
+      return DEFAULT_THREADS;
+    }
+  }
+
+  saveDmThreads(threads) {
+    localStorage.setItem('kiuda_dm_threads', JSON.stringify(threads));
+    this.forceUpdate();
+  }
+
+  getNeighborMessages(neighbor) {
+    if (!neighbor) return [];
+    const green = 'oklch(0.56 0.09 152)';
+    const threads = this.loadDmThreads();
+    const thread = threads[neighbor.key] || [];
+    return thread.map((m) => ({
+      text: m.text,
+      align: m.from === 'me' ? 'flex-end' : 'flex-start',
+      bg: m.from === 'me' ? green : 'oklch(0.96 0.015 130)',
+      color: m.from === 'me' ? 'oklch(0.99 0.006 120)' : 'oklch(0.3 0.02 145)',
+    }));
+  }
+}
+
+</script>
+</body>
+</html>

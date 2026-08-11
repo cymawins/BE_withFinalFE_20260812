@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+      font-weight: 45 920;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: oklch(0.56 0.09 152); }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh; background: oklch(0.985 0.008 95); color: oklch(0.24 0.02 145);">
+
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter: blur(16px); background: oklch(0.985 0.008 95 / 0.75); border-bottom: 1px solid oklch(0.9 0.015 120);">
+    <div style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,40px); height:76px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="dashboard.dc.html" aria-label="키우다 홈" style="display:flex; align-items:center; gap:10px;">
+        <img src="../assets/logo.png" alt="키우다 로고" style="width:auto; height:210px; object-fit:contain;">
+        </a>
+      <nav aria-label="주요 서비스" style="display:flex; align-items:center; gap:36px;">
+        <a href="dashboard.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">보다</a>
+        <a href="ask.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">묻다</a>
+        <a href="connect.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">잇다</a>
+        <a href="share.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">나누다</a>
+      </nav>
+      <a href="profile.dc.html" style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150); border:2px solid oklch(0.56 0.09 152);">민</a>
+    </div>
+  </header>
+
+  <main style="max-width:720px; margin:0 auto; padding: clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px;">
+
+    <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">내 정보</p>
+    <h1 style="margin-top:12px; font-size:clamp(26px,3.4vw,34px); font-weight:900; letter-spacing:-0.03em;">개인정보 관리</h1>
+
+    <div style="margin-top:28px; border-radius:24px; background:oklch(1 0 0); padding:28px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div style="width:80px; height:80px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+        <image-slot id="profile-avatar" shape="circle" placeholder="프로필 사진"></image-slot>
+      </div>
+      <div style="flex:1; min-width:180px;">
+        <h2 style="font-size:20px; font-weight:900;">{{ user.name }}</h2>
+        <p style="margin-top:4px; font-size:14px; color:oklch(0.5 0.02 145);">{{ user.email }}</p>
+        <p style="margin-top:4px; font-size:13px; color:oklch(0.55 0.02 145);">{{ user.region }} · {{ user.joinedAt }} 가입</p>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:16px;">
+      <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="3">
+        <div onClick="{{ stat.onClick }}" style="border-radius:20px; background:oklch(1 0 0); padding:20px; text-align:center; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); cursor:{{ stat.cursor }};">
+          <p style="font-size:24px; font-weight:900; color:oklch(0.5 0.1 152);">{{ stat.value }}</p>
+          <p style="margin-top:4px; font-size:13px; color:oklch(0.55 0.02 145);">{{ stat.label }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ showPlantsModal }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 145 / 0.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div onClick="{{ stopPropagation }}" style="background:oklch(1 0 0); border-radius:24px; padding:28px; max-width:720px; width:100%; max-height:80vh; overflow-y:auto;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <h2 style="font-size:18px; font-weight:900;">나의 키움터</h2>
+            <button onClick="{{ closeModal }}" style="border:none; background:transparent; font-size:20px; cursor:pointer; color:oklch(0.5 0.02 145);">×</button>
+          </div>
+          <sc-if value="{{ isPlantDetailOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:280px;">
+              <article style="border-radius:22px; background:oklch(0.985 0.008 95); overflow:hidden; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); border:1px solid oklch(0.9 0.012 130 / 0.6);">
+                <div style="position:relative; height:120px;">
+                  <image-slot id="profile-{{ plantDetailPlot.imgId }}" shape="rect" placeholder="{{ plantDetailPlot.placeholder }}"></image-slot>
+                  <span style="position:absolute; top:10px; left:10px; border-radius:999px; padding:4px 10px; font-size:11.5px; font-weight:800; background:{{ plantDetailPlot.badgeBg }}; color:{{ plantDetailPlot.badgeColor }};">{{ plantDetailPlot.statusLabel }}</span>
+                </div>
+                <div style="padding:14px 16px 16px;">
+                  <p style="font-size:11.5px; font-weight:700; color:oklch(0.55 0.02 145); display:flex; align-items:center; gap:5px;">
+                    <span style="color:oklch(0.5 0.1 152);">{{ plantDetailPlot.environmentLabel }}</span>{{ plantDetailPlot.speciesName }}
+                  </p>
+                  <h3 style="margin-top:4px; font-size:15.5px; font-weight:800;">{{ plantDetailPlot.nickname }}</h3>
+                  <p style="margin-top:8px; font-size:12.5px; color:oklch(0.5 0.02 145);">💧 {{ plantDetailPlot.watered }}</p>
+                  <p style="margin-top:2px; font-size:11.5px; color:oklch(0.55 0.02 145);">{{ plantDetailPlot.plantedLocation }}</p>
+                  <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+                    <button onClick="{{ closePlantDetail }}" style="border:none; background:transparent; color:oklch(0.5 0.1 152); font-size:13px; font-weight:700; cursor:pointer; padding:4px 0;">← 뒤로</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isPlantListOpen }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:24px;">
+              <sc-for list="{{ plantGroups }}" as="group" hint-placeholder-count="3">
+                <div>
+                  <p style="font-size:13px; font-weight:800; color:oklch(0.35 0.02 145); margin-bottom:10px;">{{ group.label }} ({{ group.plants.length }})</p>
+                  <div style="display:flex; flex-direction:column; gap:10px;">
+                    <sc-for list="{{ group.plants }}" as="plot" hint-placeholder-count="2">
+                      <button onClick="{{ plot.openDetail }}" style="display:flex; align-items:center; gap:14px; border:1px solid oklch(0.9 0.012 130 / 0.6); background:oklch(0.985 0.008 95); border-radius:16px; padding:12px 16px; cursor:pointer; text-align:left; width:100%;">
+                        <div style="width:44px; height:44px; border-radius:12px; overflow:hidden; flex-shrink:0;">
+                          <image-slot id="profile-list-{{ plot.imgId }}" shape="rect" placeholder="{{ plot.placeholder }}"></image-slot>
+                        </div>
+                        <div style="flex:1;">
+                          <h3 style="font-size:14.5px; font-weight:800;">{{ plot.nickname }}</h3>
+                          <p style="margin-top:2px; font-size:12px; color:oklch(0.55 0.02 145);">{{ plot.speciesName }} · {{ plot.plantedLocation }}</p>
+                        </div>
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showFollowersModal }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 145 / 0.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div onClick="{{ stopPropagation }}" style="background:oklch(1 0 0); border-radius:24px; padding:28px; max-width:420px; width:100%; max-height:80vh; overflow-y:auto;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <h2 style="font-size:18px; font-weight:900;">팔로워</h2>
+            <button onClick="{{ closeModal }}" style="border:none; background:transparent; font-size:20px; cursor:pointer; color:oklch(0.5 0.02 145);">×</button>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <sc-for list="{{ followerList }}" as="person" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:14px; padding:12px; border-radius:14px; background:oklch(0.98 0.01 100);">
+                <div style="width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                  <image-slot id="{{ person.avatarId }}" shape="circle" placeholder="{{ person.initial }}"></image-slot>
+                </div>
+                <div style="flex:1;">
+                  <p style="font-size:14.5px; font-weight:700;">{{ person.name }}</p>
+                  <p style="font-size:12.5px; color:oklch(0.55 0.02 145); margin-top:2px;">{{ person.region }}</p>
+                </div>
+                <a href="connect.dc.html" style="border:1.5px solid oklch(0.56 0.09 152); background:transparent; color:oklch(0.56 0.09 152); font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:999px; text-decoration:none; flex-shrink:0;">방문하기</a>
+                <button style="border:1.5px solid oklch(0.88 0.015 120); background:transparent; color:oklch(0.4 0.02 145); font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:999px; cursor:pointer; flex-shrink:0;">팔로잉</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showFollowingModal }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:fixed; inset:0; background:oklch(0.2 0.02 145 / 0.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div onClick="{{ stopPropagation }}" style="background:oklch(1 0 0); border-radius:24px; padding:28px; max-width:420px; width:100%; max-height:80vh; overflow-y:auto;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <h2 style="font-size:18px; font-weight:900;">팔로잉</h2>
+            <button onClick="{{ closeModal }}" style="border:none; background:transparent; font-size:20px; cursor:pointer; color:oklch(0.5 0.02 145);">×</button>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <sc-for list="{{ followingList }}" as="person" hint-placeholder-count="4">
+              <div style="display:flex; align-items:center; gap:14px; padding:12px; border-radius:14px; background:oklch(0.98 0.01 100);">
+                <div style="width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                  <image-slot id="{{ person.avatarId }}" shape="circle" placeholder="{{ person.initial }}"></image-slot>
+                </div>
+                <div style="flex:1;">
+                  <p style="font-size:14.5px; font-weight:700;">{{ person.name }}</p>
+                  <p style="font-size:12.5px; color:oklch(0.55 0.02 145); margin-top:2px;">{{ person.region }}</p>
+                </div>
+                <a href="share.dc.html" style="border:1.5px solid oklch(0.56 0.09 152); background:transparent; color:oklch(0.56 0.09 152); font-size:12.5px; font-weight:700; padding:7px 14px; border-radius:999px; text-decoration:none; flex-shrink:0;">방문하기</a>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:32px; border-radius:24px; background:oklch(1 0 0); padding:28px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+      <h2 style="font-size:16px; font-weight:800;">기본 정보</h2>
+      <div style="margin-top:20px; display:flex; flex-direction:column; gap:18px;">
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:700; color:oklch(0.35 0.02 145);">이름 (name)</span>
+          <input type="text" value="{{ formName }}" disabled="{{ true }}" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.5 0.02 145); background:oklch(0.96 0.01 100);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:700; color:oklch(0.35 0.02 145);">이메일 (email)</span>
+          <input type="email" value="{{ formEmail }}" disabled="{{ true }}" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.5 0.02 145); background:oklch(0.96 0.01 100);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:700; color:oklch(0.35 0.02 145);">지역 (region)</span>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <select value="{{ province }}" disabled="{{ true }}" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.5 0.02 145); background:oklch(0.96 0.01 100);">
+              <option value="">시/도 선택</option>
+              <option value="서울특별시">서울특별시</option>
+              <option value="경기도">경기도</option>
+              <option value="강원특별자치도">강원특별자치도</option>
+              <option value="충청북도">충청북도</option>
+              <option value="충청남도">충청남도</option>
+              <option value="전라북도">전라북도</option>
+              <option value="전라남도">전라남도</option>
+              <option value="경상북도">경상북도</option>
+              <option value="경상남도">경상남도</option>
+            </select>
+            <select value="{{ district }}" disabled="{{ true }}" style="border:1.5px solid oklch(0.9 0.015 120); border-radius:14px; padding:13px 16px; font-size:15px; font-family:inherit; outline:none; color:oklch(0.5 0.02 145); background:oklch(0.96 0.01 100);">
+              <option value="">시/군/구 선택</option>
+              <sc-for list="{{ districtsForProvince }}" as="d" hint-placeholder-count="3">
+                <option value="{{ d }}">{{ d }}</option>
+              </sc-for>
+            </select>
+          </div>
+        </label>
+      </div>
+
+      <div style="margin-top:24px; display:flex; align-items:center; justify-content:flex-end;">
+        <a href="settings-account.dc.html" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14.5px; font-weight:800; padding:12px 28px; border-radius:999px; text-decoration:none; box-shadow:0 10px 24px oklch(0.56 0.09 152 / 0.28);">계정 설정 변경</a>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+      <button onClick="{{ handleLogout }}" style="border:1.5px solid oklch(0.88 0.015 120); background:transparent; color:oklch(0.55 0.02 145); font-size:14px; font-weight:700; padding:11px 22px; border-radius:999px; cursor:pointer;">로그아웃</button>
+    </div>
+
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    formName: '민준',
+    formEmail: 'minjun@kiuda.app',
+    province: '서울특별시',
+    district: '마포구',
+    showSaved: false,
+    activeModal: null,
+    selectedPlantId: null,
+  };
+
+  districtsByProvince = {
+    '서울특별시': ['강남구', '강북구', '강서구', '관악구', '광진구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'],
+    '경기도': ['고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '오산시', '옛 안산시', '안성시', '안양시', '양주시', '여주시', '연천군', '오사부', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'],
+    '강원특별자치도': ['강릉시', '고성군', '동해시', '삼척시', '속초시', '양구군', '양양군', '영월군', '원주시', '인제군', '정선군', '철원군', '태백시', '평창군', '홍천군', '화천군', '횡성군'],
+    '충청북도': ['괴산군', '단양군', '제천시', '청주시', '충주시', '음성군', '옥천군', '영동군', '증평군', '진천군'],
+    '충청남도': ['계룡시', '공주시', '금산군', '논산시', '당진시', '보령시', '부여군', '서천군', '세종특별자치시', '아산시', '예산군', '천안시', '청양군', '태안군', '홍성군'],
+    '전라북도': ['고창군', '고창읍', '군산시', '김제시', '남원시', '무주군', '부안군', '순창군', '전주시', '정읍시', '완주군', '임실군', '장수군', '전라북도'],
+    '전라남도': ['강진군', '고흥군', '곡성군', '구례군', '나주시', '담양군', '동복읍', '목포시', '무안군', '보성군', '순천시', '신안군', '여수시', '영광군', '영암군', '완도군', '주천군', '중국군', '함평군', '해남군', '화순군'],
+    '경상북도': ['경산시', '경주시', '고령군', '구미시', '군위군', '김천시', '문경시', '봉화군', '상주시', '성주군', '안동시', '영덕군', '영양군', '영주시', '영천시', '예천군', '울릉군', '울진군', '의성군', '청도군', '청송군', '포항시'],
+    '경상남도': ['거제시', '거창군', '고성군', '김해시', '남해군', '사천시', '산청군', '순천시', '의령군', '진주시', '창녕군', '창원시', '통영시', '하동군', '합천군']
+  };
+
+  onProvinceChange = (e) => this.setState({ province: e.target.value, district: '', showSaved: false });
+  onDistrictChange = (e) => this.setState({ district: e.target.value, showSaved: false });
+
+  STATUS_LABELS = { GROWING: '생육중', HARVESTED: '수확완료', ARCHIVED: '보관' };
+  STATUS_COLORS = {
+    GROWING: { bg: 'oklch(0.94 0.03 140)', color: 'oklch(0.4 0.09 150)' },
+    HARVESTED: { bg: 'oklch(0.93 0.05 90)', color: 'oklch(0.5 0.11 90)' },
+    ARCHIVED: { bg: 'oklch(0.92 0.01 130)', color: 'oklch(0.5 0.02 145)' },
+  };
+  ENV_ICON = { INDOOR: '실내', OUTDOOR: '실외' };
+
+  myPlants = [
+    { imgId: 'plot-1', placeholder: '방울토마토', speciesName: '방울토마토', nickname: '우리집 방울이', status: 'GROWING', watered: '오늘 완료', plantedAt: '2026.04.02', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+    { imgId: 'plot-2', placeholder: '상추', speciesName: '상추', nickname: '베란다 상추', status: 'GROWING', watered: '1일 전', plantedAt: '2026.05.10', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+    { imgId: 'plot-3', placeholder: '고구마', speciesName: '고구마', nickname: '고구마 밭', status: 'GROWING', watered: '2일 전', plantedAt: '2026.05.20', environment: 'OUTDOOR', plantedLocation: '경기 파주시' },
+    { imgId: 'plot-4', placeholder: '블루베리', speciesName: '블루베리', nickname: '블루베리 화분', status: 'HARVESTED', watered: '오늘 완료', plantedAt: '2025.09.14', environment: 'INDOOR', plantedLocation: '서울 마포구' },
+    { imgId: 'plot-5', placeholder: '바질', speciesName: '바질', nickname: '허브 화단', status: 'GROWING', watered: '3일 전', plantedAt: '2026.06.01', environment: 'OUTDOOR', plantedLocation: '서울 마포구' },
+    { imgId: 'plot-6', placeholder: '옥수수', speciesName: '옥수수', nickname: '옥수수 밭', status: 'ARCHIVED', watered: '2일 전', plantedAt: '2025.06.03', environment: 'OUTDOOR', plantedLocation: '경기 파주시' },
+  ].map((p) => ({
+    ...p,
+    statusLabel: this.STATUS_LABELS[p.status],
+    badgeBg: this.STATUS_COLORS[p.status].bg,
+    badgeColor: this.STATUS_COLORS[p.status].color,
+    environmentLabel: this.ENV_ICON[p.environment],
+  }));
+
+  followingList = [
+    { key: 'yj', name: '지수', region: '서울 마포구', initial: '지', avatarId: 'following-1' },
+    { key: 'sh', name: '태윤', region: '경기 성남시', initial: '태', avatarId: 'following-2' },
+    { key: 'mk', name: '서연', region: '서울 강남구', initial: '서', avatarId: 'following-3' },
+    { key: 'jw', name: '도현', region: '인천 연수구', initial: '도', avatarId: 'following-4' },
+  ];
+
+  followerList = [
+    { key: 'yj', name: '연주', region: '서울 마포구', initial: '연', avatarId: 'follower-1' },
+    { key: 'sh', name: '승현', region: '서울 마포구', initial: '승', avatarId: 'follower-2' },
+    { key: 'jw', name: '재원', region: '경기 파주시', initial: '재', avatarId: 'follower-3' },
+  ];
+
+  buildPlantGroups() {
+    const order = [
+      { status: 'GROWING', label: this.STATUS_LABELS.GROWING },
+      { status: 'HARVESTED', label: this.STATUS_LABELS.HARVESTED },
+      { status: 'ARCHIVED', label: this.STATUS_LABELS.ARCHIVED },
+    ];
+    return order.map((g) => ({
+      label: g.label,
+      plants: this.myPlants.filter((p) => p.status === g.status).map((p) => ({
+        ...p,
+        openDetail: () => this.setState({ selectedPlantId: p.imgId }),
+      })),
+    })).filter((g) => g.plants.length > 0);
+  }
+
+  openPlantsModal = () => this.setState({ activeModal: 'plants', selectedPlantId: null });
+  openFollowingModal = () => this.setState({ activeModal: 'following' });
+  openFollowersModal = () => this.setState({ activeModal: 'followers' });
+  closeModal = () => this.setState({ activeModal: null });
+  stopPropagation = (e) => e.stopPropagation();
+
+  handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    window.location.href = 'Kiuda Landing.dc.html';
+  };
+
+  renderVals() {
+    // User(name, email, region_id→Region.region_name, created_at)
+    const region = `${this.state.province} ${this.state.district}`.trim();
+    const user = {
+      name: this.state.formName,
+      email: this.state.formEmail,
+      region: region,
+      joinedAt: '2026.03.14',
+    };
+
+    // UserPlant count(6) + Follow(follower/followee) 기준 통계
+    const stats = [
+      { label: '등록된 키움이', value: '6', onClick: this.openPlantsModal, cursor: 'pointer' },
+      { label: '팔로잉', value: '4', onClick: this.openFollowingModal, cursor: 'pointer' },
+      { label: '팔로워', value: '3', onClick: this.openFollowersModal, cursor: 'pointer' },
+    ];
+
+    return {
+      user,
+      stats,
+      myPlants: this.myPlants,
+      plantGroups: this.buildPlantGroups(),
+      isPlantDetailOpen: !!this.state.selectedPlantId,
+      isPlantListOpen: !this.state.selectedPlantId,
+      plantDetailPlot: this.myPlants.find((p) => p.imgId === this.state.selectedPlantId) || {},
+      closePlantDetail: () => this.setState({ selectedPlantId: null }),
+      followingList: this.followingList,
+      followerList: this.followerList,
+      showPlantsModal: this.state.activeModal === 'plants',
+      showFollowingModal: this.state.activeModal === 'following',
+      showFollowersModal: this.state.activeModal === 'followers',
+      closeModal: this.closeModal,
+      stopPropagation: this.stopPropagation,
+      handleLogout: this.handleLogout,
+      formName: this.state.formName,
+      formEmail: this.state.formEmail,
+      province: this.state.province,
+      district: this.state.district,
+      districtsForProvince: this.districtsByProvince[this.state.province] || [],
+      districtSelectDisabled: !this.state.province,
+      districtSelectBg: this.state.province ? 'white' : 'oklch(0.96 0.01 100)',
+      showSaved: this.state.showSaved,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

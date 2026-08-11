@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+      font-weight: 45 920;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: oklch(0.56 0.09 152); }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100vh; background: oklch(0.985 0.008 95); color: oklch(0.24 0.02 145);">
+
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter: blur(16px); background: oklch(0.985 0.008 95 / 0.75); border-bottom: 1px solid oklch(0.9 0.015 120);">
+    <div style="max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,40px); height:76px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="dashboard.dc.html" aria-label="키우다 홈" style="display:flex; align-items:center; gap:10px;">
+        <img src="../assets/logo.png" alt="키우다 로고" style="width:auto; height:210px; object-fit:contain;">
+        </a>
+      <nav aria-label="주요 서비스" style="display:flex; align-items:center; gap:36px;">
+        <a href="dashboard.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">보다</a>
+        <a href="ask.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">묻다</a>
+        <a href="connect.dc.html" style="font-size:15px; font-weight:600; color:oklch(0.5 0.02 145);">잇다</a>
+        <a href="share.dc.html" style="font-size:15px; font-weight:700; color:oklch(0.5 0.1 152);">나누다</a>
+      </nav>
+      <a href="profile.dc.html" style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150);">민</a>
+    </div>
+  </header>
+
+  <main style="max-width:1180px; margin:0 auto; padding: clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px;">
+
+    <div>
+      <p style="font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.2em; color:oklch(0.5 0.1 152);">키움이 소식을 나누다</p>
+      <h1 style="margin-top:12px; font-size:clamp(26px,3.4vw,34px); font-weight:900; letter-spacing:-0.03em;">성장의 순간을 기록해요</h1>
+      <p style="margin-top:8px; font-size:14px; color:oklch(0.5 0.02 145);">팔로잉하는 이웃의 소식만 모아봐요.</p>
+    </div>
+
+    <div style="margin-top:32px; display:grid; grid-template-columns: minmax(0,1fr) 280px; gap:24px; align-items:start;">
+
+      <div style="min-width:0;">
+        <sc-if value="{{ isFeedView }}" hint-placeholder-val="{{ true }}">
+        <div style="border-radius:24px; background:oklch(1 0 0); padding:20px 22px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+          <div style="display:flex; gap:12px;">
+            <div style="width:38px; height:38px; border-radius:50%; background:oklch(0.94 0.03 140); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:oklch(0.45 0.09 150); flex-shrink:0;">민</div>
+            <textarea placeholder="오늘 키움이의 변화를 기록해 보세요" value="{{ draftContent }}" onChange="{{ onDraftChange }}" style="flex:1; min-width:0; height:56px; resize:none; border:none; outline:none; font-size:15px; font-family:inherit; line-height:1.6; color:oklch(0.24 0.02 145); padding-top:8px;"></textarea>
+          </div>
+
+          <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+            <button onClick="{{ publish }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:13px; font-weight:800; padding:8px 16px; border-radius:999px; cursor:pointer;">업데이트</button>
+            <button onClick="{{ toggleCameraCapture }}" aria-label="사진 촬영" title="사진 촬영" style="border:none; background:{{ cameraBtnBg }}; width:34px; height:34px; border-radius:50%; font-size:15px; cursor:pointer;">📷</button>
+            <button onClick="{{ toggleFileAttach }}" aria-label="파일 첨부" title="파일 첨부" style="border:none; background:{{ fileBtnBg }}; width:34px; height:34px; border-radius:50%; font-size:15px; cursor:pointer;">📎</button>
+          </div>
+
+          <sc-if value="{{ isFileAttached }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:10px; display:flex; align-items:center; gap:8px; border-radius:12px; background:oklch(0.96 0.015 130); padding:8px 12px; width:fit-content;">
+              <span style="font-size:14px;">📄</span>
+              <span style="font-size:12.5px; font-weight:600; color:oklch(0.4 0.02 145);">생육기록.pdf 첨부됨</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showCameraCapture }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px; height:150px; border-radius:16px; overflow:hidden;">
+              <image-slot id="draft-photo" shape="rect" placeholder="키움이 사진 첨부"></image-slot>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isComposerOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:8px;">
+              <sc-for list="{{ draftTags }}" as="t" hint-placeholder-count="3">
+                <span style="border-radius:999px; background:oklch(0.96 0.015 130); padding:6px 12px; font-size:13px; font-weight:600; color:oklch(0.4 0.02 145);">#{{ t }}</span>
+              </sc-for>
+            </div>
+
+            <div style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+              <div style="display:flex; gap:8px;">
+                <sc-for list="{{ visibilityOptions }}" as="v" hint-placeholder-count="3">
+                  <button onClick="{{ v.select }}" style="border:1.5px solid {{ v.border }}; background:{{ v.bg }}; color:{{ v.color }}; font-size:13px; font-weight:700; padding:8px 14px; border-radius:999px; cursor:pointer;">{{ v.label }}</button>
+                </sc-for>
+              </div>
+              <button onClick="{{ publish }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:14.5px; font-weight:800; padding:11px 24px; border-radius:999px; cursor:pointer; box-shadow:0 10px 24px oklch(0.56 0.09 152 / 0.28);">공유하기</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="margin-top:20px; display:flex; gap:16px; overflow-x:auto; padding-bottom:4px;">
+          <sc-for list="{{ mutualNeighbors }}" as="n" hint-placeholder-count="3">
+            <button onClick="{{ n.openProfile }}" style="border:none; background:transparent; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; width:64px;">
+              <div style="width:56px; height:56px; border-radius:50%; overflow:hidden; border:2px solid oklch(0.88 0.03 140);">
+                <image-slot id="{{ n.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+              </div>
+              <p style="font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:64px;">{{ n.name }}</p>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:24px; display:flex; flex-direction:column; gap:24px;">
+          <sc-for list="{{ stories }}" as="s" hint-placeholder-count="3">
+            <article style="border-radius:24px; background:oklch(1 0 0); overflow:hidden; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+              <div style="padding:20px 22px 0; display:flex; align-items:center; gap:12px;">
+                <div style="width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                  <image-slot id="{{ s.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+                </div>
+                <div style="flex:1;">
+                  <p style="font-size:14.5px; font-weight:800;">{{ s.author }} <span style="font-weight:500; color:oklch(0.55 0.02 145);">· {{ s.plantNickname }}</span></p>
+                  <p style="font-size:12.5px; color:oklch(0.55 0.02 145);">{{ s.createdAt }} · {{ s.visibilityLabel }}</p>
+                </div>
+              </div>
+
+              <p style="margin:16px 22px 0; font-size:15px; line-height:1.7; color:oklch(0.3 0.02 145);">{{ s.content }}</p>
+
+              <div style="margin-top:14px; height:280px;">
+                <image-slot id="{{ s.photoId }}" shape="rect" placeholder="{{ s.photoPlaceholder }}"></image-slot>
+              </div>
+
+              <div style="padding:14px 22px 0; display:flex; flex-wrap:wrap; gap:8px;">
+                <sc-for list="{{ s.tags }}" as="tag" hint-placeholder-count="2">
+                  <span style="border-radius:999px; background:oklch(0.96 0.015 130); padding:6px 12px; font-size:12.5px; font-weight:600; color:oklch(0.4 0.02 145);">#{{ tag }}</span>
+                </sc-for>
+              </div>
+
+              <div style="padding:16px 22px 20px; display:flex; align-items:center; gap:18px; border-top:1px solid oklch(0.94 0.01 130); margin-top:14px; padding-top:14px;">
+                <button onClick="{{ s.toggleLike }}" style="border:none; background:transparent; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:{{ s.likeColor }};">
+                  <span>{{ s.likeIcon }}</span>{{ s.likeCount }}
+                </button>
+                <button onClick="{{ s.toggleComments }}" style="border:none; background:transparent; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:oklch(0.5 0.02 145);">💬 {{ s.commentCount }}</button>
+                <button onClick="{{ s.toggleBookmark }}" style="margin-left:auto; border:none; background:transparent; cursor:pointer; font-size:16px; color:{{ s.bookmarkColor }};">{{ s.bookmarkIcon }}</button>
+              </div>
+
+              <sc-if value="{{ s.commentsOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 22px 20px; display:flex; flex-direction:column; gap:10px;">
+                  <sc-for list="{{ s.comments }}" as="c" hint-placeholder-count="2">
+                    <div style="display:flex; gap:8px; font-size:13.5px; line-height:1.6;">
+                      <span style="font-weight:800; flex-shrink:0;">{{ c.author }}</span>
+                      <span style="color:oklch(0.35 0.02 145);">{{ c.text }}</span>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex; gap:8px; margin-top:4px;">
+                    <input type="text" placeholder="댓글을 입력하세요" value="{{ s.commentDraft }}" onChange="{{ s.onCommentChange }}" style="flex:1; min-width:0; height:38px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 14px; font-size:13.5px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+                    <button onClick="{{ s.submitComment }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:13px; font-weight:700; padding:0 16px; border-radius:999px; cursor:pointer;">등록</button>
+                  </div>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isNeighborView }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <button onClick="{{ backToFeed }}" style="border:none; background:transparent; cursor:pointer; font-size:13.5px; font-weight:700; color:oklch(0.5 0.02 145); align-self:flex-start;">← 전체 소식으로</button>
+            <div style="border-radius:24px; background:oklch(1 0 0); padding:24px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); display:flex; align-items:center; gap:16px;">
+              <div style="width:56px; height:56px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                <image-slot id="{{ viewedNeighbor.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+              </div>
+              <div>
+                <h2 style="font-size:18px; font-weight:900;">{{ viewedNeighbor.name }}</h2>
+                <p style="margin-top:4px; font-size:13.5px; color:oklch(0.5 0.02 145);">{{ viewedNeighbor.plantNickname }}</p>
+              </div>
+            </div>
+
+            <sc-for list="{{ viewedNeighborStories }}" as="s" hint-placeholder-count="2">
+              <article style="border-radius:24px; background:oklch(1 0 0); overflow:hidden; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+                <div style="padding:20px 22px 0; display:flex; align-items:center; gap:12px;">
+                  <div style="width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                    <image-slot id="{{ s.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+                  </div>
+                  <div style="flex:1;">
+                    <p style="font-size:14.5px; font-weight:800;">{{ s.author }} <span style="font-weight:500; color:oklch(0.55 0.02 145);">· {{ s.plantNickname }}</span></p>
+                    <p style="font-size:12.5px; color:oklch(0.55 0.02 145);">{{ s.createdAt }}</p>
+                  </div>
+                </div>
+                <p style="margin:16px 22px 0; font-size:15px; line-height:1.7; color:oklch(0.3 0.02 145);">{{ s.content }}</p>
+                <div style="margin-top:14px; height:280px;">
+                  <image-slot id="{{ s.photoId }}" shape="rect" placeholder="{{ s.photoPlaceholder }}"></image-slot>
+                </div>
+                <div style="padding:16px 22px 20px;"></div>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isCalendarDayView }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <button onClick="{{ backToFeed }}" style="border:none; background:transparent; cursor:pointer; font-size:13.5px; font-weight:700; color:oklch(0.5 0.02 145); align-self:flex-start;">← 전체 소식으로</button>
+            <h2 style="font-size:18px; font-weight:900;">{{ calendarDayLabel }} 내가 작성한 글</h2>
+            <sc-for list="{{ myPostsOnSelectedDay }}" as="p" hint-placeholder-count="1">
+              <div style="border-radius:24px; background:oklch(1 0 0); padding:22px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04);">
+                <p style="font-size:12.5px; color:oklch(0.55 0.02 145);">{{ p.plantNickname }}</p>
+                <p style="margin-top:8px; font-size:15px; line-height:1.7; color:oklch(0.3 0.02 145);">{{ p.content }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <aside style="border-radius:22px; background:oklch(1 0 0); padding:20px; box-shadow:0 2px 8px oklch(0.3 0.03 145 / 0.04); position:sticky; top:96px; display:flex; flex-direction:column; gap:20px;">
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <button onClick="{{ prevMonth }}" aria-label="이전 달" style="border:none; background:oklch(0.96 0.015 130); width:24px; height:24px; border-radius:50%; font-size:12px; cursor:pointer; color:oklch(0.4 0.02 145);">‹</button>
+            <h2 style="font-size:14px; font-weight:800;">{{ calendarLabel }}</h2>
+            <button onClick="{{ nextMonth }}" aria-label="다음 달" style="border:none; background:oklch(0.96 0.015 130); width:24px; height:24px; border-radius:50%; font-size:12px; cursor:pointer; color:oklch(0.4 0.02 145);">›</button>
+          </div>
+          <div style="margin-top:12px; display:grid; grid-template-columns: repeat(7,1fr); gap:4px; text-align:center;">
+            <sc-for list="{{ calendarWeekdays }}" as="w" hint-placeholder-count="7">
+              <span style="font-size:11px; font-weight:700; color:oklch(0.55 0.02 145); padding-bottom:4px;">{{ w }}</span>
+            </sc-for>
+            <sc-for list="{{ calendarCells }}" as="d" hint-placeholder-count="35">
+              <button onClick="{{ d.onClick }}" disabled="{{ d.disabled }}" style="border:none; font-size:12px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:{{ d.bg }}; color:{{ d.color }}; font-weight:{{ d.weight }}; cursor:{{ d.cursor }}; padding:0;">{{ d.label }}</button>
+            </sc-for>
+          </div>
+          <p style="margin-top:10px; font-size:11.5px; color:oklch(0.55 0.02 145); display:flex; align-items:center; gap:6px;">
+            <span style="width:9px; height:9px; border-radius:50%; background:oklch(0.56 0.09 152); display:inline-block;"></span>내가 글을 작성한 날
+          </p>
+          <sc-if value="{{ isNeighborView }}" hint-placeholder-val="{{ false }}">
+            <p style="margin-top:6px; font-size:11.5px; color:oklch(0.55 0.02 145); display:flex; align-items:center; gap:6px;">
+              <span style="width:9px; height:9px; border-radius:50%; background:oklch(0.2 0.01 145); display:inline-block;"></span>{{ viewedNeighbor.name }}님이 글을 작성한 날
+            </p>
+          </sc-if>
+        </div>
+
+        <div style="padding-top:20px; border-top:1px solid oklch(0.94 0.01 130);">
+        <h2 style="font-size:14px; font-weight:800;">다이렉트 메시지</h2>
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:4px;">
+          <sc-for list="{{ conversations }}" as="c" hint-placeholder-count="2">
+            <button onClick="{{ c.open }}" style="border:none; background:transparent; text-align:left; border-radius:14px; padding:10px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+              <div style="width:34px; height:34px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                <image-slot id="{{ c.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+              </div>
+              <div style="min-width:0; flex:1;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <p style="font-size:13.5px; font-weight:700;">{{ c.name }}</p>
+                  <sc-if value="{{ c.relLabel }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px; background:{{ c.relBg }}; color:{{ c.relColor }};">{{ c.relLabel }}</span>
+                  </sc-if>
+                </div>
+                <p style="font-size:12px; color:oklch(0.55 0.02 145); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ c.lastMessage }}</p>
+              </div>
+              <span style="font-size:11px; color:oklch(0.6 0.02 145); flex-shrink:0;">{{ c.lastTime }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="padding-top:20px; border-top:1px solid oklch(0.94 0.01 130);">
+          <h2 style="font-size:14px; font-weight:800;">북마크한 피드</h2>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ bookmarkedStories }}" as="b" hint-placeholder-count="1">
+              <button onClick="{{ b.open }}" style="border:none; background:transparent; text-align:left; cursor:pointer; display:flex; align-items:center; gap:10px; padding:0; width:100%;">
+                <div style="width:34px; height:34px; border-radius:10px; overflow:hidden; flex-shrink:0;">
+                  <image-slot id="{{ b.photoId }}" shape="rounded" placeholder="{{ b.photoPlaceholder }}"></image-slot>
+                </div>
+                <div style="min-width:0; flex:1;">
+                  <p style="font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ b.author }} · {{ b.plantNickname }}</p>
+                  <p style="font-size:11.5px; color:oklch(0.55 0.02 145); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ b.content }}</p>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        </div>
+      </aside>
+    </div>
+
+    <sc-if value="{{ hasSelectedBookmark }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeBookmarkModal }}" style="position:fixed; inset:0; background:oklch(0.15 0.01 145 / 0.4); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px;">
+        <div onClick="{{ stopPropagation }}" style="background:oklch(1 0 0); border-radius:24px; overflow:hidden; max-width:480px; width:100%; max-height:85vh; overflow-y:auto; position:relative;">
+          <button onClick="{{ closeBookmarkModal }}" aria-label="닫기" style="position:absolute; top:14px; right:14px; z-index:1; border:none; background:oklch(1 0 0 / 0.85); width:32px; height:32px; border-radius:50%; font-size:14px; cursor:pointer; color:oklch(0.4 0.02 145);">✕</button>
+          <div style="padding:20px 22px 0; display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+              <image-slot id="{{ selectedBookmark.avatarId }}" shape="circle" placeholder="프로필"></image-slot>
+            </div>
+            <div style="flex:1;">
+              <p style="font-size:14.5px; font-weight:800;">{{ selectedBookmark.author }} <span style="font-weight:500; color:oklch(0.55 0.02 145);">· {{ selectedBookmark.plantNickname }}</span></p>
+              <p style="font-size:12.5px; color:oklch(0.55 0.02 145);">{{ selectedBookmark.createdAt }} · {{ selectedBookmark.visibilityLabel }}</p>
+            </div>
+          </div>
+
+          <p style="margin:16px 22px 0; font-size:15px; line-height:1.7; color:oklch(0.3 0.02 145);">{{ selectedBookmark.content }}</p>
+
+          <div style="margin-top:14px; height:280px;">
+            <image-slot id="{{ selectedBookmark.photoId }}" shape="rect" placeholder="{{ selectedBookmark.photoPlaceholder }}"></image-slot>
+          </div>
+
+          <div style="padding:14px 22px 0; display:flex; flex-wrap:wrap; gap:8px;">
+            <sc-for list="{{ selectedBookmark.tags }}" as="tag" hint-placeholder-count="2">
+              <span style="border-radius:999px; background:oklch(0.96 0.015 130); padding:6px 12px; font-size:12.5px; font-weight:600; color:oklch(0.4 0.02 145);">#{{ tag }}</span>
+            </sc-for>
+          </div>
+
+          <div style="padding:16px 22px 20px; display:flex; align-items:center; gap:18px; border-top:1px solid oklch(0.94 0.01 130); margin-top:14px; padding-top:14px;">
+            <button onClick="{{ selectedBookmark.toggleLike }}" style="border:none; background:transparent; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:{{ selectedBookmark.likeColor }};">
+              <span>{{ selectedBookmark.likeIcon }}</span>{{ selectedBookmark.likeCount }}
+            </button>
+            <span style="font-size:14px; font-weight:700; color:oklch(0.5 0.02 145);">💬 {{ selectedBookmark.commentCount }}</span>
+            <button onClick="{{ selectedBookmark.toggleBookmark }}" style="margin-left:auto; border:none; background:transparent; cursor:pointer; font-size:16px; color:{{ selectedBookmark.bookmarkColor }};">{{ selectedBookmark.bookmarkIcon }}</button>
+          </div>
+
+          <div style="padding:0 22px 22px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ selectedBookmark.comments }}" as="c" hint-placeholder-count="2">
+              <div style="display:flex; gap:8px; font-size:13.5px; line-height:1.6;">
+                <span style="font-weight:800; flex-shrink:0;">{{ c.author }}</span>
+                <span style="color:oklch(0.35 0.02 145);">{{ c.text }}</span>
+              </div>
+            </sc-for>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <input type="text" placeholder="댓글을 입력하세요" value="{{ selectedBookmark.commentDraft }}" onChange="{{ selectedBookmark.onCommentChange }}" style="flex:1; min-width:0; height:38px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 14px; font-size:13.5px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+              <button onClick="{{ selectedBookmark.submitComment }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:13px; font-weight:700; padding:0 16px; border-radius:999px; cursor:pointer;">등록</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ hasSelectedConversation }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeDmModal }}" style="position:fixed; inset:0; background:oklch(0.15 0.01 145 / 0.4); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px;">
+        <div onClick="{{ stopPropagation }}" style="background:oklch(1 0 0); border-radius:22px; padding:22px; max-width:420px; width:100%; max-height:80vh; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <p style="font-size:15px; font-weight:800;">{{ selectedConversation.name }}</p>
+              <sc-if value="{{ selectedConversation.relLabel }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px; background:{{ selectedConversation.relBg }}; color:{{ selectedConversation.relColor }};">{{ selectedConversation.relLabel }}</span>
+              </sc-if>
+            </div>
+            <button onClick="{{ closeDmModal }}" aria-label="닫기" style="border:none; background:oklch(0.96 0.015 130); width:32px; height:32px; border-radius:50%; font-size:14px; cursor:pointer; color:oklch(0.4 0.02 145);">✕</button>
+          </div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px; overflow-y:auto; flex:1;">
+            <sc-for list="{{ selectedConversationMessages }}" as="m" hint-placeholder-count="3">
+              <div style="align-self:{{ m.align }}; max-width:85%; background:{{ m.bg }}; color:{{ m.color }}; border-radius:14px; padding:8px 12px; font-size:13px; line-height:1.5;">{{ m.text }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:6px;">
+            <input type="text" placeholder="메시지 입력" value="{{ dmText }}" onChange="{{ onDmChange }}" style="flex:1; min-width:0; height:36px; border:1.5px solid oklch(0.9 0.015 120); border-radius:999px; padding:0 12px; font-size:13px; font-family:inherit; outline:none; color:oklch(0.24 0.02 145);">
+            <button onClick="{{ sendDm }}" style="border:none; background:oklch(0.56 0.09 152); color:oklch(0.99 0.006 120); font-size:13px; font-weight:700; padding:0 14px; border-radius:999px; cursor:pointer;">전송</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    draftContent: '',
+    visibility: 'PUBLIC',
+    likes: { s1: true, s2: false },
+    bookmarks: { s1: false, s2: true },
+    likeCounts: { s1: 24, s2: 11 },
+    commentsOpen: { s1: false, s2: false, s3: false, s4: false, s5: false, s6: false },
+    commentDrafts: { s1: '', s2: '', s3: '', s4: '', s5: '', s6: '' },
+    extraComments: { s1: [], s2: [], s3: [], s4: [], s5: [], s6: [] },
+    selectedConversationKey: null,
+    selectedBookmarkId: null,
+    dmText: '',
+    calendarYear: 2026,
+    calendarMonth: 8,
+    showCameraCapture: false,
+    isFileAttached: false,
+    viewMode: 'feed',
+    viewedNeighborKey: null,
+    viewedCalendarDay: null,
+  };
+
+  renderVals() {
+    const green = 'oklch(0.56 0.09 152)';
+
+    // Follow(follower_id, followee_id) 양방향 성립 = 맞팔로우 이웃만 대상 (Kiuda Connect의 팔로우 상태와 localStorage로 연동)
+    const NEIGHBOR_MASTER = [
+      { key: 'yj', avatarId: 'story-av-1', name: '연주', plantNickname: '베란다 상추', isFollower: true },
+      { key: 'sh', avatarId: 'story-av-2', name: '승현', plantNickname: '망원 도시농장', isFollower: true },
+      { key: 'mk', avatarId: 'story-av-3', name: '미경', plantNickname: '블루베리 화분', isFollower: true },
+      { key: 'jw', avatarId: 'story-av-4', name: '재원', plantNickname: '옥수수 밭', isFollower: false },
+    ];
+    let followedKeys;
+    try {
+      const raw = localStorage.getItem('kiuda_followed_mutual');
+      followedKeys = raw ? JSON.parse(raw) : ['yj', 'sh', 'mk'];
+    } catch (e) {
+      followedKeys = ['yj', 'sh', 'mk'];
+    }
+    const mutualNeighborData = NEIGHBOR_MASTER.filter((n) => n.isFollower && followedKeys.includes(n.key));
+    const mutualNeighbors = mutualNeighborData.map((n) => ({
+      ...n,
+      openProfile: () => this.setState({ viewMode: 'neighbor', viewedNeighborKey: n.key }),
+    }));
+
+    const visibilityMeta = { PRIVATE: '나만 보기', FOLLOWERS: '이웃 공개', PUBLIC: '전체 공개' };
+    const visibilityOptions = Object.keys(visibilityMeta).map((key) => {
+      const active = this.state.visibility === key;
+      return {
+        key,
+        label: visibilityMeta[key],
+        select: () => this.setState({ visibility: key }),
+        bg: active ? green : 'transparent',
+        color: active ? 'oklch(0.99 0.006 120)' : 'oklch(0.4 0.02 145)',
+        border: active ? green : 'oklch(0.88 0.015 120)',
+      };
+    });
+
+    // GrowthStory — 팔로잉 이웃(mutualNeighbors)의 소식만 피드에 노출. sortKey: 최신순 정렬용(값이 클수록 최신)
+    const storyData = [
+      { id: 's1', key: 'yj', avatarId: 'story-av-1', photoId: 'story-ph-1', photoPlaceholder: '상추 새싹 사진', author: '연주', plantNickname: '베란다 상추', createdAt: '5시간 전', sortKey: 100, visibility: 'FOLLOWERS', content: '씨앗 뿌린 지 열흘, 새싹이 이렇게 올라왔어요. 매일 보는 재미가 쏠쏠합니다.', tags: ['상추', '새싹일지'], commentCount: 2 },
+      { id: 's2', key: 'sh', avatarId: 'story-av-2', photoId: 'story-ph-2', photoPlaceholder: '도시농장 사진', author: '승현', plantNickname: '망원 도시농장', createdAt: '어제', sortKey: 90, visibility: 'PUBLIC', content: '진딧물 방제하고 나니 잎이 훨씬 건강해졌어요. 다들 이번 주 방제 한번 해보세요!', tags: ['병해충관리'], commentCount: 4 },
+      { id: 's3', key: 'yj', avatarId: 'story-av-1', photoId: 'story-ph-3', photoPlaceholder: '허브 화단 사진', author: '연주', plantNickname: '허브 화단', createdAt: '2일 전', sortKey: 80, visibility: 'FOLLOWERS', content: '바질 새순이 올라왔어요. 향이 벌써 좋네요.', tags: ['바질'], commentCount: 1 },
+      { id: 's4', key: 'mk', avatarId: 'story-av-3', photoId: 'story-ph-4', photoPlaceholder: '블루베리 화분 사진', author: '미경', plantNickname: '블루베리 화분', createdAt: '3일 전', sortKey: 70, visibility: 'PUBLIC', content: '첫 열매가 파랗게 익어가고 있어요!', tags: ['블루베리'], commentCount: 3 },
+      { id: 's5', key: 'sh', avatarId: 'story-av-2', photoId: 'story-ph-5', photoPlaceholder: '도시농장 흙 사진', author: '승현', plantNickname: '망원 도시농장', createdAt: '4일 전', sortKey: 60, visibility: 'PUBLIC', content: '주말에 퇴비를 좀 더 섞어줬습니다. 흙이 훨씬 부드러워졌어요.', tags: ['토양관리'], commentCount: 0 },
+      { id: 's6', key: 'yj', avatarId: 'story-av-1', photoId: 'story-ph-6', photoPlaceholder: '상추 밭 사진', author: '연주', plantNickname: '베란다 상추', createdAt: '6일 전', sortKey: 50, visibility: 'FOLLOWERS', content: '상추 씨앗을 추가로 더 뿌려봤어요.', tags: ['상추'], commentCount: 0 },
+    ];
+
+    // CommunityInteraction(interaction_type='COMMENT') — 게시물별 댓글 목록
+    const baseComments = {
+      s1: [{ author: '민준', text: '와 벌써 새싹이 이렇게 컸어요!' }],
+      s2: [{ author: '미경', text: '저도 님오일 한번 써봐야겠어요.' }],
+      s3: [], s4: [], s5: [], s6: [],
+    };
+
+    const stories = storyData.map((s) => {
+      const liked = this.state.likes[s.id] || false;
+      const bookmarked = this.state.bookmarks[s.id] || false;
+      const comments = [...baseComments[s.id], ...this.state.extraComments[s.id]];
+      return {
+        ...s,
+        bookmarked,
+        visibilityLabel: visibilityMeta[s.visibility],
+        likeCount: this.state.likeCounts[s.id] || 0,
+        likeIcon: liked ? '❤️' : '🤍',
+        likeColor: liked ? 'oklch(0.55 0.13 30)' : 'oklch(0.5 0.02 145)',
+        bookmarkIcon: bookmarked ? '🔖' : '📑',
+        bookmarkColor: bookmarked ? green : 'oklch(0.55 0.02 145)',
+        toggleLike: () => this.setState((st) => ({
+          likes: { ...st.likes, [s.id]: !st.likes[s.id] },
+          likeCounts: { ...st.likeCounts, [s.id]: st.likeCounts[s.id] + (st.likes[s.id] ? -1 : 1) },
+        })),
+        toggleBookmark: () => this.setState((st) => ({ bookmarks: { ...st.bookmarks, [s.id]: !st.bookmarks[s.id] } })),
+        commentCount: s.commentCount + this.state.extraComments[s.id].length,
+        commentsOpen: this.state.commentsOpen[s.id],
+        toggleComments: () => this.setState((st) => ({ commentsOpen: { ...st.commentsOpen, [s.id]: !st.commentsOpen[s.id] } })),
+        comments,
+        commentDraft: this.state.commentDrafts[s.id],
+        onCommentChange: (e) => this.setState((st) => ({ commentDrafts: { ...st.commentDrafts, [s.id]: e.target.value } })),
+        submitComment: () => this.setState((st) => {
+          const text = st.commentDrafts[s.id].trim();
+          if (!text) return null;
+          return {
+            extraComments: { ...st.extraComments, [s.id]: [...st.extraComments[s.id], { author: '민준', text }] },
+            commentDrafts: { ...st.commentDrafts, [s.id]: '' },
+          };
+        }),
+      };
+    });
+
+    // DirectMessage — Kiuda Connect와 공유되는 localStorage 저장소(kiuda_dm_threads)에서 로드
+    const messageThreads = this.loadDmThreads();
+    const conversationMeta = [
+      { key: 'yj', avatarId: 'story-av-1', name: '연주', lastMessage: '감사합니다!', lastTime: '1시간 전' },
+      { key: 'sh', avatarId: 'story-av-2', name: '승현', lastMessage: '님오일 스프레이 쓰고 있어요...', lastTime: '어제' },
+      { key: 'jw', avatarId: 'story-av-4', name: '재원', lastMessage: '옥수수 관련해서 여쭤볼게 있어요.', lastTime: '3일 전' },
+    ];
+    const relMeta = (key) => {
+      const master = NEIGHBOR_MASTER.find((n) => n.key === key);
+      const isFollowing = followedKeys.includes(key);
+      const isFollower = !!(master && master.isFollower);
+      if (isFollowing) return { relLabel: '팔로잉', relBg: green, relColor: 'oklch(0.99 0.006 120)' };
+      if (isFollower) return { relLabel: '팔로워', relBg: 'oklch(0.94 0.03 140)', relColor: 'oklch(0.3 0.06 145)' };
+      return { relLabel: '', relBg: 'transparent', relColor: 'transparent' };
+    };
+    const conversations = conversationMeta.map((c) => ({
+      ...c,
+      ...relMeta(c.key),
+      open: () => this.setState({ selectedConversationKey: c.key }),
+    }));
+
+    const selectedConversation = conversations.find((c) => c.key === this.state.selectedConversationKey) || null;
+    const selectedConversationMessages = selectedConversation
+      ? (messageThreads[selectedConversation.key] || []).map((m) => ({
+          text: m.text,
+          align: m.from === 'me' ? 'flex-end' : 'flex-start',
+          bg: m.from === 'me' ? green : 'oklch(0.96 0.015 130)',
+          color: m.from === 'me' ? 'oklch(0.99 0.006 120)' : 'oklch(0.3 0.02 145)',
+        }))
+      : [];
+
+    // 2026년 8월 민준(me)의 GrowthStory 작성 기록 — 캘린더 초록 날짜 클릭 시 이 날 작성한 글만 표시
+    const myPostsByDay = {
+      1: [{ plantNickname: '우리집 방울이', content: '방울토마토 첫 순지르기를 했어요. 곁순 정리가 생각보다 손이 많이 가네요.' }],
+      3: [{ plantNickname: '베란다 상추', content: '상추에 물을 주고 잎 상태를 확인했어요. 벌레는 아직 없네요.' }],
+      6: [{ plantNickname: '고구마 밭', content: '고구마 순이 많이 뻗었길래 순 정리를 했습니다.' }],
+      12: [{ plantNickname: '블루베리 화분', content: '블루베리에 첫 열매가 열렸어요! 색이 조금씩 올라오고 있어요.' }],
+      19: [{ plantNickname: '허브 화단', content: '바질을 수확해서 페스토를 만들어봤어요.' }],
+      27: [{ plantNickname: '옥수수 밭', content: '장마 끝나고 옥수수 상태 점검, 다행히 큰 피해는 없었어요.' }],
+    };
+
+    // 2026년 8월 팔로잉 이웃들의 GrowthStory 작성일(mock) — 이웃 프로필 조회 시 캘린더에 검정 원으로 표시
+    const NEIGHBOR_POSTED_BY_MONTH = {
+      yj: { '2026-8': [2, 5, 8, 20, 25] },
+      sh: { '2026-8': [4, 15, 22] },
+      mk: { '2026-8': [10, 17] },
+    };
+
+    // GrowthStory 작성일(postedDays) 캘린더 — 년/월 이동 가능, 2026년 8월에만 목업 기록 존재
+    const { calendarYear: cYear, calendarMonth: cMonth } = this.state;
+    const POSTED_BY_MONTH = { '2026-8': [1, 3, 6, 12, 19, 27] };
+    const postedDays = POSTED_BY_MONTH[`${cYear}-${cMonth}`] || [];
+    const neighborPostedDays = (this.state.viewMode === 'neighbor' && this.state.viewedNeighborKey)
+      ? ((NEIGHBOR_POSTED_BY_MONTH[this.state.viewedNeighborKey] || {})[`${cYear}-${cMonth}`] || [])
+      : [];
+    const TODAY_Y = 2026, TODAY_M = 8, TODAY_D = 3;
+    const calendarWeekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    const leadingBlanks = new Date(cYear, cMonth - 1, 1).getDay();
+    const daysInMonth = new Date(cYear, cMonth, 0).getDate();
+    const calendarCells = [];
+    for (let i = 0; i < leadingBlanks; i++) calendarCells.push({ label: '', bg: 'transparent', color: 'transparent', weight: 400, disabled: true, cursor: 'default', onClick: () => {} });
+    for (let day = 1; day <= daysInMonth; day++) {
+      const posted = postedDays.includes(day);
+      const neighborPosted = neighborPostedDays.includes(day);
+      const isToday = cYear === TODAY_Y && cMonth === TODAY_M && day === TODAY_D;
+      const clickable = posted;
+      calendarCells.push({
+        label: String(day),
+        bg: neighborPosted ? 'oklch(0.2 0.01 145)' : (posted ? green : (isToday ? 'oklch(0.94 0.03 140)' : 'transparent')),
+        color: (posted || neighborPosted) ? 'oklch(0.99 0.006 120)' : 'oklch(0.3 0.02 145)',
+        weight: (posted || neighborPosted || isToday) ? 800 : 500,
+        disabled: !clickable,
+        cursor: clickable ? 'pointer' : 'default',
+        onClick: clickable ? () => this.setState({ viewMode: 'calendarDay', viewedCalendarDay: `${cYear}-${cMonth}-${day}` }) : () => {},
+      });
+    }
+    const calendarLabel = `${cYear}년 ${cMonth}월`;
+    const shiftMonth = (delta) => this.setState((s) => {
+      let m = s.calendarMonth + delta, y = s.calendarYear;
+      if (m > 12) { m = 1; y += 1; } else if (m < 1) { m = 12; y -= 1; }
+      return { calendarMonth: m, calendarYear: y };
+    });
+
+    const viewedNeighbor = this.state.viewedNeighborKey ? mutualNeighborData.find((n) => n.key === this.state.viewedNeighborKey) : null;
+    const viewedNeighborStories = viewedNeighbor
+      ? storyData.filter((s) => s.key === viewedNeighbor.key).sort((a, b) => b.sortKey - a.sortKey)
+      : [];
+    const [dayY, dayM, dayD] = this.state.viewedCalendarDay ? this.state.viewedCalendarDay.split('-').map(Number) : [];
+    const calendarDayLabel = this.state.viewedCalendarDay ? `${dayM}월 ${dayD}일` : '';
+    const myPostsOnSelectedDay = this.state.viewedCalendarDay ? (myPostsByDay[dayD] || []) : [];
+
+    return {
+      mutualNeighbors,
+      isFeedView: this.state.viewMode === 'feed',
+      isNeighborView: this.state.viewMode === 'neighbor',
+      isCalendarDayView: this.state.viewMode === 'calendarDay',
+      backToFeed: () => this.setState({ viewMode: 'feed' }),
+      viewedNeighbor: viewedNeighbor || {},
+      viewedNeighborStories,
+      calendarDayLabel,
+      myPostsOnSelectedDay,
+      calendarLabel,
+      calendarWeekdays,
+      calendarCells,
+      prevMonth: () => shiftMonth(-1),
+      nextMonth: () => shiftMonth(1),
+      showCameraCapture: this.state.showCameraCapture,
+      toggleCameraCapture: () => this.setState((s) => ({ showCameraCapture: !s.showCameraCapture })),
+      isFileAttached: this.state.isFileAttached,
+      toggleFileAttach: () => this.setState((s) => ({ isFileAttached: !s.isFileAttached })),
+      cameraBtnBg: this.state.showCameraCapture ? 'oklch(0.94 0.03 140)' : 'oklch(0.96 0.015 130)',
+      fileBtnBg: this.state.isFileAttached ? 'oklch(0.94 0.03 140)' : 'oklch(0.96 0.015 130)',
+      draftContent: this.state.draftContent,
+      onDraftChange: (e) => this.setState({ draftContent: e.target.value }),
+      isComposerOpen: this.state.draftContent.trim().length > 0,
+      draftTags: ['방울토마토'],
+      visibilityOptions,
+      publish: () => this.setState({ draftContent: '' }),
+      stories,
+      conversations,
+      bookmarkedStories: stories.filter((s) => s.bookmarked).map((s) => ({ ...s, open: () => this.setState({ selectedBookmarkId: s.id }) })),
+      hasSelectedBookmark: !!this.state.selectedBookmarkId,
+      selectedBookmark: stories.find((s) => s.id === this.state.selectedBookmarkId) || {},
+      closeBookmarkModal: () => this.setState({ selectedBookmarkId: null }),
+      hasSelectedConversation: !!selectedConversation,
+      selectedConversation: selectedConversation || {},
+      selectedConversationMessages,
+      closeDmModal: () => this.setState({ selectedConversationKey: null }),
+      stopPropagation: (e) => e.stopPropagation(),
+      dmText: this.state.dmText,
+      onDmChange: (e) => this.setState({ dmText: e.target.value }),
+      sendDm: () => {
+        const key = this.state.selectedConversationKey;
+        const text = this.state.dmText.trim();
+        if (!key || !text) return;
+        const threads = this.loadDmThreads();
+        threads[key] = [...(threads[key] || []), { from: 'me', text }];
+        this.saveDmThreads(threads);
+        this.setState({ dmText: '' });
+      },
+    };
+  }
+
+  loadDmThreads() {
+    const DEFAULT_THREADS = {
+      yj: [
+        { from: 'them', text: '민준님 안녕하세요! 상추 씨앗 남는 거 있으신가요?' },
+        { from: 'me', text: '네 있어요! 내일 오후에 드릴게요 :)' },
+        { from: 'them', text: '감사합니다!' },
+      ],
+      sh: [
+        { from: 'me', text: '진딧물 방제 스프레이 어떤 거 쓰세요?' },
+        { from: 'them', text: '님오일 스프레이 쓰고 있어요, 효과 좋아요!' },
+      ],
+    };
+    try {
+      const raw = localStorage.getItem('kiuda_dm_threads');
+      return raw ? JSON.parse(raw) : DEFAULT_THREADS;
+    } catch (e) {
+      return DEFAULT_THREADS;
+    }
+  }
+
+  saveDmThreads(threads) {
+    localStorage.setItem('kiuda_dm_threads', JSON.stringify(threads));
+    this.forceUpdate();
+  }
+}
+
+</script>
+</body>
+</html>

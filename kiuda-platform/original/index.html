@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <template id="__bundler_thumbnail" data-bg-color="#eef3ea">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" fill="#eef3ea"/>
+      <circle cx="100" cy="70" r="34" fill="none" stroke="#4f7a3e" stroke-width="7"/>
+      <circle cx="67" cy="130" r="34" fill="none" stroke="#4f7a3e" stroke-width="7"/>
+      <circle cx="133" cy="130" r="34" fill="none" stroke="#4f7a3e" stroke-width="7"/>
+      <text x="100" y="175" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="900" fill="#2c3a28">키:우다</text>
+    </svg>
+  </template>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>키:우다 | 함께 하는 키움</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/neo.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body class="page-neo">
+
+  <!-- Soft blurred smart-farm background -->
+  <div class="neo-bg-wrap" aria-hidden="true">
+    <img src="assets/hero-bg-source.jpg" alt="" class="neo-bg-img">
+    <div class="neo-bg-fade"></div>
+  </div>
+
+  <!-- Second background photo: fades in from WHY KIUda through Invitation -->
+  <div class="neo-bg-wrap2" aria-hidden="true">
+    <img src="assets/hero-bg-source.jpg" alt="" class="neo-bg-img2">
+  </div>
+
+  <header class="neo-header">
+    <a href="index.html" class="neo-logo">
+      <img src="assets/logo.png" alt="키:우다">
+    </a>
+    <nav class="neo-nav">
+      <a href="screens/dashboard.dc.html" data-auth-link>보다</a>
+      <a href="screens/ask.dc.html" data-auth-link>묻다</a>
+      <a href="screens/connect.dc.html" data-auth-link>잇다</a>
+      <a href="screens/share.dc.html" data-auth-link>나누다</a>
+    </nav>
+    <div class="neo-auth">
+      <a href="screens/signup.dc.html" class="neo-btn neo-btn-ghost" data-auth-action>회원가입</a>
+      <a href="screens/login.dc.html" class="neo-btn neo-btn-primary" data-auth-action>로그인</a>
+    </div>
+    <button class="hamburger neo-ham" id="hamburger" aria-label="메뉴">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close" id="closeMenu">×</button>
+    <ul>
+      <li><a href="screens/dashboard.dc.html" data-auth-link>보다</a></li>
+      <li><a href="screens/ask.dc.html" data-auth-link>묻다</a></li>
+      <li><a href="screens/connect.dc.html" data-auth-link>잇다</a></li>
+      <li><a href="screens/share.dc.html" data-auth-link>나누다</a></li>
+      <li class="auth-mobile">
+        <a href="screens/signup.dc.html" class="btn-signup" data-auth-action>회원가입</a>
+        <a href="screens/login.dc.html" class="btn-login" data-auth-action>로그인</a>
+      </li>
+    </ul>
+  </div>
+
+  <main class="neo-main">
+
+    <!-- 1. Overview — seedling grow animation -->
+    <section class="neo-hero neo-section-anim neo-hero-soil" id="overview">
+      <div class="neo-soil-text" id="grow-message">
+        <p style="font-size:clamp(0.95rem,1.6vw,1.15rem);font-weight:400;color:#eef4e6;text-shadow:0 1px 3px rgba(0,0,0,0.55),0 3px 12px rgba(0,0,0,0.4);margin-bottom:10px;">초보부터 베테랑까지, 화초부터 농작물까지</p>
+        <h1 class="neo-hero-title" id="grow-title">함께 키:우다</h1>
+      </div>
+    </section>
+
+    <!-- 2. Pain Points -->
+    <section class="neo-section neo-section-anim" id="pain">
+      <div class="neo-container">
+        <h2 class="neo-h2 neo-reveal" style="color:#4f7a3e;">정보는 넘치는데,<br>정작 내게 맞는 곳은 없었다</h2>
+        <div style="display:flex;flex-direction:column;gap:40px;max-width:760px;margin:0 auto;font-style:italic;text-align:center;font-size:1.35rem;line-height:1.6;">
+          <div class="neo-reveal">
+            <h3>"혼자 키우니 막막해요</h3>
+            <p>물어볼 사람도, 비슷한 상황의 이웃도 찾기 어려웠어요"</p>
+          </div>
+          <div class="neo-reveal delay-1">
+            <h3>"성장 기록을 어떻게 해야 할지 잘 모르겠어요</h3>
+            <p>사진은 찍어놓았는데 언제 무슨 일이 있었는지 기억이 안 나요"</p>
+          </div>
+          <div class="neo-reveal delay-2">
+            <h3>"어떻게 무슨 정보를 찾아야 하는지 모르겠어요</h3>
+            <p>병해충, 커뮤니티 등 앱은 많은 것 같은데 잘 안와닿아요"</p>
+          </div>
+          <div class="neo-reveal delay-3">
+            <h3>"병해충을 늦게 알아차렸어요</h3>
+            <p>증상이 심해질 때까지 그냥 그러려니 방치했었더라구요"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. What -->
+    <section class="neo-section neo-section-anim neo-tint" id="what">
+      <div class="neo-container">
+        <p class="neo-h2 neo-reveal" style="text-align:left;margin-bottom:24px;color:#4f7a3e;">키:우다는</p>
+        <h2 class="neo-h2 neo-reveal" style="text-align:center;font-weight:400;">
+          나의 키움터를 한 눈에 보고,<br>
+          AI에게 묻고,<br>
+          가까운 이웃과 잇고,<br>
+          이야기를 나누는<br>
+          하나의 공간입니다.
+        </h2>
+      </div>
+    </section>
+
+    <!-- 4. Core Values -->
+    <section class="neo-section neo-section-anim" id="values">
+      <div class="neo-container">
+        <h2 class="neo-h2 neo-reveal" style="color:#4f7a3e;">키:우다가 추구하는 가치</h2>
+        <div style="position:relative;width:min(95vw,640px);aspect-ratio:1;margin:64px auto 0;">
+          <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;" aria-hidden="true">
+            <circle cx="50" cy="14" r="34" fill="none" stroke="#4f7a3e" stroke-width="7" style="mix-blend-mode:multiply;opacity:0.65;"></circle>
+            <circle cx="17" cy="80" r="34" fill="none" stroke="#4f7a3e" stroke-width="7" style="mix-blend-mode:multiply;opacity:0.65;"></circle>
+            <circle cx="83" cy="80" r="34" fill="none" stroke="#4f7a3e" stroke-width="7" style="mix-blend-mode:multiply;opacity:0.65;"></circle>
+          </svg>
+          <div class="neo-reveal" style="position:absolute;top:0;left:50%;transform:translateX(-50%);text-align:center;width:220px;">
+            <div style="width:180px;height:180px;margin:0 auto;border-radius:50%;background:#ffffff;color:#4f7a3e;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(79,122,62,.25);">
+              <h3 style="margin:0;font-size:1.7rem;font-weight:900;color:#4f7a3e;">성장</h3>
+            </div>
+            <p style="margin-top:16px;font-size:1.3rem;line-height:1.5;">사람과 작물이 함께 성장</p>
+          </div>
+          <div class="neo-reveal delay-1" style="position:absolute;bottom:0;left:0;text-align:center;width:220px;">
+            <div style="width:180px;height:180px;margin:0 auto;border-radius:50%;background:#ffffff;color:#4f7a3e;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(111,155,90,.25);">
+              <h3 style="margin:0;font-size:1.7rem;font-weight:900;color:#4f7a3e;">연결</h3>
+            </div>
+            <p style="margin-top:16px;font-size:1.3rem;line-height:1.5;">관계·일상·지식의 연결</p>
+          </div>
+          <div class="neo-reveal delay-2" style="position:absolute;bottom:0;right:0;text-align:center;width:220px;">
+            <div style="width:180px;height:180px;margin:0 auto;border-radius:50%;background:#ffffff;color:#4f7a3e;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(111,155,90,.25);">
+              <h3 style="margin:0;font-size:1.7rem;font-weight:900;color:#4f7a3e;">지속</h3>
+            </div>
+            <p style="margin-top:16px;font-size:1.3rem;line-height:1.5;">성장·연결의 선순환</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Core Services -->
+    <section class="neo-section neo-section-anim neo-tint" id="services">
+      <div class="neo-container">
+        <h2 class="neo-h2 neo-reveal" style="color:#4f7a3e;">연결, 성장, 지속을 위한<br>키:우다의 서비스</h2>
+        <div class="neo-grid neo-grid-2">
+          <a href="screens/dashboard.dc.html" class="neo-card neo-card-lg neo-reveal" data-auth-link>
+            <div class="neo-icon">🌱</div>
+            <h3>보다</h3>
+            <p>나의 키움터 현황을 한 눈에 파악합니다</p>
+          </a>
+          <a href="screens/ask.dc.html" class="neo-card neo-card-lg neo-reveal delay-1" data-auth-link>
+            <div class="neo-icon">🤖</div>
+            <h3>묻다</h3>
+            <p>지혜의 샘 AI 온새미에게 궁금한 것을 바로 묻습니다</p>
+          </a>
+          <a href="screens/connect.dc.html" class="neo-card neo-card-lg neo-reveal delay-2" data-auth-link>
+            <div class="neo-icon">🤝</div>
+            <h3>잇다</h3>
+            <p>가까운 이웃을 확인하고, 품앗이를 통해 서로 연결됩니다</p>
+          </a>
+          <a href="screens/share.dc.html" class="neo-card neo-card-lg neo-reveal delay-3" data-auth-link>
+            <div class="neo-icon">📔</div>
+            <h3>나누다</h3>
+            <p>나의 일상과 키움 일지를 친한 이웃과 나눕니다</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Why -->
+    <section class="neo-section neo-section-anim" id="why">
+      <div class="neo-container neo-why-inner">
+        <div class="neo-why-text neo-reveal">
+          <h2 class="neo-h2" style="color:#4f7a3e;">왜 키:우다일까요?</h2>
+          <p class="neo-lead" style="margin-bottom:24px;">
+            궁금증을 바로 해결하고, 가까운 이웃과 이어 주며,<br>
+            도움과 노하우를 나누는 모든 기능을<br>
+            <strong>한 번에</strong> 이용할 수 있는 곳은 키:우다가 유일합니다.
+          </p>
+          <ul class="neo-list">
+            <li>
+              <span class="neo-badge">✓</span>
+              <div>초보자도 바로 이해하는 직관적 정보</div>
+            </li>
+            <li>
+              <span class="neo-badge">✓</span>
+              <div>AI 온새미 + 이웃 품앗이 이중 지원</div>
+            </li>
+            <li>
+              <span class="neo-badge">✓</span>
+              <div>키움터·피드·일지가 한 공간에</div>
+            </li>
+          </ul>
+        </div>
+        <div class="neo-why-media neo-reveal delay-1" style="display:flex;flex-direction:column;gap:20px;">
+          <div class="neo-inset neo-why-photo-a" style="overflow:hidden;padding:4px;width:100%;">
+            <img src="assets/hero-photo.png" alt="취미 텃밭" style="height:260px;">
+          </div>
+          <div class="neo-inset neo-why-photo-b" style="overflow:hidden;padding:4px;width:100%;box-shadow:0 16px 36px rgba(30,40,20,0.28), inset 8px 8px 18px var(--neo-shadow-dark), inset -8px -8px 18px var(--neo-shadow-light);">
+            <img src="assets/why-card.jpg" alt="키움 일지" style="height:260px;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section class="neo-section neo-section-anim neo-tint" id="reviews">
+      <div class="neo-container">
+        <h2 class="neo-h2 neo-reveal" style="color:#4f7a3e;">키:우다 이웃들의 이야기</h2>
+        <div style="display:flex;flex-direction:column;gap:36px;max-width:640px;margin:0 auto;">
+          <div class="neo-review neo-reveal">
+            <div class="neo-stars">★★★★★</div>
+            <p class="neo-review-text">“잎이 노랗게 변했을 때 온새미에게 물어보니 바로 원인을 알려줘서 정말 편했어요. 초보인데도 작물이 살아났습니다.”</p>
+            <div class="neo-reviewer">
+              <div class="neo-avatar">민</div>
+              <div>
+                <strong>김민지</strong>
+                <span>베란다 키움 · 3개월차</span>
+              </div>
+            </div>
+          </div>
+          <div class="neo-review neo-reveal delay-1">
+            <div class="neo-stars">★★★★★</div>
+            <p class="neo-review-text">“남는 상추를 피드에 올렸더니 이웃이 가져가 주시고, 대신 방울토마토를 나눠 주셨어요. 서로 웃는 맛이 납니다.”</p>
+            <div class="neo-reviewer">
+              <div class="neo-avatar">준</div>
+              <div>
+                <strong>이준호</strong>
+                <span>옥상 텃밭 · 1년차</span>
+              </div>
+            </div>
+          </div>
+          <div class="neo-review neo-reveal delay-2">
+            <div class="neo-stars">★★★★★</div>
+            <p class="neo-review-text">“전문 사이트는 너무 어렵고, 블로그는 정보가 흩어져 있었는데 키우다는 한곳에서 다 해결돼요. 일지도 습관이 됐습니다.”</p>
+            <div class="neo-reviewer">
+              <div class="neo-avatar">서</div>
+              <div>
+                <strong>박서연</strong>
+                <span>취미 농부 · 6개월차</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Invitation -->
+    <section class="neo-section neo-section-anim" id="invite" style="margin-top:320px;min-height:90vh;display:grid;grid-template-rows:auto 1fr;background:none !important;">
+      <div style="padding:6px 32px;">
+        <img src="assets/logo.png" alt="키:우다" class="neo-reveal" style="height:210px;width:auto;">
+      </div>
+      <div class="neo-container" style="text-align:center;align-self:center;justify-self:center;">
+        <h2 class="neo-h2 neo-reveal" style="color:#f5f9ee;font-size:clamp(2.4rem,5vw,3.6rem);font-weight:900;letter-spacing:-0.03em;text-shadow:0 2px 8px rgba(30,20,10,0.55),0 1px 2px rgba(30,20,10,0.4);">여러분을 새 이웃으로 초대합니다</h2>
+        <div class="neo-hero-actions" style="justify-content:center;margin-top:56px;">
+          <a href="screens/signup.dc.html" class="neo-btn neo-btn-primary neo-btn-lg" style="font-size:1.3rem;padding:20px 52px;border-radius:999px;" data-auth-action>초대 수락하기</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="neo-footer" id="neo-footer" style="max-height:0;opacity:0;overflow:hidden;transition:max-height 0.6s ease, opacity 0.6s ease;margin:0;">
+    <div class="neo-container" style="display:flex;justify-content:space-between;align-items:center;gap:96px;text-align:left;padding:16px 0;">
+      <div style="display:flex;align-items:center;gap:20px;flex:1;justify-content:flex-start;white-space:nowrap;">
+        <strong>키:우다</strong>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;gap:20px;white-space:nowrap;">
+          <li><a href="#">소개</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">공지사항</a></li>
+        </ul>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;flex:1;justify-content:flex-start;white-space:nowrap;">
+        <strong>고객지원</strong>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;gap:20px;white-space:nowrap;">
+          <li><a href="#">자주 묻는 질문</a></li>
+          <li><a href="#">1:1 문의</a></li>
+          <li><a href="#">제휴 문의</a></li>
+        </ul>
+      </div>
+      <div style="flex:1;text-align:left;color:var(--neo-muted);white-space:nowrap;">@2026 키:우다(Ki:uda)</div>
+    </div>
+  </footer>
+  <button id="neo-footer-toggle" style="display:block;width:100%;border:none;background:#e6eee1;color:var(--neo-muted);font-size:0.85rem;font-weight:700;padding:10px;margin:0;cursor:pointer;">확대</button>
+
+  <script src="js/common.js"></script>
+  <script src="js/neo-anim.js"></script>
+  <script>
+    (function () {
+      var AUTH_KEY = 'kiuda_auth';
+      document.querySelectorAll('[data-auth-action]').forEach(function (a) {
+        a.addEventListener('click', function () { localStorage.setItem(AUTH_KEY, '1'); });
+      });
+      document.querySelectorAll('[data-auth-link]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          if (localStorage.getItem(AUTH_KEY) !== '1') e.preventDefault();
+        });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var footer = document.getElementById('neo-footer');
+      var toggle = document.getElementById('neo-footer-toggle');
+      if (!footer || !toggle) return;
+      toggle.addEventListener('click', function () {
+        var open = footer.style.opacity === '1';
+        footer.style.maxHeight = open ? '0px' : footer.scrollHeight + 'px';
+        footer.style.opacity = open ? '0' : '1';
+        toggle.textContent = open ? '확대' : '축소';
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+/* ============================================================
+   앱 화면 공용 인터랙션 상태 스타일.
+   원본 .dc.html 목업의 `style-hover` / `style-focus` / `style-active`
+   커스텀 속성(dc-runtime 전용 문법)을 실제 CSS :hover/:focus/:active로
+   옮긴 것 — 값은 원본과 동일하게 유지했다.
+   ============================================================ */
+
+/* 로그인/회원가입 텍스트 인풋 */
+.kiuda-input:focus {
+  outline: none;
+  border-color: #56b968 !important;
+  box-shadow: 0 0 0 3px rgba(86, 185, 104, 0.1);
+}
+
+/* 로그인/회원가입 주요 버튼 */
+.kiuda-btn-primary:hover:not(:disabled) {
+  background: #4a9b56 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(86, 185, 104, 0.3);
+}
+.kiuda-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+.kiuda-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* 소셜 로그인 버튼 */
+.kiuda-social-btn:hover {
+  background: #f5f0e8 !important;
+  border-color: #c9b5a1 !important;
+}
+
+/* 링크류 hover 색 전환 */
+.kiuda-link-hover:hover {
+  color: #4a9b56 !important;
+  text-decoration: underline;
+}
+
+/* 하단 보조 링크(비밀번호 찾기/도움말/개인정보 등) hover 색 전환 */
+.kiuda-muted-link:hover {
+  color: #56b968 !important;
+}
+
+/* 회원가입 위저드 — 보조(취소/이전) 버튼 hover */
+.kiuda-signup-secondary:hover {
+  background: #f5f0e8 !important;
+  border-color: #c9b5a1 !important;
+}
+
+/* 회원가입 위저드 — 주요(다음/완료) 버튼 hover */
+.kiuda-signup-primary:hover:not(:disabled) {
+  background: #4a9b56 !important;
+}
+.kiuda-signup-primary:disabled {
+  cursor: not-allowed;
+}
+
+/* 대시보드 — 살짝 떠오르는 CTA 버튼 (style-hover="transform: translateY(-2px);") */
+.kiuda-lift-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* 대시보드 — 키움터 카드 hover */
+.kiuda-plot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);
+}
+
+/* 잇다 — 이웃/품앗이/행사 카드 hover (동일한 상승 효과) */
+.kiuda-connect-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px oklch(0.3 0.03 145 / 0.1);
+}
+
+/* oklch 인풋 포커스 상태 (대시보드 새 키움이 등록 모달 등) */
+.kiuda-oklch-input:focus {
+  border-color: oklch(0.56 0.09 152) !important;
+}
+
+/* 묻다 — 첨부 제거 원형 버튼 hover */
+.kiuda-round-btn:hover {
+  background: oklch(0.96 0.015 130) !important;
+}
+
+/* 묻다 — 자주 묻는 증상 칩 hover */
+.kiuda-chip:hover {
+  border-color: oklch(0.56 0.09 152) !important;
+  background: oklch(0.97 0.02 140) !important;
+  transform: translateY(-2px);
+}
+
+/* 계정 설정 — 기본 정보/비밀번호 변경 저장 버튼 hover */
+.kiuda-settings-save:hover {
+  background: oklch(0.5 0.1 152) !important;
+}
+
+/* 계정 설정 — 계정 삭제 위험 버튼 hover */
+.kiuda-danger-btn:hover {
+  background: #A00 !important;
+}
+
+/* 관리자 — 사이드바 탭 버튼 hover */
+.kiuda-admin-nav-btn:hover {
+  background: #F0EBE1 !important;
+}
+
+/* 관리자 — 로그아웃 버튼 hover */
+.kiuda-admin-logout-btn:hover {
+  background: #FFE8E8 !important;
+}
+
+/* 관리자 — 사용자 테이블 행 hover (원본의 `hover-background` 속성 대응) */
+.kiuda-admin-row:hover {
+  background: #F9F6EE !important;
+}
+
+/* 관리자 — 통계 탭 일별 가입 막대그래프 hover */
+.kiuda-admin-bar:hover {
+  opacity: 1 !important;
+}
