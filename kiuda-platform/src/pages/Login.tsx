@@ -39,11 +39,7 @@ export default function Login() {
       login()
       navigate('/dashboard')
     } catch (err) {
-      // 백엔드 API가 아직 연결되지 않은 데모 환경에서는 데모용으로 즉시 통과시킨다
-      login()
-      localStorage.setItem('authToken', 'demo-token')
-      navigate('/dashboard')
-      console.warn('[login] /api/auth/login 미연결 — 데모 로그인으로 대체:', err)
+      setError(err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다.')
     } finally {
       setIsLoading(false)
     }
