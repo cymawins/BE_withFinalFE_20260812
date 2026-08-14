@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
+import helpPostRoutes from './routes/helpPostRoutes.js'
 import {errorHandler} from './middleware/errorHandler.js'
 
 // 백엔드 서버의 기본 환경설정을 모아둔 곳입니다.
@@ -23,6 +24,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth',authRoutes)
+app.use('/api/help', helpPostRoutes)
 
 app.use(errorHandler)
 
