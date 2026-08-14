@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 4000
 // 서버를 PORT 번호로 실행. 이 시점부터 실제로 요청을 받을 준비가 됨
 // ***주의: 이건 서버가 켜졌다는 뜻일 뿐, DB 연결 여부와는 무관
 app.listen(PORT, ()=>{
-    console.log(`서버가 작동 중입니다. 작동중인 서버 : http://localhost:${PORT}`)
+    console.log(`작동중인 서버 : http://localhost:${PORT}`)
 })
 
 // ** 연결 확인용 임시코드, 백엔드 완성 시 지워야 함. **
@@ -32,4 +32,6 @@ try {
     console.log('MySQL DB pool 연결 성공, 1이 출력되면 성공 : ', rows)
 } catch (error) {
     console.error('에러 발생, 타입 : ', error)
+} finally {
+    console.log('현재까지의 문장들은 서버 연결 확인용입니다. 정식 배포 시 삭제 필요합니다.')
 }
