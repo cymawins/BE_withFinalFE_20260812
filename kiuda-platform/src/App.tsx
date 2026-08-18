@@ -10,6 +10,13 @@ import Profile from '@/pages/Profile'
 import SettingsAccount from '@/pages/SettingsAccount'
 import Admin from '@/pages/Admin'
 import NotFound from '@/pages/NotFound'
+import About from '@/pages/info/About'
+import Guide from '@/pages/info/Guide'
+import Faq from '@/pages/info/Faq'
+import Terms from '@/pages/info/Terms'
+import Privacy from '@/pages/info/Privacy'
+import Notices from '@/pages/info/notices/Notices'
+import NoticeDetail from '@/pages/info/notices/NoticeDetail'
 
 export default function App() {
   return (
@@ -24,6 +31,13 @@ export default function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/settings/account" element={<SettingsAccount />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/guide" element={<Guide />} />
+      <Route path="/faq" element={<Faq />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/notices" element={<Notices />} />
+      <Route path="/notices/:id" element={<NoticeDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

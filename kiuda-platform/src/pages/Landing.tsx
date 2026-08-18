@@ -13,9 +13,8 @@ import { Invitation } from '@/components/sections/Invitation'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
 import { useLandingBackgroundEffects } from '@/hooks/useLandingBackgroundEffects'
 
-/** 랜딩페이지 (원본 index.html 1:1 대응) */
+/** 랜딩페이지 — app-shell 로 푸터를 하단에 고정 */
 export default function Landing() {
-  // 원본 <body class="page-neo"> 대응 — 뉴모피즘 테마는 이 클래스가 있을 때만 적용된다
   useEffect(() => {
     document.body.classList.add('page-neo')
     return () => document.body.classList.remove('page-neo')
@@ -25,7 +24,7 @@ export default function Landing() {
   useLandingBackgroundEffects()
 
   return (
-    <>
+    <div className="app-shell">
       <BackgroundLayers />
       <LandingHeader />
       <main className="neo-main">
@@ -39,6 +38,6 @@ export default function Landing() {
         <Invitation />
       </main>
       <LandingFooter />
-    </>
+    </div>
   )
 }
