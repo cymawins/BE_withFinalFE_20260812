@@ -73,3 +73,23 @@
     max-height: 500px;
   }
 }
+
+/* ===== 앱 화면 세로 스크롤 보장 (묻다/보다 등) ===== */
+.app-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 묻다: 콘텐츠가 짧아도 스크롤 가능 영역이 보이도록 */
+.app-screen--ask {
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.app-screen--ask > main {
+  padding-bottom: max(100px, 12vh);
+}

@@ -35,7 +35,17 @@ export default function Ask() {
   }
 
   return (
-    <div className="app-screen" style={{ minHeight: '100vh', background: 'oklch(0.985 0.008 95)', color: 'oklch(0.24 0.02 145)' }}>
+    <div
+      className="app-screen app-screen--ask"
+      style={{
+        minHeight: '100vh',
+        height: 'auto',
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        background: 'oklch(0.985 0.008 95)',
+        color: 'oklch(0.24 0.02 145)',
+      }}
+    >
       <AppHeader active="ask" />
 
       <main style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(40px,5vw,64px) clamp(20px,4vw,40px) 100px' }}>
