@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import {errorHandler} from './middleware/errorHandler.js'
 
 // 백엔드 서버의 기본 환경설정을 모아둔 곳입니다.
@@ -17,13 +18,18 @@ import {errorHandler} from './middleware/errorHandler.js'
 // > controllers (결과를 JSON형태로 가공)
 // > middleware (최종에러 처리)
 
-const app = express()
+const app = express() // 빈 서버 생성, 이후 자료를 채워넣을 것임.
+// 이후 app. 으로 시작한다면, 서버에 내용물을 채워넣는 것과 같음.
 
-app.use(cors())
-app.use(express.json())
+app.use(cors()) // 프론트엔드에서 온 자료들을 허용합니다
+app.use(express.json()) // json언어로 해석합니다
 
-app.use('/api/auth',authRoutes)
+// 아래는 등록된 routes 목록입니다.
+app.use('/api/auth',authRoutes) // 로그인, 토큰 발급
+app.use('/api/users', userRoutes) // 토큰 검증, 내 정보 조회
 
 app.use(errorHandler)
+// 중간에 next(err) 함수를 호출 시, 에러내용과 함께 실행
+// middleware의 errorHandler.js 파일에 있으며, '500 (에러내용)' 반환
 
 export default app
