@@ -3,12 +3,15 @@ import {login} from '../controllers/authController.js'
 import {validateRequest} from '../middleware/validateRequest.js'
 import {loginSchema} from '../validators/authValidator.js'
 
+// 인증(로그인/회원가입) 관련 라우트. /login을 검증, 토큰을 발급하는 쪽임.
+// 로그인된 유저의 정보조회는 userRoutes에서 다룸. 토큰을 검증해서 데이터를 주는 쪽.
+
+const router = express.Router() // 라우트들을 모아두는 작은 라우터 객체 정의
+
 // 마지막으로 라우트에 연결함.
 // 그 전에, 마지막으로 한번 더 검사
 // validateRequest는 middleware의 validateRequest에 있으며, 오류 검증용 함수
 // loginSchema는 validators의 authValidator에 있으며, 검사중 오류 발생시 에러메세지 반환
-
-const router = express.Router() // 라우트들을 모아두는 작은 라우터 객체 정의
 
 router.post('/login', validateRequest(loginSchema), login)
 // HTTP method가 POST일 때만 반응 (로그인 : 데이터 제출)
