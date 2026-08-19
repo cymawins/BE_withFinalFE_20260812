@@ -80,7 +80,7 @@ export const signup = async (req, res, next) => {
             message : '회원가입이 완료되었습니다.'
         })
         // '201 요청 성공'
-        // 회원가입 즉시 로그인 기능 추가시, userId:result.insertId 추가 필요
+        // 회원가입 즉시 로그인 기능 추가시, userId:result.insertId 추가
     } catch(err) {
         next(err) // 예기치 못한 에러 발생시 errorHandler로 보내어, '500 error' 처리
     }
