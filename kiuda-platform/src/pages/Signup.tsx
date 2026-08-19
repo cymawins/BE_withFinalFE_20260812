@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { districtsByProvince, provinceOptions } from '@/data/regions'
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const passwordNoUpperRegex = /^[^A-Z]+$/;
+const passwordLowerRegex = /[a-z]/;
+const passwordNumberRegex = /[0-9]/;
+const passwordSpecialRegex = /[^A-Za-z0-9]/;
+
 const stepTitles = [
   '이메일과 비밀번호를 입력해주세요',
   '프로필 정보를 완성해주세요',
@@ -12,7 +18,7 @@ const stepTitles = [
 function checkPasswordStrength(pwd: string) {
   let strength = 0
   if (pwd.length >= 8) strength++
-  if (/[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) strength++
+  if (/[a-z]/.test(pwd) && /[0-9]/.test(pwd)) strength++
   if (/[!@#$%^&*]/.test(pwd)) strength++
   return strength
 }
@@ -56,6 +62,10 @@ export default function Signup() {
       setEmailError('이메일을 입력해주세요')
       return
     }
+    if (!emailRegex.test(email)) {
+      setEmailError('올바른 이메일 형식이 아닙니다')
+      return
+    }
     try {
       const response = await fetch('/api/auth/check-email', {
         method: 'POST',
@@ -80,10 +90,34 @@ export default function Signup() {
 
   const handleStep1 = (e: FormEvent) => {
     e.preventDefault()
-    if (nextButtonEnabled1) setCurrentStep(1)
+    if (!emailRegex.test(email)) {
+      alert('올바른 이메일 형식이 아닙니다.')
+      return
+    }
+    if (password.length < 8) {
+      alert('비밀번호는 8자 이상이어야 합니다.')
+      return
+    }
+    if (!passwordNoUpperRegex.test(password)) {
+      alert('비밀번호에는 대문자를 사용할 수 없습니다.')
+      return
+    }
+    if (!passwordLowerRegex.test(password)) {
+      alert('비밀번호에 소문자를 포함해야 합니다.')
+      return
+    }
+    if (!passwordNumberRegex.test(password)) {
+      alert('비밀번호에 숫자를 포함해야 합니다.')
+      return
+    }
+    if (!passwordSpecialRegex.test(password)) {
+      alert('비밀번호에 특수문자를 포함해야 합니다.')
+      return
+    }
+    setCurrentStep(1)
   }
 
-  const handleCancel = () => {
+  const handleReset = () => {
     setCurrentStep(0)
     setEmail('')
     setEmailChecked(false)
@@ -236,7 +270,7 @@ export default function Signup() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  placeholder="8자 이상, 대문자·숫자·특수문자 포함"
+                  placeholder="8자 이상, 소문자·숫자·특수문자를 포함 (대문자 불가)"
                   className="kiuda-input"
                   style={inputStyle}
                   onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
@@ -265,8 +299,8 @@ export default function Signup() {
               </div>
 
               <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-                <button type="button" onClick={handleCancel} className="kiuda-signup-secondary" style={secondaryBtnStyle}>
-                  취소
+                <button type="button" onClick={handleReset} className="kiuda-signup-secondary" style={secondaryBtnStyle}>
+                  초기화
                 </button>
                 <button
                   type="submit"

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { findUserByEmail } from '../models/userModel.js'
+import { findUserByEmail, createUser } from '../models/userModel.js'
 
 // bcrypt : 암호화된 비밀번호값과, 사용자가 로그인 시 입력한 비밀번호를 서로 비교하기 위한 라이브러리
 // jwt : '이 사람은 인증된 사람입니다.' 라는 것을 증명하는 토큰 발급을 위한 라이브러리
@@ -41,7 +41,7 @@ export const login = async (req, res, next) => {
 
         // 여기까지 왔다면, 이메일과 비밀번호도 맞고, 이용권한도 있는 유저임. 인증토큰 발급.
         const token = jwt.sign(
-            {userId: user.user_id, email: user.email}, // 토큰검증시 무슨 유저의 토큰인지 확인용
+            {userId: user.user_id}, // 토큰검증시 무슨 유저의 토큰인지 확인용
             process.env.JWT_SECRET, // 토큰위조 방지용 서명 키 (나중에 검증시에 이 키를 사용)
             {expiresIn: '7d'} // 유효기간은 7일
         )
@@ -57,4 +57,31 @@ export const login = async (req, res, next) => {
     }
     // 혹시 갑자기 DB연결이 끊기는 등의 예기치 못한 에러 발생시,
     // 에러처리를 middleware로 넘김 (errorHandler, 함수위치 : app.js)
+}
+
+
+// 회원가입을 처리하는 함수 (findUserByEmail, createUser는 userModel에서 정의했음)
+// 아이디 및 비밀번호 형식은 authValidator의 signupSchema에서 이미 처리 완료
+export const signup = async (req, res, next) => {
+    try{
+        const {email, password, name} = req.body // 사용자가 보낸 정보 저장
+        const existing = await findUserByEmail(email) // email이 현재 존재하는지 검증
+        if (existing) { // 존재할 경우(true) 'error 409 : 요청처리불가'
+            return res.status(409).json({message: '이미 가입된 이메일입니다.'})
+        }
+        const password_hash = await bcrypt.hash(password, 10) // 그동안 검증해왔으므로 진행
+        const result = await createUser({ // userModel에서 정의한 user 및 result 호출
+            email,
+            password_hash,
+            name,
+            login_type:'EMAIL'
+        })
+        return res.status(201).json({
+            message : '회원가입이 완료되었습니다.'
+        })
+        // '201 요청 성공'
+        // 회원가입 즉시 로그인 기능 추가시, userId:result.insertId 추가
+    } catch(err) {
+        next(err) // 예기치 못한 에러 발생시 errorHandler로 보내어, '500 error' 처리
+    }
 }

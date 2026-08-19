@@ -17,6 +17,20 @@ export default function Login() {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
+    // 로그인 유효성 검사
+    // 이메일 형식이 올바른지 확인합니다.
+    // 아이디, @, .형식의 도메인이 포함되어야 합니다. 도메인은 2글자 이상이어야 합니다.
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
+    // 비밀번호가 8자 이상인지 확인합니다.
+    if (password.length < 8) {
+      setError('비밀번호는 8자 이상 입력해주세요.');
+      return;
+    }
+    // 위의 로그인 유효성 검사를 통과한 경우, 로그인 상태로 변경합니다 (isLoading:true)
     setIsLoading(true)
     setError('')
 
