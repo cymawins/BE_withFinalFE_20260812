@@ -34,6 +34,6 @@ export const requireAuth = (req, res, next) => {
     // 이때 split('')을 쓰면 모든 글자가 하나씩 쪼개지므로, 띄어쓰기 단위로 체크하기 위해
     // split(' ')을 써서, [0]인 Bearer 이후의 [1] 토큰명만 제대로 가져오게 된다.
     // 이후에 verify(검증)하여, 진짜 우리서버에서 발급한 토큰이 맞는지 확인하고, 
-    // 검증에 성공하면 req.user에 userId와 email을 반환 후 계속 진행
+    // 검증에 성공하면 req.user에 userId를 반환 후 계속 진행
     // 검증에 실패 시 401 error를 반환한다.
 }
