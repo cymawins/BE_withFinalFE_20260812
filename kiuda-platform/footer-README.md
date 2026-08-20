@@ -27,7 +27,7 @@ src/pages/info/notices/NoticeDetail.tsx      (신규)
 ## 적용
 
 ```bash
-cp -r kiuda-platform/src/* ./src/
+cp -r src/* ./src/
 ```
 
 ## 포함된 변경 사항
@@ -35,23 +35,28 @@ cp -r kiuda-platform/src/* ./src/
 - `app-shell` flex 레이아웃으로 푸터 하단 고정 (sticky footer)
 - 리치(Rich) 푸터로 전면 개편 + `/about`, `/guide`, `/faq`, `/terms`, `/privacy`,
   `/notices`, `/notices/:id` 라우트 및 페이지 추가
-- 푸터 로고 크기 강제 CSS(`footer-logo-force.css`)를 `neo.css` 맨 끝에 병합
-  (`LandingFooter.tsx`의 실제 적용값 `logoHeight: 140`과 일치하는 버전만 반영,
-  기존에 있던 280px짜리 구버전 CSS는 현재 값과 불일치하여 제외)
+- 푸터 데이터·로고 크기를 `data/footer.ts` 의 `footerConfig` 로 단일화
+- 로고 높이는 CSS 변수 `--footer-logo-height` 로 전달 (값 이중 관리 제거)
 
-## 푸터 두께 조정
+## 리뷰 피드백 반영 (PR#3 후속)
 
-리치 푸터 전체 두께(높이)를 기존 대비 2/3 수준으로 축소했습니다 (실측 283px → 187px, 약 66%).
-이후 로고만 100px로 다시 키웠습니다 (실측 푸터 높이 약 208px).
+1. **data 단일 소스**  
+   `LandingFooter.tsx` 내부 로컬 `FOOTER` 중복을 제거하고 `footerConfig` 를 import 해서 사용합니다.  
+   문구/컬럼/로고 높이 변경은 `src/data/footer.ts` 만 수정하면 됩니다.
 
-- 로고 높이: 140px → 78px → **100px** (`neo.css`의 강제 CSS + `LandingFooter.tsx`의 `logoHeight` 동시 반영)
-- 상하 패딩: `36px … 28px` → `19px … 15px` (유지)
-- 로고/태그라인/링크 항목 간 여백(margin-bottom)도 비례 축소 (유지)
-- 모바일(600px 이하) 로고 높이: 100px → 60px (유지)
+2. **로고 크기 단일 값**  
+   `footerConfig.logoHeight` → 컴포넌트가 `--footer-logo-height` 설정 → `neo.css` 가
+   `height: var(--footer-logo-height)` 로 참조합니다.  
+   하드코딩된 `100px !important` 와 인라인 높이 이중 관리는 제거했습니다.
 
-로고를 더 키우거나 줄이고 싶으면 `LandingFooter.tsx`의 `logoHeight` 값과
-`neo.css` 맨 아래 `.neo-footer-rich .neo-footer-logo img { height: ... }` 값을
-**항상 같이** 맞춰주세요 (CSS가 `!important`라 인라인보다 우선 적용됩니다).
+## 로고 크기
+
+- 데스크톱 기본: **160px** (`footerConfig.logoHeight`)
+- 모바일(≤600px): **96px** (`neo.css` 미디어쿼리에서 변수 재정의)
+
+로고를 더 키우거나 줄이려면 `src/data/footer.ts` 의 `logoHeight` 만 바꾸면 됩니다.  
+모바일 비율을 바꾸려면 `neo.css` 의 `@media (max-width: 600px)` 안
+`--footer-logo-height` 값을 조정하세요.
 
 ## 주의
 

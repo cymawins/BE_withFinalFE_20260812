@@ -1,53 +1,12 @@
 /**
  * LandingFooter — 리치 푸터
- * 로고 크기는 CSS 우선순위 문제를 피하기 위해 img 에 인라인 style 로 강제합니다.
+ * 문구·컬럼·로고 크기는 data/footer.ts 의 footerConfig 가 단일 소스입니다.
+ * 로고 높이는 --footer-logo-height CSS 변수로 전달되어 neo.css 와 값이 어긋나지 않습니다.
  */
+import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import logoUrl from '@/assets/logo.png'
-
-type FooterLink = {
-  label: string
-  href: string
-  external?: boolean
-}
-
-type FooterColumn = {
-  title: string
-  links: FooterLink[]
-}
-
-const FOOTER = {
-  brandName: '키:우다',
-  tagline: '같이 키우는 스마트 키움 커뮤니티',
-  copyright: '© 2026 키:우다 (Kiuda). All rights reserved.',
-  logoHref: '/',
-  /** 푸터 로고 표시 높이(px). 작으면 이 숫자만 키우면 됩니다. */
-  logoHeight: 100,
-  columns: [
-    {
-      title: '서비스 정보',
-      links: [
-        { label: '서비스 소개', href: '/about' },
-        { label: '공지사항', href: '/notices' },
-      ],
-    },
-    {
-      title: '도움',
-      links: [
-        { label: '이용방법', href: '/guide' },
-        { label: 'FAQ', href: '/faq' },
-        { label: '문의하기', href: 'mailto:support@kiuda.kr', external: true },
-      ],
-    },
-    {
-      title: '정책',
-      links: [
-        { label: '이용약관', href: '/terms' },
-        { label: '개인정보처리방침', href: '/privacy' },
-      ],
-    },
-  ] as FooterColumn[],
-}
+import { footerConfig, type FooterLink } from '@/data/footer'
 
 function FooterAnchor({ link }: { link: FooterLink }) {
   const isExternal =
@@ -69,42 +28,37 @@ function FooterAnchor({ link }: { link: FooterLink }) {
 }
 
 export function LandingFooter() {
+  const logoHeightPx = `${footerConfig.logoHeight}px`
+
   return (
-    <footer className="neo-footer neo-footer-rich" aria-label="사이트 푸터">
+    <footer
+      className="neo-footer neo-footer-rich"
+      aria-label="사이트 푸터"
+      style={
+        {
+          ['--footer-logo-height' as string]: logoHeightPx,
+        } as CSSProperties
+      }
+    >
       <div className="neo-footer-inner">
         <div className="neo-footer-brand">
-          {/* 옆 타이핑 글자 없음. 크기는 인라인 style 로 강제 (CSS 덮어쓰기 방지) */}
           <Link
-            to={FOOTER.logoHref}
+            to={footerConfig.logoHref}
             className="neo-footer-logo"
-            aria-label={FOOTER.brandName}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              marginBottom: 12,
-              textDecoration: 'none',
-            }}
+            aria-label={footerConfig.brandName}
           >
             <img
               src={logoUrl}
-              alt={FOOTER.brandName}
+              alt={footerConfig.brandName}
               className="neo-footer-logo-img"
-              style={{
-                height: FOOTER.logoHeight,
-                width: 'auto',
-                maxHeight: 'none',
-                maxWidth: 'min(90vw, 360px)',
-                objectFit: 'contain',
-                display: 'block',
-              }}
             />
           </Link>
-          <p className="neo-footer-tagline">{FOOTER.tagline}</p>
-          <p className="neo-footer-copy">{FOOTER.copyright}</p>
+          <p className="neo-footer-tagline">{footerConfig.tagline}</p>
+          <p className="neo-footer-copy">{footerConfig.copyright}</p>
         </div>
 
         <div className="neo-footer-cols">
-          {FOOTER.columns.map((col) => (
+          {footerConfig.columns.map((col) => (
             <div key={col.title} className="neo-footer-col">
               <h4>{col.title}</h4>
               {col.links.map((link) => (

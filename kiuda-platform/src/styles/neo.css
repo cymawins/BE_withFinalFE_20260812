@@ -2061,7 +2061,10 @@ html { scroll-behavior: smooth; }
   text-decoration: none;
 }
 .neo-footer-logo span { color: #ffffff !important; }
-.neo-footer-logo img { height: 28px; width: auto; }
+.neo-footer-logo img {
+  height: var(--footer-logo-height, 160px);
+  width: auto;
+}
 .neo-footer-tagline {
   font-size: 0.85rem;
   color: #c5d4bc;
@@ -2180,15 +2183,17 @@ body {
   width: 100%;
 }
 
-/* ↓↓↓ 푸터 로고 크기 강제 (footer-logo-force.css 병합) ↓↓↓ */
-/* neo.css 맨 아래에 반드시 붙여 넣기 — 로고 크기 강제 */
+/* ↓↓↓ 푸터 로고 — 단일 소스: --footer-logo-height (LandingFooter가 footerConfig.logoHeight로 설정) ↓↓↓ */
+.neo-footer-rich {
+  --footer-logo-height: 160px; /* fallback; 컴포넌트 인라인 변수가 우선 */
+}
 .neo-footer-rich .neo-footer-logo img,
 .neo-footer-rich img.neo-footer-logo-img,
 footer.neo-footer-rich .neo-footer-logo img {
-  height: 100px !important;
+  height: var(--footer-logo-height) !important;
   width: auto !important;
   max-height: none !important;
-  max-width: min(90vw, 360px) !important;
+  max-width: min(90vw, 480px) !important;
   object-fit: contain !important;
   display: block !important;
 }
@@ -2196,13 +2201,12 @@ footer.neo-footer-rich .neo-footer-logo img {
   display: none !important;
 }
 .neo-footer-rich .neo-footer-inner {
-  grid-template-columns: minmax(150px, 280px) 1fr !important;
+  grid-template-columns: minmax(160px, 300px) 1fr !important;
   align-items: center !important;
   gap: 14px !important;
 }
 @media (max-width: 600px) {
-  .neo-footer-rich .neo-footer-logo img,
-  .neo-footer-rich img.neo-footer-logo-img {
-    height: 60px !important;
+  .neo-footer-rich {
+    --footer-logo-height: 96px;
   }
 }
