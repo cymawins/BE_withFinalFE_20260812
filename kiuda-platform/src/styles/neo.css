@@ -2026,3 +2026,162 @@ html { scroll-behavior: smooth; }
 .neo-page .neo-form {
   background: rgba(255, 255, 255, 0.95) !important;
 }
+
+/* ===== Notion-style rich footer (frontend) ===== */
+/*
+ * neo-footer 클래스를 쓰지 않음 → 레거시 .page-neo .neo-footer { … !important }
+ * 에 걸리지 않으므로 이 블록에는 !important 가 없습니다.
+ */
+footer.neo-footer-rich {
+  --footer-logo-height: 160px; /* fallback; LandingFooter 인라인 변수가 우선 */
+
+  background: rgba(30, 46, 28, 0.72);
+  background-image: none;
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 19px 24px 15px;
+  text-align: left;
+  color: #f0f5ec;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+}
+
+footer.neo-footer-rich .neo-footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(160px, 300px) 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+footer.neo-footer-rich .neo-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 11px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+footer.neo-footer-rich .neo-footer-logo span {
+  display: none;
+}
+
+footer.neo-footer-rich .neo-footer-logo img,
+footer.neo-footer-rich img.neo-footer-logo-img {
+  height: var(--footer-logo-height);
+  width: auto;
+  max-height: none;
+  max-width: min(90vw, 480px);
+  object-fit: contain;
+  display: block;
+}
+
+footer.neo-footer-rich .neo-footer-tagline {
+  font-size: 0.85rem;
+  color: #c5d4bc;
+  margin: 0 0 4px;
+  line-height: 1.4;
+  max-width: 200px;
+}
+
+footer.neo-footer-rich .neo-footer-copy {
+  font-size: 0.78rem;
+  color: #c5d4bc;
+}
+
+footer.neo-footer-rich .neo-footer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+footer.neo-footer-rich .neo-footer-col h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+footer.neo-footer-rich .neo-footer-col a {
+  display: block;
+  font-size: 0.88rem;
+  color: #d0ddc8;
+  margin-bottom: 4px;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+footer.neo-footer-rich .neo-footer-col a:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  footer.neo-footer-rich .neo-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  footer.neo-footer-rich .neo-footer-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  footer.neo-footer-rich {
+    --footer-logo-height: 96px;
+    padding: 19px 16px 16px;
+  }
+  footer.neo-footer-rich .neo-footer-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Sticky footer shell (푸터 하단 고정) ===== */
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+}
+#root {
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell > .neo-main,
+.app-shell > main.neo-main,
+.app-shell > #app-content {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.app-shell > .neo-footer-rich,
+.app-shell > footer.neo-footer-rich {
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+}

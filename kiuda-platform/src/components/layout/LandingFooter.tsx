@@ -1,76 +1,76 @@
-import { useRef, useState } from 'react'
-import { footerColumns, footerCopyright } from '@/data/footer'
-
 /**
- * 접이식 Footer (원본 index.html <footer id="neo-footer"> + #neo-footer-toggle 버튼).
- * max-height/opacity 트랜지션으로 열림/닫힘, 라벨은 "확대"/"축소"로 전환.
+ * LandingFooter — 리치 푸터
+ * 문구·컬럼·로고 크기는 data/footer.ts 의 footerConfig 가 단일 소스입니다.
+ * 로고 높이는 --footer-logo-height CSS 변수로 전달되어 neo.css 와 값이 어긋나지 않습니다.
+ *
+ * 클래스는 neo-footer-rich 만 사용합니다 (neo-footer 미사용).
+ * 레거시 .page-neo .neo-footer { … !important } 에 걸리지 않아 !important 없이 스타일합니다.
  */
-export function LandingFooter() {
-  const [open, setOpen] = useState(false)
-  const footerRef = useRef<HTMLElement>(null)
+import type { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
+import logoUrl from '@/assets/logo.png'
+import { footerConfig, type FooterLink } from '@/data/footer'
 
-  const toggle = () => {
-    const footer = footerRef.current
-    if (!footer) return
-    if (!open) {
-      footer.style.maxHeight = `${footer.scrollHeight}px`
-    } else {
-      footer.style.maxHeight = '0px'
-    }
-    setOpen(!open)
+function FooterAnchor({ link }: { link: FooterLink }) {
+  const isExternal =
+    link.external || link.href.startsWith('mailto:') || link.href.startsWith('http')
+
+  if (isExternal) {
+    return (
+      <a
+        href={link.href}
+        target={link.href.startsWith('http') ? '_blank' : undefined}
+        rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      >
+        {link.label}
+      </a>
+    )
   }
 
+  return <Link to={link.href}>{link.label}</Link>
+}
+
+export function LandingFooter() {
+  const logoHeightPx = `${footerConfig.logoHeight}px`
+
   return (
-    <>
-      <footer
-        ref={footerRef}
-        id="neo-footer"
-        className="neo-footer"
-        style={{
-          maxHeight: open ? undefined : 0,
-          opacity: open ? 1 : 0,
-          overflow: 'hidden',
-          transition: 'max-height 0.6s ease, opacity 0.6s ease',
-          margin: 0,
-        }}
-      >
-        <div
-          className="neo-container"
-          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 96, textAlign: 'left', padding: '16px 0' }}
-        >
-          {footerColumns.map((col) => (
-            <div key={col.title} style={{ display: 'flex', alignItems: 'center', gap: 20, flex: 1, justifyContent: 'flex-start', whiteSpace: 'nowrap' }}>
-              <strong>{col.title}</strong>
-              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', gap: 20, whiteSpace: 'nowrap' }}>
-                {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#">{link}</a>
-                  </li>
-                ))}
-              </ul>
+    <footer
+      className="neo-footer-rich"
+      aria-label="사이트 푸터"
+      style={
+        {
+          ['--footer-logo-height' as string]: logoHeightPx,
+        } as CSSProperties
+      }
+    >
+      <div className="neo-footer-inner">
+        <div className="neo-footer-brand">
+          <Link
+            to={footerConfig.logoHref}
+            className="neo-footer-logo"
+            aria-label={footerConfig.brandName}
+          >
+            <img
+              src={logoUrl}
+              alt={footerConfig.brandName}
+              className="neo-footer-logo-img"
+            />
+          </Link>
+          <p className="neo-footer-tagline">{footerConfig.tagline}</p>
+          <p className="neo-footer-copy">{footerConfig.copyright}</p>
+        </div>
+
+        <div className="neo-footer-cols">
+          {footerConfig.columns.map((col) => (
+            <div key={col.title} className="neo-footer-col">
+              <h4>{col.title}</h4>
+              {col.links.map((link) => (
+                <FooterAnchor key={link.label} link={link} />
+              ))}
             </div>
           ))}
-          <div style={{ flex: 1, textAlign: 'left', color: 'var(--neo-muted)', whiteSpace: 'nowrap' }}>{footerCopyright}</div>
         </div>
-      </footer>
-      <button
-        id="neo-footer-toggle"
-        onClick={toggle}
-        style={{
-          display: 'block',
-          width: '100%',
-          border: 'none',
-          background: '#e6eee1',
-          color: 'var(--neo-muted)',
-          fontSize: '0.85rem',
-          fontWeight: 700,
-          padding: 10,
-          margin: 0,
-          cursor: 'pointer',
-        }}
-      >
-        {open ? '축소' : '확대'}
-      </button>
-    </>
+      </div>
+    </footer>
   )
 }
