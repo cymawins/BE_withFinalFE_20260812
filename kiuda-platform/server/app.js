@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 import {errorHandler} from './middleware/errorHandler.js'
 
 // 백엔드 서버의 기본 환경설정을 모아둔 곳입니다.
@@ -27,6 +28,7 @@ app.use(express.json()) // json언어로 해석합니다
 // 아래는 등록된 routes 목록입니다.
 app.use('/api/auth',authRoutes) // 로그인, 토큰 발급
 app.use('/api/users', userRoutes) // 토큰 검증, 내 정보 조회
+app.use('/api/admin', adminRoutes) // 관리자 권한 확인
 
 app.use(errorHandler)
 // 중간에 next(err) 함수를 호출 시, 에러내용과 함께 실행

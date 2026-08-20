@@ -47,11 +47,24 @@ export default function Login() {
       }
 
       const data = await response.json()
+
+      // 이전세션의 잔여값 정리
+      // 추가하지 않으면, 관리자>일반유저로 바꿔 로그인해도 관리자화면으로 이동 가능한 현상 발생
+      localStorage.removeItem('userId')
+      localStorage.removeItem('adminId')
+      
       localStorage.setItem('authToken', data.token)
-      localStorage.setItem('userId', data.userId)
-      // 랜딩 페이지 인증 게이팅(kiuda_auth)과 연동해 SPA 내 이동을 허용한다
-      login()
-      navigate('/dashboard')
+
+      if (data.adminId) {
+        localStorage.setItem('adminId', data.adminId)
+        login()
+        navigate('/admin')
+      } else {
+        localStorage.setItem('userId', data.userId)
+        // 랜딩 페이지 인증 게이팅(kiuda_auth)과 연동해 SPA 내 이동을 허용한다
+        login()
+        navigate('/dashboard')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다.')
     } finally {

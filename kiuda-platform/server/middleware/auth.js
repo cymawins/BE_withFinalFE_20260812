@@ -37,3 +37,13 @@ export const requireAuth = (req, res, next) => {
     // 검증에 성공하면 req.user에 userId를 반환 후 계속 진행
     // 검증에 실패 시 401 error를 반환한다.
 }
+
+// 관리자인지 검증
+// req.user는 token에서 꺼내온 값이지, User테이블에서 꺼내온 값이 아니기 때문에
+// Admin 테이블이 따로 있어도, req.user로 조회 가능
+export const requireAdmin = (req, res, next) => {
+    if (req.user.adminId){
+        next()
+    }
+    else return res.status(403).json({message:'권한이 없습니다.'})
+}

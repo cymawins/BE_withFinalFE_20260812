@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { findUserByEmail, createUser } from '../models/userModel.js'
+import { findAdminByEmail } from '../models/adminModel.js'
 
 // bcrypt : 암호화된 비밀번호값과, 사용자가 로그인 시 입력한 비밀번호를 서로 비교하기 위한 라이브러리
 // jwt : '이 사람은 인증된 사람입니다.' 라는 것을 증명하는 토큰 발급을 위한 라이브러리
@@ -24,6 +25,24 @@ export const login = async (req, res, next) => {
     try {
         const user = await findUserByEmail(email) // 해당 이메일의 유저정보 호출
         if (!user) {
+            // 관리자인지 검사. 보안을 위해 '관리자가 아닙니다' 등의 메시지 표현하지 않음
+            // 관리자는 token 자체가 다름.
+            const admin = await findAdminByEmail(email)
+            if (admin) {
+                const adminMatch = await bcrypt.compare(password, admin.password_hash)
+                if(adminMatch){
+                    const token = jwt.sign(
+                    {adminId: admin.admin_id},
+                    process.env.JWT_SECRET,
+                    {expiresIn: '7d'}
+                    )
+                    return res.status(200).json({
+                    token,
+                    adminId: admin.admin_id,
+                    message: '관리자입니다.',
+                    })
+                }
+            }
             return res.status(401).json({message: '이메일 또는 비밀번호가 잘못되었습니다.'})
         } // 이메일로 가입한 유저 정보가 없음. 입력 오류 혹은 회원가입 미실시
         if (user.is_withdrawn) {

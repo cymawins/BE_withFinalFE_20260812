@@ -57,12 +57,13 @@ export default function Profile() {
   }
   const stopPropagation: React.MouseEventHandler = (e) => e.stopPropagation()
 
-  const handleLogout = () => {
+const handleLogout = () => {
     localStorage.removeItem('authToken')
     localStorage.removeItem('userId')
+    localStorage.removeItem('adminId')
     logout()
     navigate('/')
-  }
+}
 
   const disabledInputStyle: React.CSSProperties = {
     border: '1.5px solid oklch(0.9 0.015 120)',
