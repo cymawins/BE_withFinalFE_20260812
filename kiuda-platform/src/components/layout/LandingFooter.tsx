@@ -2,6 +2,9 @@
  * LandingFooter — 리치 푸터
  * 문구·컬럼·로고 크기는 data/footer.ts 의 footerConfig 가 단일 소스입니다.
  * 로고 높이는 --footer-logo-height CSS 변수로 전달되어 neo.css 와 값이 어긋나지 않습니다.
+ *
+ * 클래스는 neo-footer-rich 만 사용합니다 (neo-footer 미사용).
+ * 레거시 .page-neo .neo-footer { … !important } 에 걸리지 않아 !important 없이 스타일합니다.
  */
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
@@ -32,7 +35,7 @@ export function LandingFooter() {
 
   return (
     <footer
-      className="neo-footer neo-footer-rich"
+      className="neo-footer-rich"
       aria-label="사이트 푸터"
       style={
         {

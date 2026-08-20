@@ -49,6 +49,11 @@ cp -r src/* ./src/
    `height: var(--footer-logo-height)` 로 참조합니다.  
    하드코딩된 `100px !important` 와 인라인 높이 이중 관리는 제거했습니다.
 
+3. **`!important` 제거 (클래스 분리)**  
+   리치 푸터는 `neo-footer` 를 쓰지 않고 `neo-footer-rich` 만 사용합니다.  
+   레거시 `.page-neo .neo-footer { … !important }` 선택자에 걸리지 않으므로
+   리치 푸터 블록의 선언에는 `!important` 가 없습니다.
+
 ## 로고 크기
 
 - 데스크톱 기본: **160px** (`footerConfig.logoHeight`)
