@@ -17,6 +17,7 @@ import Terms from '@/pages/info/Terms'
 import Privacy from '@/pages/info/Privacy'
 import Notices from '@/pages/info/notices/Notices'
 import NoticeDetail from '@/pages/info/notices/NoticeDetail'
+import AdminRoute from '@/components/AdminRoutes'
 
 export default function App() {
   return (
@@ -30,7 +31,11 @@ export default function App() {
       <Route path="/share" element={<Share />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/settings/account" element={<SettingsAccount />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={
+        <AdminRoute>
+          <Admin />
+        </AdminRoute>
+      } />
       <Route path="/about" element={<About />} />
       <Route path="/guide" element={<Guide />} />
       <Route path="/faq" element={<Faq />} />

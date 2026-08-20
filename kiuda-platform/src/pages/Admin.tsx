@@ -19,6 +19,7 @@ export default function Admin() {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken')
+    localStorage.removeItem('adminId')
     navigate('/login')
   }
 
