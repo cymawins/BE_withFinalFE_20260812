@@ -1,0 +1,67 @@
+/* ============================================================
+   앱 화면 공용 베이스 (screens/*.dc.html 원본의 <helmet><style> 공통부)
+   로그인/회원가입/대시보드/묻다/잇다/나누다/프로필/설정/관리자 화면에서 공유
+   ============================================================ */
+.app-screen {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background: oklch(0.985 0.008 95);
+  color: oklch(0.24 0.02 145);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.app-screen a {
+  color: inherit;
+  text-decoration: none;
+}
+.app-screen a:hover {
+  color: oklch(0.56 0.09 152);
+}
+
+@keyframes onsaemi-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes shimmer-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}

@@ -1,0 +1,32 @@
+/* ============================================================
+   키:우다 글로벌 스타일 엔트리
+   - 원본 디자인 픽셀 동일성을 위해 common.css / neo.css를
+     원본 그대로(구조 변경 없이) 유지하고 원본과 동일한 순서로 로드합니다.
+   - Tailwind는 이 파일들 "다음"에 로드되어, 새로 작성하는 컴포넌트에서
+     유틸리티 클래스를 함께 쓸 수 있게 하되 기존 neo 및 레거시 클래스의
+     시각 결과를 절대 깨지 않도록 합니다.
+   ============================================================ */
+
+/* CSS 사양상 @import는 반드시 다른 모든 규칙보다 앞에 와야 하므로 최상단에 둔다.
+   이 4개 파일은 어떤 @layer에도 속하지 않는(unlayered) 전역 CSS인데,
+   CSS Cascade에서 "레이어 미지정 CSS"는 소스 순서/명시도와 무관하게
+   레이어에 속한 CSS보다 항상 우선 적용된다. 아래에서 Tailwind 세 레이어를
+   전부 @layer로 감싸 두었기 때문에, 이 4개 파일은 파일 내 위치와 상관없이
+   Tailwind의 어떤 규칙(reset 포함)보다도 항상 이긴다 — 이렇게 원본 픽셀 동일성을 보장한다. */
+@import './common.css';
+@import './neo.css';
+@import './app-screens.css';
+@import './forms.css';
+
+/* Tailwind 세 레이어를 명시적 @layer로 감싼다 — 위 원본 CSS(unlayered)가
+   항상 우선하도록 만들되, 새로 작성하는 컴포넌트에서는 Tailwind 유틸리티를
+   정상적으로 사용할 수 있게 한다. */
+@layer tw-base {
+  @tailwind base;
+}
+@layer tw-components {
+  @tailwind components;
+}
+@layer tw-utilities {
+  @tailwind utilities;
+}
