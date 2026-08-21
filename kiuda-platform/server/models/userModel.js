@@ -1,8 +1,9 @@
 import pool from '../config/db.js'
 
+// (MySQL은 대소문자를 가리지 않았으나, Linux기반 서버는 대소문자를 가리기 때문에 확실한 필드값 부여)
 export async function findUserByEmail(email) {
     const [rows] = await pool.query(
-        'SELECT * FROM User WHERE email = ?', 
+        'SELECT * FROM user WHERE email = ?', 
         [email]
         // SQL 쿼리를 실행, ?인자를 사용하여 SQL INJECTION 방지
     )
@@ -13,7 +14,7 @@ export async function findUserByEmail(email) {
 
 export async function findUserById(userId) {
     const [rows] = await pool.query(
-        'SELECT * FROM User WHERE user_id = ?',
+        'SELECT * FROM user WHERE user_id = ?',
         [userId]
     )
     return rows[0]
@@ -28,7 +29,7 @@ export async function createUser(user) {
     // DB의 User 테이블에 행(row)을 추가(INSERT)
     // 현재는 user객체를 정의만 했고, 이후에 호출할 때 값들이 들어갈 예정(authController에서 호출)
     const [result] = await pool.query(
-        'INSERT INTO User (email, password_hash, name, login_type, terms_agreed_at) VALUES (?, ?, ?, ?, NOW())',
+        'INSERT INTO user (email, password_hash, name, login_type, terms_agreed_at) VALUES (?, ?, ?, ?, NOW())',
         [user.email, user.password_hash, user.name, user.login_type]
     )
     return result
