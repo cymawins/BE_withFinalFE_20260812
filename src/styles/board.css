@@ -1,0 +1,223 @@
+/* =========================================
+   게시판 — 키:우다 neo 서브페이지 맞춤
+   ========================================= */
+
+.board-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+
+.board-panel {
+  padding: 8px 4px 12px;
+}
+
+/* 뒤로가기 */
+.board-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--neo-bg, #eef3ea);
+  color: var(--neo-text, #2c3a28);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    5px 5px 12px var(--neo-shadow-dark, #c5d0be),
+    -4px -4px 10px var(--neo-shadow-light, #ffffff);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.board-back-btn:hover {
+  transform: translateY(-1px);
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.board-back-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 4px 4px 8px var(--neo-shadow-dark, #c5d0be),
+    inset -4px -4px 8px var(--neo-shadow-light, #ffffff);
+}
+
+.board-back-btn .board-back-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 테이블 / 폼 — neo 톤 */
+.neo-panel .table {
+  margin-bottom: 0;
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(111, 155, 90, 0.08);
+  color: var(--neo-text, #2c3a28);
+}
+
+.neo-panel .table thead,
+.neo-panel .table thead.table-dark {
+  background: var(--neo-green-soft, #d5e6c8) !important;
+  --bs-table-bg: var(--neo-green-soft, #d5e6c8);
+  color: var(--neo-green-dark, #4f7a3e) !important;
+}
+
+.neo-panel .table thead th {
+  border-bottom: 1px solid #c5d8b8;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 14px 12px;
+  color: var(--neo-green-dark, #4f7a3e) !important;
+  background: transparent !important;
+}
+
+.neo-panel .table tbody td {
+  padding: 14px 12px;
+  border-color: #e2eadc;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.neo-panel .table a {
+  color: var(--neo-text, #2c3a28);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.neo-panel .table a:hover {
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.neo-panel .table-bordered th.bg-dark,
+.neo-panel .table-bordered th {
+  background: var(--neo-green-soft, #d5e6c8) !important;
+  color: var(--neo-green-dark, #4f7a3e) !important;
+  border-color: #c5d8b8 !important;
+}
+
+.neo-panel .table-bordered td {
+  border-color: #e2eadc !important;
+}
+
+.neo-panel .bg-primary {
+  background: var(--neo-green, #6f9b5a) !important;
+}
+
+.neo-panel .bg-light {
+  background: #f0f5ec !important;
+}
+
+.neo-panel .btn-danger,
+.neo-panel .btn-primary,
+.neo-panel .btn-success {
+  background: linear-gradient(145deg, #8bc34a, #689f38);
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 10px 18px;
+  color: #fff;
+}
+
+.neo-panel .btn-secondary,
+.neo-panel .btn-outline-secondary,
+.neo-panel .btn-warning {
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  background: var(--neo-bg, #eef3ea);
+  color: var(--neo-text, #2c3a28);
+  box-shadow:
+    4px 4px 10px var(--neo-shadow-dark, #c5d0be),
+    -3px -3px 8px var(--neo-shadow-light, #ffffff);
+}
+
+.neo-panel .btn-outline-primary {
+  border-radius: 999px;
+  border-color: var(--neo-green, #6f9b5a);
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.neo-panel .form-control {
+  border-radius: 12px;
+  border: 1px solid #d0deca;
+  background: #f7faf4;
+  padding: 12px 14px;
+}
+
+.neo-panel .form-control:focus {
+  border-color: var(--neo-green, #6f9b5a);
+  box-shadow: 0 0 0 3px rgba(111, 155, 90, 0.2);
+}
+
+.neo-panel .form-label {
+  color: var(--neo-green-dark, #4f7a3e);
+  font-weight: 700;
+}
+
+.neo-panel .rc-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.neo-panel .rc-pagination-item-active {
+  background: var(--neo-green, #6f9b5a) !important;
+  border-color: var(--neo-green, #6f9b5a) !important;
+}
+
+.neo-panel .rc-pagination-item-active a {
+  color: #fff !important;
+}
+
+@media (max-width: 600px) {
+  .board-hero-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .board-back-btn {
+    align-self: flex-start;
+  }
+}
+
+
+/* ===== 게시판 진입 페이지: 사진 배경 대신 단색 neo 배경 ===== */
+.neo-page .neo-bg-wrap,
+.neo-page .neo-bg-wrap2 {
+  display: none !important;
+}
+
+.neo-page {
+  background: var(--neo-bg, #eef3ea) !important;
+}
+
+.neo-page .neo-main {
+  background: var(--neo-bg, #eef3ea) !important;
+  min-height: 60vh;
+}
+
+.neo-page .neo-page-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.neo-page .neo-content {
+  position: relative;
+  z-index: 1;
+}
+
+.neo-page .neo-panel.board-panel {
+  background: var(--neo-light, #f7faf4);
+  border-radius: var(--neo-radius-sm, 18px);
+  box-shadow:
+    8px 8px 18px var(--neo-shadow-dark, #c5d0be),
+    -6px -6px 16px var(--neo-shadow-light, #ffffff);
+  padding: 20px 22px 28px;
+}
