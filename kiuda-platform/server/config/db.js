@@ -23,6 +23,11 @@ const pool = mysql.createPool ({
     password: process.env.DB_PASSWORD, // password 값은 DB_PASSWORD (env에서 가져옴)
     database: process.env.DB_NAME, // database 값은 DB_NAME (env에서 가져옴)
     waitForConnections: true, // 커넥션 풀이 전부 사용 중이라면, 에러를 발생시키지 않고 대기하기
+
+    ssl: {
+        ca: process.env.DB_SSL_CA
+    }, // Aiven DB서버 연결용, 나중에 조정 필요
+
     connectionLimit: 10,
     // 커넥션 풀은 최대 10개까지 생성, 10개가 넘는다면 waitForConnections:true 이므로 대기
 })
