@@ -20,9 +20,4 @@ export const validateRequest = (schema) => (req, res, next) => {
     req.body = result.data
     next()
     // zod가 검증하며 정리한 result의 data로 덮어쓰며 최종 승인 후 진행
-
-    // 주의 : zod에 정의되지 않은 데이터를 입력 후 덮어쓸 시
-    // result.data에 존재하지 않은 데이터이기 때문에,
-    // 필드 참조 시 undefined 상태가 되어, 500 error 발생위험 있음. (26/8/19 에러 확인)
-    // 이 부분은 추후 수정이 필요한 사항으로 보임.
 }

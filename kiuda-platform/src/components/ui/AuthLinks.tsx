@@ -32,6 +32,8 @@ export function AuthGatedLink({ children, onClick, ...props }: LinkProps) {
       onClick={(e) => {
         if (!isAuthenticated) {
           e.preventDefault()
+          // 비로그인 시 로그인 페이지로 안내 (무반응 방지)
+          window.location.assign('/login')
           return
         }
         onClick?.(e)

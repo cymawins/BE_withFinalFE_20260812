@@ -1,7 +1,7 @@
 import express from 'express';
-import {login, signup} from '../controllers/authController.js'
+import {login} from '../controllers/authController.js'
 import {validateRequest} from '../middleware/validateRequest.js'
-import {loginSchema, signupSchema} from '../validators/authValidator.js'
+import {loginSchema} from '../validators/authValidator.js'
 
 // 인증(로그인/회원가입) 관련 라우트. /login을 검증, 토큰을 발급하는 쪽임.
 // 로그인된 유저의 정보조회는 userRoutes에서 다룸. 토큰을 검증해서 데이터를 주는 쪽.
@@ -18,10 +18,5 @@ router.post('/login', validateRequest(loginSchema), login)
 // *첫 항목 : POST로 /api/auth/login에 요청이 오면,
 // *중간 항목 : 오류 검증 방법을 이용하여 오류를 검증하고(현재는 validateRequest(loginSchema)),
 // *마지막 항목 : 통과시 최종 로그인
-
-router.post('/signup', validateRequest(signupSchema), signup)
-// 로그인과 동일하게 POST일 때 반응(데이터 제출)
-// Body에 email, password, name 의 key값과 value값을 입력
-// signupSchema로 오류검증 후 결과값 도출 (201, 400, 409)
 
 export default router

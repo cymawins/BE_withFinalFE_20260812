@@ -21,18 +21,3 @@ export async function findUserById(userId) {
 // 같은 방식으로, userId로 유저를 찾는 함수를 정의함.
 // userID의 필드명은 user_id이므로, SQL DB에서 실행할 때는 user_id로 찾아야 한다.
 // 나머지 반환 및 기타 항목들은 전부 동일하다.
-
-
-export async function createUser(user) {
-    // user 객체에서 (email, password_hash, name, login_type) 값을 꺼내서
-    // DB의 User 테이블에 행(row)을 추가(INSERT)
-    // 현재는 user객체를 정의만 했고, 이후에 호출할 때 값들이 들어갈 예정(authController에서 호출)
-    const [result] = await pool.query(
-        'INSERT INTO User (email, password_hash, name, login_type, terms_agreed_at) VALUES (?, ?, ?, ?, NOW())',
-        [user.email, user.password_hash, user.name, user.login_type]
-    )
-    return result
-}
-// '' 에 들어있는 내용은, DB에 데이터를 입력하는 형태 (SQL Query)
-// result는 조회 결과가 아닌, INSERT에서 정보를 처리한(추가한) 결과를 담은 객체임
-// 예를 들어, 새로 생성된 user_id를 조회할 때는, result.insertId 로 조회 가능

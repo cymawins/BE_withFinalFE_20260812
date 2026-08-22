@@ -2,16 +2,8 @@
    앱 화면 공용 베이스 (screens/*.dc.html 원본의 <helmet><style> 공통부)
    로그인/회원가입/대시보드/묻다/잇다/나누다/프로필/설정/관리자 화면에서 공유
    ============================================================ */
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2')
-    format('woff2-variations');
-  font-weight: 45 920;
-  font-display: swap;
-}
-
 .app-screen {
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   background: oklch(0.985 0.008 95);

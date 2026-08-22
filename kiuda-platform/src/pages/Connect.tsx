@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { ImageSlot } from '@/components/ui/ImageSlot'
+import { LandingFooter } from '@/components/layout/LandingFooter'
 import { useFollowedNeighbors } from '@/hooks/useFollowedNeighbors'
 import { useDmThreads } from '@/hooks/useDmThreads'
 import {
@@ -599,6 +600,7 @@ export default function Connect() {
           </div>
         </div>
       )}
+      <LandingFooter />
     </div>
   )
 }

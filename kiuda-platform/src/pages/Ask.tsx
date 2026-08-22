@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { ImageSlot } from '@/components/ui/ImageSlot'
+import { LandingFooter } from '@/components/layout/LandingFooter'
 import { askDefaultQuestion, diagnosisList, symptomChips } from '@/data/ask'
 
 const GREEN = 'oklch(0.56 0.09 152)'
