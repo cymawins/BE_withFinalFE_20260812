@@ -152,7 +152,8 @@ export default function Signup() {
           email,
           password,
           name,
-          region: `${province} ${district}`,
+          province,
+          district,
           plantInterests: selectedPlantTypes,
           marketingAgreed,
           termsAgreed

@@ -14,6 +14,7 @@ export const loginSchema = z.object({
 // 중복검증하지 않는다.
 // (대문자 금지)소문자, 숫자, 특수문자를 포함한 8자리이상의 검증 정규식 포함
 // '이용약관에 동의했는지' (Talend 등의 외부 방식으로 접근시 동의하지 않았음.)
+// optional : 요청없어도 pass
 export const signupSchema = z.object ({
     email: z.string().email('올바른 이메일 형식이 아닙니다.'),
     password: z.string()
@@ -23,5 +24,8 @@ export const signupSchema = z.object ({
     .regex(/[0-9]/, '숫자를 포함해야 합니다.')
     .regex(/[^A-Za-z0-9]/, '특수문자를 포함해야 합니다.'),
     name: z.string().min(1, '이름을 입력해주세요.'),
+    province: z.string().min(1, '지역(시/도)을 선택해주세요.'),
+    district: z.string().min(1, '지역(시/군/구)을 선택해주세요.'),
+    marketingAgreed: z.boolean().optional().default(false), // 미체크시 default(false)
     termsAgreed: z.literal(true, { message: '이용약관에 동의해야 합니다.' }),
 })

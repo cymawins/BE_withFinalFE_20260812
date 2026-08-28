@@ -29,8 +29,8 @@ export async function createUser(user) {
     // DB의 User 테이블에 행(row)을 추가(INSERT)
     // 현재는 user객체를 정의만 했고, 이후에 호출할 때 값들이 들어갈 예정(authController에서 호출)
     const [result] = await pool.query(
-        'INSERT INTO user (email, password_hash, name, login_type, terms_agreed_at) VALUES (?, ?, ?, ?, NOW())',
-        [user.email, user.password_hash, user.name, user.login_type]
+        'INSERT INTO user (email, password_hash, name, login_type, province, district, terms_agreed_at, marketing_agreed) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)',
+        [user.email, user.password_hash, user.name, user.login_type, user.province, user.district, user.marketingAgreed]
     )
     return result
 }
