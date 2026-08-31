@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { ImageSlot } from '@/components/ui/ImageSlot'
 import {
@@ -48,6 +48,23 @@ export default function Dashboard() {
 
   const stopClick: React.MouseEventHandler = (e) => e.stopPropagation()
 
+  // Dashboard에 저장된 유저의 값을 불러오기
+  const [userInfo, setUserInfo] = useState<{ name: string; province: string; district: string } | null>(null) 
+  useEffect(() => { //useEffect 형식은 promise 형식을 반환시 예상치못한 오류 발생가능성 있으므로
+    const fetchMyInfo = async () => { // 추가로 함수 정의
+      const token = localStorage.getItem('authToken')
+      const response = await fetch('/api/users/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setUserInfo(data)
+      }
+    }
+    fetchMyInfo() // 이후 정의된 async 함수 즉시 실행
+  }, []) // useEffect(콜백함수, []) 형태로, 리렌더링(체크항목 변경 등)마다 재실행되지 않음.
+
+
   return (
     <div className="app-screen" style={{ minHeight: '100vh', background: 'oklch(0.985 0.008 95)', color: 'oklch(0.24 0.02 145)' }}>
       <AppHeader active="dashboard" />
@@ -56,8 +73,14 @@ export default function Dashboard() {
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20 }}>
           <div>
             <p style={{ fontSize: 13.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'oklch(0.5 0.1 152)' }}>나의 키움터</p>
-            <h1 style={{ marginTop: 12, fontSize: 'clamp(28px,3.6vw,38px)', fontWeight: 900, letterSpacing: '-0.03em' }}>오늘도 건강하게 자라고 있어요, 민준님</h1>
-            <p style={{ marginTop: 8, fontSize: 15.5, color: 'oklch(0.48 0.02 145)' }}>2026년 8월 3일 월요일 · 서울 마포구</p>
+            <h1 style={{ marginTop: 12, fontSize: 'clamp(28px,3.6vw,38px)', fontWeight: 900, letterSpacing: '-0.03em' }}>오늘도 건강하게 자라고 있어요, {userInfo?.name}님</h1>
+            <p style={{ marginTop: 8, fontSize: 15.5, color: 'oklch(0.48 0.02 145)' }}>{new Date().toLocaleDateString('ko-KR',{
+              year : 'numeric', 
+              month : 'long',
+              day : 'numeric',
+              weekday : 'long'
+            })} · {userInfo?.province} {userInfo?.district} </p>
+            {/* 한국기준 현재날짜, 나머지 함수 형식은 toLocaleDateString 함수의 원칙에 따름, 지역을 불러오는 함수 추가 */}
           </div>
           <button
             onClick={() => setIsModalOpen(true)}

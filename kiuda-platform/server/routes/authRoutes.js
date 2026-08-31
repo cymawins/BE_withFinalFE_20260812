@@ -1,5 +1,5 @@
 import express from 'express';
-import {login, signup} from '../controllers/authController.js'
+import {login, signup, checkEmail} from '../controllers/authController.js'
 import {validateRequest} from '../middleware/validateRequest.js'
 import {loginSchema, signupSchema} from '../validators/authValidator.js'
 
@@ -23,5 +23,8 @@ router.post('/signup', validateRequest(signupSchema), signup)
 // 로그인과 동일하게 POST일 때 반응(데이터 제출)
 // Body에 email, password, name 의 key값과 value값을 입력
 // signupSchema로 오류검증 후 결과값 도출 (201, 400, 409)
+
+router.get('/checkEmail', checkEmail)
+// signup 도중 필요한 간단한 함수이므로, middleware를 거치지 않고 get해오는 가벼운 형식
 
 export default router
