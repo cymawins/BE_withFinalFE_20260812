@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { districtsByProvince, provinceOptions } from '@/data/regions'
 
@@ -29,6 +29,14 @@ export default function Signup() {
   const { login } = useAuth()
 
   const [currentStep, setCurrentStep] = useState(0)
+
+  const goToHome = () => {
+    const confirmed = window.confirm(
+      '작성 중인 회원가입 정보가 초기화됩니다. 홈으로 이동하시겠습니까?')
+    if (confirmed) {
+      navigate('/')
+    }
+  }
 
   // Step 1
   const [email, setEmail] = useState('')
@@ -67,24 +75,29 @@ export default function Signup() {
       return
     }
     try {
-      const response = await fetch('/api/auth/check-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+      const response = await fetch(`/api/auth/checkEmail?email=${email}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       })
-      if (!response.ok) throw new Error('Server error')
-      const data = await response.json()
-      if (data.available) {
-        setEmailChecked(true)
-        setEmailError('')
-      } else {
-        setEmailError('이미 사용 중인 이메일입니다')
+      if (response.status===409) {
+        setEmailError('이미 사용 중인 이메일입니다.')
         setEmailChecked(false)
       }
-    } catch {
-      // 백엔드 API 미연결 데모 환경: 항상 사용 가능한 것으로 간주
-      setEmailChecked(true)
-      setEmailError('')
+      else if(response.status===400) {
+        setEmailError('이메일을 입력해주세요.')
+        setEmailChecked(false)
+      }
+      else if (response.status===200) {
+        setEmailChecked(true)
+        setEmailError('')
+      }
+      else {
+        setEmailError('서버 오류입니다. 다시 시도해주세요. 이 현상이 반복된다면 문의해주세요.')
+        setEmailChecked(false)
+      }
+    } catch(err) {
+      setEmailError(err instanceof Error ? err.message : '이메일 확인 중 오류가 발생했습니다.')
+      setEmailChecked(false)
     }
   }
 
@@ -152,7 +165,8 @@ export default function Signup() {
           email,
           password,
           name,
-          region: `${province} ${district}`,
+          province,
+          district,
           plantInterests: selectedPlantTypes,
           marketingAgreed,
           termsAgreed
@@ -169,11 +183,8 @@ export default function Signup() {
       localStorage.setItem('userId', data.userId)
       login()
       navigate('/dashboard')
-    } catch {
-      // 백엔드 API가 아직 연결되지 않은 데모 환경에서는 데모용으로 즉시 통과시킨다
-      localStorage.setItem('authToken', 'demo-token')
-      login()
-      navigate('/dashboard')
+    } catch(err) {  
+      setSignupError(err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.')
     } finally {
       setIsSigningUp(false)
     }
@@ -226,9 +237,22 @@ export default function Signup() {
           {/* Logo & Header */}
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#56B968', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: 'white' }}>
-                키
-              </div>
+              <button
+                type='button'
+                className='goToHome'
+                onClick={goToHome}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  display: 'flex',
+                }}
+              >
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#56B968', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: 'white' }}>
+                  키
+                </div>
+              </button>
             </div>
             <h1 style={{ fontSize: 26, fontWeight: 900, color: '#3D5A3D', marginBottom: 8 }}>회원가입</h1>
             <p style={{ fontSize: 13, color: '#888' }}>{stepTitles[currentStep]}</p>
@@ -236,7 +260,7 @@ export default function Signup() {
 
           {/* Step 1: Email & Password */}
           {currentStep === 0 && (
-            <form onSubmit={handleStep1} style={{ animation: 'fadeIn 0.3s ease-out' }}>
+            <form onSubmit={handleStep1} style={{ animation: 'fadeIn 0.3s ease-out'}}>
               <div style={{ marginBottom: 18 }}>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: '#3D5A3D', marginBottom: 8 }}>이메일</label>
                 <div style={{ display: 'flex', gap: 8 }}>
@@ -313,9 +337,24 @@ export default function Signup() {
                 </button>
               </div>
 
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <input type="checkbox" checked={showPassword} onChange={(e) => setShowPassword(e.target.checked)} style={{ width: 16, height: 16, cursor: 'pointer' }} />
-                <label style={{ fontSize: 12, color: '#888', cursor: 'pointer' }}>비밀번호 표시</label>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' ,marginBottom: 12}}>
+                <input type="checkbox" checked={showPassword} onChange={(e) => setShowPassword(e.target.checked)} style={{ width: 16, height: 16, cursor: 'pointer'}} />
+                <label style={{ fontSize: 12, color: '#888', cursor: 'pointer'}}>비밀번호 표시</label>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20}}>
+                <div style={{ flex: 1, height: 1, background: '#D9CFC1' }} />
+                <span style={{ fontSize: 12, color: '#888', whiteSpace: 'nowrap' }}>또는</span>
+                <div style={{ flex: 1, height: 1, background: '#D9CFC1' }} />
+              </div>
+            
+              <div style={{ textAlign: 'center', marginBottom: 24}}>
+                <p style={{ fontSize: 14, color: '#666' }}>
+                  이미 계정이 있으신가요?{' '}
+                  <Link to="/login" className="kiuda-link-hover" style={{ color: '#56B968', fontWeight: 700, textDecoration: 'none' }}>
+                    로그인
+                  </Link>
+                </p>
               </div>
             </form>
           )}
