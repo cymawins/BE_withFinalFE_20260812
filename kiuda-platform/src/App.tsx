@@ -18,13 +18,14 @@ import Privacy from '@/pages/info/Privacy'
 import Notices from '@/pages/info/notices/Notices'
 import NoticeDetail from '@/pages/info/notices/NoticeDetail'
 import AdminRoute from '@/components/AdminRoutes'
+import IfLoginRoute from './components/IfLoginRoutes'
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<IfLoginRoute><Login /></IfLoginRoute>} />
+      <Route path="/signup" element={<IfLoginRoute><Signup /></IfLoginRoute>} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/ask" element={<Ask />} />
       <Route path="/connect" element={<Connect />} />

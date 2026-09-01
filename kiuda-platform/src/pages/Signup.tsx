@@ -178,11 +178,13 @@ export default function Signup() {
         throw new Error(err.message || '회원가입 실패')
       }
 
-      const data = await response.json()
-      localStorage.setItem('authToken', data.token)
-      localStorage.setItem('userId', data.userId)
-      login()
-      navigate('/dashboard')
+    const confirmed = window.confirm(
+      '회원가입이 완료되었습니다. 로그인하시겠습니까?')
+    if (confirmed) {
+      navigate('/login')
+    } else {
+      navigate('/')
+    }
     } catch(err) {  
       setSignupError(err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.')
     } finally {
