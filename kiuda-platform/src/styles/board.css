@@ -1,0 +1,537 @@
+/* =========================================
+   게시판 — 키:우다 neo 서브페이지 맞춤
+   (공지사항 클린 스타일 기준으로 통일)
+   ========================================= */
+
+/* ---------- 히어로 행 (제목 + 문의하기 버튼) ---------- */
+.board-hero-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  width: 100%;
+}
+
+.board-hero-row h1 {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.board-hero-row .neo-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.board-panel {
+  padding: 8px 4px 12px;
+}
+
+/* ---------- 뒤로가기 ---------- */
+.board-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--neo-bg, #eef3ea);
+  color: var(--neo-text, #2c3a28);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.board-back-btn:hover {
+  background: #e4ecdf;
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.board-back-btn:active {
+  background: #dce6d6;
+}
+
+.board-back-btn .board-back-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* =========================================
+   테이블 — 공지사항과 동일한 클린 스타일
+   ========================================= */
+.neo-panel .table,
+.neo-panel .board-wrap .table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  font-size: 0.92rem;
+  color: var(--neo-text, #2c3a28);
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(111, 155, 90, 0.06);
+  background: transparent;
+}
+
+/* 헤더: 배경색 제거 + 얇은 하단 보더만 */
+.neo-panel .table thead,
+.neo-panel .table thead.table-success,
+.neo-panel .table thead.table-dark,
+.neo-panel .table thead tr {
+  background: transparent !important;
+  --bs-table-bg: transparent !important;
+}
+
+.neo-panel .table thead th,
+.neo-panel .table thead.table-success th {
+  background: transparent !important;
+  color: var(--neo-muted, #6b7c64) !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 10px 8px;
+  border: none !important;
+  border-bottom: 2px solid #dce4d6 !important;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.neo-panel .table thead th.text-center {
+  text-align: center;
+}
+
+/* 본문 행 */
+.neo-panel .table tbody tr {
+  border-bottom: 1px solid #e8eee4;
+  transition: background 0.15s ease;
+}
+
+.neo-panel .table tbody tr:hover {
+  background: rgba(111, 155, 90, 0.05);
+}
+
+.neo-panel .table tbody td {
+  padding: 12px 8px;
+  border: none !important;
+  border-bottom: 1px solid #e8eee4 !important;
+  vertical-align: middle;
+  font-size: 0.92rem;
+  color: var(--neo-text, #2c3a28);
+}
+
+/* 링크 (제목) */
+.neo-panel .table a,
+.neo-panel .table a.text-dark,
+.neo-panel .table a.text-decoration-none {
+  color: #2d4a28 !important;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.neo-panel .table a:hover {
+  color: var(--neo-green-dark, #4f7a3e) !important;
+}
+
+/* 빈 상태 */
+.neo-panel .table tbody td.text-muted,
+.neo-panel .table tbody td[colspan] {
+  color: var(--neo-muted, #6b7c64) !important;
+  padding: 48px 8px !important;
+  font-size: 0.95rem;
+}
+
+/* 상태 배지 */
+.neo-panel .table .badge {
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.neo-panel .table .badge.bg-success {
+  background: #689f38 !important;
+}
+
+.neo-panel .table .badge.bg-secondary {
+  background: #9aa894 !important;
+}
+
+/* bordered 테이블 오버라이드 */
+.neo-panel .table-bordered th.bg-dark,
+.neo-panel .table-bordered th {
+  background: transparent !important;
+  color: var(--neo-muted, #6b7c64) !important;
+  border-color: #dce4d6 !important;
+}
+
+.neo-panel .table-bordered td {
+  border-color: #e8eee4 !important;
+}
+
+.neo-panel .bg-primary {
+  background: #689f38 !important;
+}
+
+.neo-panel .bg-light {
+  background: #f0f5ec !important;
+}
+
+/* =========================================
+   공통 버튼 — 공지사항 검색 버튼과 동일
+   ========================================= */
+
+/* Primary: 문의하기, 등록 */
+.board-hero-row .neo-btn-primary,
+.inquiry-form-actions .neo-btn-primary,
+.neo-panel .btn-primary,
+.neo-panel .btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #689f38 !important;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: none !important;
+  letter-spacing: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.board-hero-row .neo-btn-primary:hover,
+.inquiry-form-actions .neo-btn-primary:hover,
+.neo-panel .btn-primary:hover,
+.neo-panel .btn-success:hover {
+  background: #5a8c2f !important;
+  transform: translateY(-1px);
+  box-shadow: none !important;
+}
+
+.board-hero-row .neo-btn-primary:active,
+.inquiry-form-actions .neo-btn-primary:active,
+.neo-panel .btn-primary:active,
+.neo-panel .btn-success:active {
+  background: #4e7a28 !important;
+  transform: translateY(0);
+}
+
+.inquiry-form-actions .neo-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ghost / 취소 */
+.inquiry-form-actions .neo-btn-ghost,
+.neo-panel .btn-secondary,
+.neo-panel .btn-outline-secondary,
+.neo-panel .btn-warning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1.5px solid #dce4d6;
+  background: #f7faf4 !important;
+  color: var(--neo-text, #2c3a28) !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: none !important;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.inquiry-form-actions .neo-btn-ghost:hover,
+.neo-panel .btn-secondary:hover,
+.neo-panel .btn-outline-secondary:hover,
+.neo-panel .btn-warning:hover {
+  background: #eef3ea !important;
+  border-color: #c5d4bc;
+  box-shadow: none !important;
+  transform: none;
+}
+
+.neo-panel .btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #c62828 !important;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: none !important;
+}
+
+.neo-panel .btn-outline-primary {
+  border-radius: 12px;
+  border: 1.5px solid #689f38;
+  color: #4f7a3e;
+  background: transparent;
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+/* ---------- 폼 컨트롤 ---------- */
+.neo-panel .form-control {
+  border-radius: 12px;
+  border: 1.5px solid #dce4d6;
+  background: #f7faf4;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: var(--neo-text, #2c3a28);
+}
+
+.neo-panel .form-control:focus {
+  border-color: #689f38;
+  box-shadow: 0 0 0 3px rgba(104, 159, 56, 0.15);
+  background: #fff;
+  outline: none;
+}
+
+.neo-panel .form-label {
+  color: var(--neo-green-dark, #4f7a3e);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+/* ---------- 페이지네이션 ---------- */
+.neo-panel .rc-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.neo-panel .rc-pagination-item-active {
+  background: #689f38 !important;
+  border-color: #689f38 !important;
+}
+
+.neo-panel .rc-pagination-item-active a {
+  color: #fff !important;
+}
+
+/* =========================================
+   문의 작성 폼
+   ========================================= */
+.inquiry-form-wrap {
+  width: 100%;
+}
+
+.inquiry-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 4px 16px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #dce4d6;
+}
+
+.inquiry-form-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--neo-text, #2c3a28);
+}
+
+.inquiry-form-back {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--neo-muted, #6b7c64);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.inquiry-form-back:hover {
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.inquiry-form-body {
+  padding: 20px 4px 8px;
+}
+
+.inquiry-field {
+  margin-bottom: 22px;
+}
+
+.inquiry-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--neo-green-dark, #4f7a3e);
+}
+
+.inquiry-field input,
+.inquiry-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #dce4d6;
+  border-radius: 12px;
+  background: #f7faf4;
+  font-size: 0.95rem;
+  color: var(--neo-text, #2c3a28);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.inquiry-field input:focus,
+.inquiry-field textarea:focus {
+  border-color: #689f38;
+  box-shadow: 0 0 0 3px rgba(104, 159, 56, 0.15);
+  background: #fff;
+}
+
+.inquiry-field textarea {
+  min-height: 200px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.inquiry-field input::placeholder,
+.inquiry-field textarea::placeholder {
+  color: #a0ad98;
+}
+
+.inquiry-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: #c62828;
+}
+
+.inquiry-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+/* =========================================
+   FAQ
+   ========================================= */
+.faq-section {
+  margin-bottom: 8px;
+}
+
+.faq-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--neo-green-dark, #4f7a3e);
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #e8eee4;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+.faq-item:first-child {
+  padding-top: 0;
+}
+
+.faq-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--neo-text, #2c3a28);
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+
+.faq-q::before {
+  content: "Q.";
+  flex-shrink: 0;
+  color: #689f38;
+  font-weight: 800;
+}
+
+.faq-a {
+  margin: 0;
+  padding-left: 1.6em;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--neo-muted, #6b7c64);
+}
+
+/* =========================================
+   반응형
+   ========================================= */
+@media (max-width: 600px) {
+  .board-hero-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .board-hero-row .neo-btn {
+    margin-top: 4px;
+  }
+
+  .board-back-btn {
+    align-self: flex-start;
+  }
+}
+
+/* =========================================
+   게시판 진입 페이지: 사진 배경 대신 단색 neo 배경
+   ========================================= */
+.neo-page .neo-bg-wrap,
+.neo-page .neo-bg-wrap2 {
+  display: none !important;
+}
+
+.neo-page {
+  background: var(--neo-bg, #eef3ea) !important;
+}
+
+.neo-page .neo-main {
+  background: var(--neo-bg, #eef3ea) !important;
+  min-height: 60vh;
+}
+
+.neo-page .neo-page-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.neo-page .neo-content {
+  position: relative;
+  z-index: 1;
+}
+
+.neo-page .neo-panel.board-panel {
+  background: var(--neo-light, #f7faf4);
+  border-radius: var(--neo-radius-sm, 18px);
+  box-shadow:
+    8px 8px 18px var(--neo-shadow-dark, #c5d0be),
+    -6px -6px 16px var(--neo-shadow-light, #ffffff);
+  padding: 20px 22px 28px;
+}

@@ -40,7 +40,9 @@ export const footerConfig: FooterConfig = {
       links: [
         { label: '이용방법', href: '/guide' },
         { label: 'FAQ', href: '/faq' },
-        { label: '문의하기', href: 'mailto:support@kiuda.kr', external: true },
+        // [2026-09-02] 'mailto:support@kiuda.kr' -> '/inquiry'
+        // 사이트 안에 1:1 문의 게시판을 새로 추가했으므로 푸터 진입점을 그쪽으로 연결한다.
+        { label: '문의하기', href: '/inquiry' },
       ],
     },
     {
