@@ -6,12 +6,10 @@ import { useAuth } from '@/context/AuthContext'
  * 회원가입/로그인/초대 수락하기 버튼 — 클릭 시 인증 플래그를 세팅하고 정상적으로 이동한다.
  */
 export function AuthActionLink({ children, onClick, ...props }: LinkProps) {
-  const { login } = useAuth()
   return (
     <Link
       {...props}
       onClick={(e) => {
-        login()
         onClick?.(e)
       }}
     >

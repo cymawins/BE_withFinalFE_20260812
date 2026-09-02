@@ -83,7 +83,7 @@ export const login = async (req, res, next) => {
 // 아이디 및 비밀번호 형식은 authValidator의 signupSchema에서 이미 처리 완료
 export const signup = async (req, res, next) => {
     try{
-        const {email, password, name} = req.body // 사용자가 보낸 정보 저장
+        const {email, password, name, province, district, marketingAgreed} = req.body // 사용자가 보낸 정보 저장
         const existing = await findUserByEmail(email) // email이 현재 존재하는지 검증
         if (existing) { // 존재할 경우(true) 'error 409 : 요청처리불가'
             return res.status(409).json({message: '이미 가입된 이메일입니다.'})
@@ -93,7 +93,10 @@ export const signup = async (req, res, next) => {
             email,
             password_hash,
             name,
-            login_type:'EMAIL'
+            login_type:'EMAIL',
+            province,
+            district,
+            marketingAgreed,
         })
         return res.status(201).json({
             message : '회원가입이 완료되었습니다.'
@@ -103,4 +106,20 @@ export const signup = async (req, res, next) => {
     } catch(err) {
         next(err) // 예기치 못한 에러 발생시 errorHandler로 보내어, '500 error' 처리
     }
+}
+
+export const checkEmail = async (req, res, next) => {
+    try {
+        const {email} = req.query
+        if (!email) {
+            return res.status(400).json({message: '이메일을 입력해주세요.'})
+        }
+        const existing = await findUserByEmail(email)
+        if (existing) {
+            return res.status(409).json({message: '이미 가입된 이메일입니다.'})
+        }
+        else {
+            return res.status(200).json({message : '사용 가능한 이메일입니다.'})
+        }
+    } catch(err) {next(err)}
 }

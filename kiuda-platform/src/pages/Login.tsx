@@ -15,6 +15,14 @@ export default function Login() {
 
   const loginButtonLabel = isLoading ? '로그인 중...' : '로그인'
 
+  const goToHome = () => {
+    const confirmed = window.confirm(
+      '작성 중인 로그인 정보가 초기화됩니다. 홈으로 이동하시겠습니까?')
+    if (confirmed) {
+      navigate('/')
+    }
+  }
+
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
     // 로그인 유효성 검사
@@ -79,22 +87,30 @@ export default function Login() {
           {/* Logo & Header */}
           <div style={{ textAlign: 'center', marginBottom: 40 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                  background: '#56B968',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 24,
-                  fontWeight: 900,
-                  color: 'white',
-                }}
-              >
-                키
-              </div>
+              <button type='button' className='goToHome' onClick={goToHome} style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                display: 'flex',
+                }}>
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                    background: '#56B968',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 24,
+                    fontWeight: 900,
+                    color: 'white',
+                  }}
+                >
+                  키
+                </div>
+              </button>
             </div>
             <h1 style={{ fontSize: 28, fontWeight: 900, color: '#3D5A3D', marginBottom: 8 }}>로그인</h1>
             <p style={{ fontSize: 14, color: '#888' }}>함께 하는 초록빛 일상을 시작하세요</p>

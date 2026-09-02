@@ -19,6 +19,8 @@ export const getMyInfo = async (req, res, next) => {
             userId: getUser.user_id,
             email: getUser.email,
             name: getUser.name,
+            province: getUser.province,
+            district: getUser.district,
             message: '유저 조회 성공'
         })
         // 유저정보를 userId, email, name으로 반환

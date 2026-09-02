@@ -26,6 +26,13 @@
   cursor: not-allowed;
 }
 
+/* 로고 홈 이동 버튼 */
+.goToHome:focus-visible {
+  outline: 2px solid #56b968;
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
 /* 소셜 로그인 버튼 */
 .kiuda-social-btn:hover {
   background: #f5f0e8 !important;
