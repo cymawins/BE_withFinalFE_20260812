@@ -7,6 +7,9 @@
     "skipLibCheck": true,
 
     "moduleResolution": "bundler",
+    // [2026-09-02] src/config/constants.js, locale.js 가 .js 파일이라 필요하다.
+    // 없으면 IList.tsx 의 import 두 줄에서 TS7016(암시적 any)로 빌드가 깨진다.
+    "allowJs": true,
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
@@ -22,7 +25,11 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "ignoreDeprecations": "6.0"
+    // [2026-09-02] "6.0" -> "5.0" 으로 변경.
+    // package-lock.json 에 잠긴 typescript 가 5.9.3 인데 이 버전은 "6.0" 을
+    // 거부해서(TS5103) `npm run build` 가 첫 줄에서 바로 실패하고 있었다.
+    // "5.0" 은 TS 5.0 이상 전 버전에서 유효하므로 더 안전하다.
+    "ignoreDeprecations": "5.0"
   },
   "include": ["src"]
 }

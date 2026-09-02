@@ -20,3 +20,4 @@ yarn-error.log*
 
 .env
 server/config/aiven-ca.pem
+*.tsbuildinfo
