@@ -5,9 +5,15 @@ import { LandingFooter } from '@/components/layout/LandingFooter'
 
 /**
  * 푸터 링크 서브 페이지 공통 레이아웃
- * app-shell: min-height 100vh + flex column → 푸터를 화면 하단에 고정
+ * hideBackground: 게시판 등 단색 배경이 필요할 때 히어로 사진 레이어 숨김
  */
-export function SubPageLayout({ children }: { children: ReactNode }) {
+export function SubPageLayout({
+  children,
+  hideBackground = false,
+}: {
+  children: ReactNode
+  hideBackground?: boolean
+}) {
   useEffect(() => {
     document.body.classList.add('neo-page')
     return () => {
@@ -17,7 +23,7 @@ export function SubPageLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-shell">
-      <BackgroundLayers />
+      {!hideBackground && <BackgroundLayers />}
       <LandingHeader />
       <main id="app-content" className="neo-main">
         {children}

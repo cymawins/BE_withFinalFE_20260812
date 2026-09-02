@@ -1,4 +1,4 @@
-/** 리치 Footer 데이터 (프론트 정적) — 푸터 문구/로고 크기는 여기만 수정 */
+/** 리치 Footer 데이터 (프론트 정적) */
 
 export interface FooterLink {
   label: string
@@ -16,8 +16,6 @@ export interface FooterConfig {
   tagline: string
   copyright: string
   logoHref: string
-  /** 푸터 로고 표시 높이(px). CSS 변수 --footer-logo-height 로 전달됩니다. */
-  logoHeight: number
   columns: FooterColumn[]
 }
 
@@ -26,7 +24,6 @@ export const footerConfig: FooterConfig = {
   tagline: '같이 키우는 스마트 키움 커뮤니티',
   copyright: '© 2026 키:우다 (Kiuda). All rights reserved.',
   logoHref: '/',
-  logoHeight: 160,
   columns: [
     {
       title: '서비스 정보',
@@ -40,7 +37,7 @@ export const footerConfig: FooterConfig = {
       links: [
         { label: '이용방법', href: '/guide' },
         { label: 'FAQ', href: '/faq' },
-        { label: '문의하기', href: 'mailto:support@kiuda.kr', external: true },
+        { label: '1:1 문의', href: '/inquiry' },
       ],
     },
     {

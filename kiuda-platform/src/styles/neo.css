@@ -2028,120 +2028,113 @@ html { scroll-behavior: smooth; }
 }
 
 /* ===== Notion-style rich footer (frontend) ===== */
-/*
- * neo-footer 클래스를 쓰지 않음 → 레거시 .page-neo .neo-footer { … !important }
- * 에 걸리지 않으므로 이 블록에는 !important 가 없습니다.
- */
-footer.neo-footer-rich {
-  --footer-logo-height: 160px; /* fallback; LandingFooter 인라인 변수가 우선 */
-
-  background: rgba(30, 46, 28, 0.72);
-  background-image: none;
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 19px 24px 15px;
-  text-align: left;
-  color: #f0f5ec;
+.neo-footer-rich {
+  background: rgba(30, 46, 28, 0.72) !important;
+  backdrop-filter: blur(14px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.1) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  padding: 19px 24px 15px !important;
+  text-align: left !important;
+  color: #f0f5ec !important;
   position: relative;
   z-index: 2;
-  flex-shrink: 0;
-  margin-top: auto;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
   width: 100%;
 }
-
-footer.neo-footer-rich .neo-footer-inner {
+.neo-footer-inner {
   max-width: 1120px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(160px, 300px) 1fr;
-  gap: 14px;
-  align-items: center;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: start;
 }
-
-footer.neo-footer-rich .neo-footer-logo {
+.neo-footer-logo {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 11px;
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 800;
   font-size: 1.05rem;
   text-decoration: none;
 }
-
-footer.neo-footer-rich .neo-footer-logo span {
-  display: none;
-}
-
-footer.neo-footer-rich .neo-footer-logo img,
-footer.neo-footer-rich img.neo-footer-logo-img {
-  height: var(--footer-logo-height);
-  width: auto;
-  max-height: none;
-  max-width: min(90vw, 480px);
-  object-fit: contain;
-  display: block;
-}
-
-footer.neo-footer-rich .neo-footer-tagline {
+.neo-footer-logo span { color: #ffffff !important; }
+.neo-footer-logo img { height: 28px; width: auto; }
+.neo-footer-tagline {
   font-size: 0.85rem;
   color: #c5d4bc;
   margin: 0 0 4px;
   line-height: 1.4;
   max-width: 200px;
 }
-
-footer.neo-footer-rich .neo-footer-copy {
+.neo-footer-copy {
   font-size: 0.78rem;
-  color: #c5d4bc;
+  color: #c5d4bc !important;
 }
-
-footer.neo-footer-rich .neo-footer-cols {
+.neo-footer-cols {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-
-footer.neo-footer-rich .neo-footer-col h4 {
+.neo-footer-col h4 {
   font-size: 0.92rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #ffffff !important;
   margin-bottom: 6px;
 }
-
-footer.neo-footer-rich .neo-footer-col a {
+.neo-footer-col a {
   display: block;
   font-size: 0.88rem;
-  color: #d0ddc8;
+  color: #d0ddc8 !important;
   margin-bottom: 4px;
   text-decoration: none;
   line-height: 1.4;
 }
-
-footer.neo-footer-rich .neo-footer-col a:hover {
-  color: #ffffff;
-}
-
+.neo-footer-col a:hover { color: #ffffff !important; }
 @media (max-width: 900px) {
-  footer.neo-footer-rich .neo-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  footer.neo-footer-rich .neo-footer-cols {
-    grid-template-columns: 1fr 1fr;
-  }
+  .neo-footer-inner { grid-template-columns: 1fr; gap: 16px; }
+  .neo-footer-cols { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 500px) {
+  .neo-footer-cols { grid-template-columns: 1fr; }
+  .neo-footer-rich { padding: 19px 16px 16px !important; }
 }
 
-@media (max-width: 600px) {
-  footer.neo-footer-rich {
-    --footer-logo-height: 96px;
-    padding: 19px 16px 16px;
-  }
-  footer.neo-footer-rich .neo-footer-cols {
-    grid-template-columns: 1fr;
-  }
+/* Force dark over legacy light .page-neo .neo-footer rules */
+footer.neo-footer.neo-footer-rich,
+.neo-footer.neo-footer-rich,
+.page-neo footer.neo-footer,
+.page-neo .neo-footer.neo-footer-rich,
+.page-neo footer.neo-footer.neo-footer-rich,
+.neo-page footer.neo-footer,
+.neo-page .neo-footer.neo-footer-rich,
+.neo-page footer.neo-footer.neo-footer-rich,
+body.page-neo footer.neo-footer.neo-footer-rich,
+body.neo-page footer.neo-footer.neo-footer-rich {
+  background: rgba(30, 46, 28, 0.72) !important;
+  background-image: none !important;
+  backdrop-filter: blur(14px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.1) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #f0f5ec !important;
+  text-align: left !important;
 }
+footer.neo-footer.neo-footer-rich .neo-footer-logo,
+footer.neo-footer.neo-footer-rich .neo-footer-logo span,
+.page-neo .neo-footer-rich .neo-footer-logo,
+.page-neo .neo-footer-rich .neo-footer-logo span { color: #ffffff !important; }
+footer.neo-footer.neo-footer-rich .neo-footer-tagline,
+footer.neo-footer.neo-footer-rich .neo-footer-copy,
+.page-neo .neo-footer-rich .neo-footer-tagline,
+.page-neo .neo-footer-rich .neo-footer-copy { color: #c5d4bc !important; }
+footer.neo-footer.neo-footer-rich .neo-footer-col h4,
+.page-neo .neo-footer-rich .neo-footer-col h4 { color: #ffffff !important; }
+footer.neo-footer.neo-footer-rich .neo-footer-col a,
+.page-neo .neo-footer-rich .neo-footer-col a { color: #d0ddc8 !important; }
+footer.neo-footer.neo-footer-rich .neo-footer-col a:hover,
+.page-neo .neo-footer-rich .neo-footer-col a:hover { color: #ffffff !important; }
 
 /* ===== Sticky footer shell (푸터 하단 고정) ===== */
 html {
@@ -2179,9 +2172,37 @@ body {
   width: 100%;
 }
 
+.app-shell > .neo-footer,
 .app-shell > .neo-footer-rich,
-.app-shell > footer.neo-footer-rich {
+.app-shell > footer.neo-footer {
   flex-shrink: 0;
-  margin-top: auto;
+  margin-top: auto !important;
   width: 100%;
+}
+
+/* ↓↓↓ 푸터 로고 크기 강제 (footer-logo-force.css 병합) ↓↓↓ */
+/* neo.css 맨 아래에 반드시 붙여 넣기 — 로고 크기 강제 */
+.neo-footer-rich .neo-footer-logo img,
+.neo-footer-rich img.neo-footer-logo-img,
+footer.neo-footer-rich .neo-footer-logo img {
+  height: 100px !important;
+  width: auto !important;
+  max-height: none !important;
+  max-width: min(90vw, 360px) !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+.neo-footer-rich .neo-footer-logo span {
+  display: none !important;
+}
+.neo-footer-rich .neo-footer-inner {
+  grid-template-columns: minmax(150px, 280px) 1fr !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+@media (max-width: 600px) {
+  .neo-footer-rich .neo-footer-logo img,
+  .neo-footer-rich img.neo-footer-logo-img {
+    height: 60px !important;
+  }
 }

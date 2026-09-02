@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { ImageSlot } from '@/components/ui/ImageSlot'
+import { LandingFooter } from '@/components/layout/LandingFooter'
 import {
   ENV_LABELS,
   STATUS_COLORS,
@@ -335,6 +336,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      <LandingFooter />
     </div>
   )
 }

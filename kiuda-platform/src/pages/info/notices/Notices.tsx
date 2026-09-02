@@ -30,7 +30,7 @@ export default function Notices() {
   }, [query])
 
   return (
-    <SubPageLayout>
+    <SubPageLayout hideBackground>
       <section className="neo-page-hero">
         <p className="neo-eyebrow dark">NEWS</p>
         <h1>

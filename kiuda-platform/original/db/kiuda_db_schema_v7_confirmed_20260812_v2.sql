@@ -453,3 +453,22 @@ SET FOREIGN_KEY_CHECKS = 1;
 --                         DirectMessage(deleted_by_sender/deleted_by_receiver),
 --                         UserPlant(탈퇴 사용자 "기록된 키움이" 집계)
 -- =====================================================================
+//문의하기
+CREATE TABLE Inquiry (
+    inquiry_id     BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id        BIGINT NOT NULL,                 -- 작성 유저
+    title          VARCHAR(200) NOT NULL,
+    content        TEXT NOT NULL,
+    views          INT UNSIGNED NOT NULL DEFAULT 0,
+    reply          TEXT NULL,                       -- 관리자 답변
+    replied_by     BIGINT NULL,                     -- 답변한 관리자
+    replied_at     DATETIME NULL,
+    created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_inquiry_user FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_inquiry_admin FOREIGN KEY (replied_by) REFERENCES Admin(admin_id) ON DELETE SET NULL
+);
+
+CREATE INDEX idx_inquiry_user_created ON Inquiry(user_id, created_at DESC);
+CREATE INDEX idx_inquiry_created ON Inquiry(created_at DESC);
