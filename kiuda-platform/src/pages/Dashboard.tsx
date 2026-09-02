@@ -11,6 +11,7 @@ import {
   type PlantEnvironment,
   type PlantStatus,
 } from '@/data/plots'
+import { LandingFooter } from '@/components/layout/LandingFooter'
 
 const GREEN = 'oklch(0.56 0.09 152)'
 

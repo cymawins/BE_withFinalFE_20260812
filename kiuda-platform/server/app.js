@@ -3,7 +3,11 @@ import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
+<<<<<<< Updated upstream
 import inquiryRoutes from './routes/inquiryRoutes.js'
+=======
+// import inquiryRoutes from './routes/inquiryRoutes.js' // [2026-09-02] 비활성화 (아래 마운트 주석 참고)
+>>>>>>> Stashed changes
 import {errorHandler} from './middleware/errorHandler.js'
 
 // 백엔드 서버의 기본 환경설정을 모아둔 곳입니다.
@@ -30,7 +34,16 @@ app.use(express.json()) // json언어로 해석합니다
 app.use('/api/auth',authRoutes) // 로그인, 토큰 발급
 app.use('/api/users', userRoutes) // 토큰 검증, 내 정보 조회
 app.use('/api/admin', adminRoutes) // 관리자 권한 확인
+<<<<<<< Updated upstream
 app.use('/api/inquiries', inquiryRoutes); // 문의하기
+=======
+// [2026-09-02] 1:1 문의 API 비활성화
+// 사유: 확정 스키마(v7 confirmed v2)에 Inquiry 테이블이 없어 호출 시 무조건 500이 났고,
+//       문의 주체를 '비회원'으로 정의하면서 프론트(localStorage) 전용으로 전환했다.
+//       routes/inquiryRoutes.js, controllers/inquiryController.js, models/inquiryModel.js는
+//       삭제하지 않고 보존한다. 추후 Inquiry 테이블을 추가하면 이 두 줄만 되살리면 된다.
+// app.use('/api/inquiries', inquiryRoutes); // 문의하기
+>>>>>>> Stashed changes
 
 app.use(errorHandler)
 // 중간에 next(err) 함수를 호출 시, 에러내용과 함께 실행

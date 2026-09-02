@@ -10,7 +10,11 @@ const http = axios.create({
 
 // 요청 인터셉터: 토큰 자동 첨부
 http.interceptors.request.use((config) => {
+<<<<<<< Updated upstream
   const token = localStorage.getItem("token"); // AuthContext에서 쓰는 키로 맞추기
+=======
+  const token = localStorage.getItem("authToken"); // AuthContext에서 쓰는 키로 맞추기
+>>>>>>> Stashed changes
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

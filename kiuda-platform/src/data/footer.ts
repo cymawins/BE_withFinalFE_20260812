@@ -37,7 +37,14 @@ export const footerConfig: FooterConfig = {
       links: [
         { label: '이용방법', href: '/guide' },
         { label: 'FAQ', href: '/faq' },
+<<<<<<< Updated upstream
         { label: '1:1 문의', href: '/inquiry' },
+=======
+        // [2026-09-02] 'mailto:support@kiuda.kr' -> '/inquiry'
+        // 사이트 안에 1:1 문의 게시판이 있는데도 푸터의 유일한 진입점이
+        // 메일 링크라서, 만들어 둔 화면에 도달할 방법 자체가 없었다.
+        { label: '문의하기', href: '/inquiry' },
+>>>>>>> Stashed changes
       ],
     },
     {

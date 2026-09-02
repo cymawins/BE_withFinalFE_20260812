@@ -16,6 +16,7 @@ import {
   type HelpType,
   type MyHelpPost,
 } from '@/data/connect'
+import { LandingFooter } from '@/components/layout/LandingFooter'
 
 const GREEN = 'oklch(0.56 0.09 152)'
 const INK = 'oklch(0.4 0.02 145)'

@@ -17,6 +17,8 @@
 @import './neo.css';
 @import './app-screens.css';
 @import './forms.css';
+/* 게시판(공지/FAQ/1:1문의) 전용 스타일 — 누락되어 있어 추가 (2026-09-02) */
+@import './board.css';
 
 /* Tailwind 세 레이어를 명시적 @layer로 감싼다 — 위 원본 CSS(unlayered)가
    항상 우선하도록 만들되, 새로 작성하는 컴포넌트에서는 Tailwind 유틸리티를
