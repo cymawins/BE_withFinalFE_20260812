@@ -20,6 +20,7 @@ export default function Admin() {
   const handleLogout = () => {
     localStorage.removeItem('authToken')
     localStorage.removeItem('adminId')
+    localStorage.removeItem('kiuda_auth')
     navigate('/login')
   }
 

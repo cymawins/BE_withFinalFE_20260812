@@ -10,7 +10,9 @@ export default function IfLoginRoute({ children }: { children: ReactNode }) {
     if (localStorage.getItem('adminId')) {
       return <Navigate to="/admin" replace />
     }
-    return <Navigate to="/dashboard" replace />
+    if (localStorage.getItem('userId')) {
+      return <Navigate to="/dashboard" replace />
+    }
   }
   return <>{children}</>
 }
