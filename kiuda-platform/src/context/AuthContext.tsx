@@ -44,6 +44,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     window.localStorage.removeItem(AUTH_KEY)
+    window.localStorage.removeItem('authToken')
+    window.localStorage.removeItem('adminId')
+    window.localStorage.removeItem('userId')
     setIsAuthenticated(false)
   }, [])
 
