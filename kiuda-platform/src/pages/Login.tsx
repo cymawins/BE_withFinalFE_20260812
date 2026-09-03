@@ -60,7 +60,7 @@ export default function Login() {
       // 추가하지 않으면, 관리자>일반유저로 바꿔 로그인해도 관리자화면으로 이동 가능한 현상 발생
       localStorage.removeItem('userId')
       localStorage.removeItem('adminId')
-      
+      localStorage.removeItem('kiuda_auth')
       localStorage.setItem('authToken', data.token)
 
       if (data.adminId) {

@@ -11,18 +11,18 @@ import {
   dailySignups,
   adminLogs,
 } from '../data/admin'
+import { useAuth } from '@/context/AuthContext'
 
 /** 관리자 대시보드 화면 (원본 screens/admin.dc.html) */
 export default function Admin() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<AdminTab>('users')
 
+  const { logout } = useAuth()
   const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('adminId')
-    navigate('/login')
+    logout()
+    navigate('/')
   }
-
   const suspendUser = (userId: number) => {
     alert(`사용자 ${userId} 일시정지 처리됨`)
   }
